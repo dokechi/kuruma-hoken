@@ -105,11 +105,8 @@ function renderCaseDetail(caseId) {
       <section><h2>このケースに近い人</h2>${listItems(modelCase.representativeExamples)}</section>
       <section><h2>会社選定に必要な条件</h2>${listItems(modelCase.decisionCriteria)}</section>
       <div class="accordion-stack">
-        <details><summary>会社ごとの比較を見る</summary>${renderComparisonCards(modelCase.comparisons)}</details>
-        <details><summary>他社を今回の主役にしなかった理由</summary>${renderComparisonTable(modelCase.comparisons, "why")}</details>
-        <details><summary>他社が主役になる条件</summary>${renderComparisonTable(modelCase.comparisons, "win")}</details>
+        <details><summary>他社と比較する</summary>${renderComparisonCards(modelCase.comparisons)}</details>
         <details><summary>細かい条件・対象外条件</summary>${listItems(modelCase.smallConditions)}</details>
-        <details><summary>ミスマッチが起きる点</summary><p>${escapeHtml(modelCase.mismatchRisk)}</p></details>
         <details><summary>このページでは判断できないこと</summary>${listItems(modelCase.cannotDecideHere)}</details>
         <details><summary>根拠資料を見る</summary>${renderSources(sources)}<p class="source-note">情報確認日：2026年6月25日。商品資料によって対象となる契約始期日が異なります。損保ジャパンは2026年1月始期資料と2026年7月始期資料を混同しないで表示しています。</p></details>
       </div>
