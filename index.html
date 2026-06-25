@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>自動車保険タイプ診断</title>
+  <meta name="description" content="保険証券なしで20問に答えるだけ。事故時の不安タイプと、最初に比較すべき保険会社タイプを整理します。">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#home" data-nav="home" aria-label="トップへ">
+      <span class="cat-mark" aria-hidden="true">=^･ω･^=</span>
+      <span>自動車保険タイプ診断</span>
+    </a>
+    <nav class="top-nav" aria-label="画面移動">
+      <button type="button" data-nav="home">トップ</button>
+      <button type="button" data-nav="sources">出典</button>
+    </nav>
+  </header>
+
+  <main>
+    <section id="home" class="screen active hero" aria-labelledby="home-title">
+      <div class="hero-copy">
+        <p class="eyebrow">個人情報・証券情報の入力なし</p>
+        <h1 id="home-title">保険証券なしでOK。<br>20問で、事故のときに困りやすいポイントがわかります。</h1>
+        <p>自動車保険は、保険料だけでは選びきれません。<br>車の使い方、運転する人、事故のときに不安なことによって、見るべきポイントが変わります。</p>
+        <p>この診断では、ふだん見落としやすい条件まで含めて、あなたに近いタイプを整理します。</p>
+        <p>まずは証券なしで、自分の保険選びの軸を確認できます。</p>
+        <button id="startBtn" class="primary-btn" type="button">診断をはじめる</button>
+        <p class="note">この診断は、特定の保険商品の加入をすすめるものではありません。結果は、回答内容から見た「事故時の不安タイプ」と各社の特徴の近さを示すものです。</p>
+      </div>
+      <aside class="hero-card" aria-label="診断の特徴">
+        <div class="line-cat" aria-hidden="true"></div>
+        <h2>ブラウザ内で完結</h2>
+        <ul>
+          <li>ログインなし</li>
+          <li>データ保存なし</li>
+          <li>保険料・等級・更新月は聞きません</li>
+        </ul>
+      </aside>
+    </section>
+
+    <section id="question" class="screen" aria-labelledby="question-title">
+      <div class="question-shell">
+        <div class="progress-meta"><span id="questionCount">質問 1 / 20</span><span id="answeredCount">未回答</span></div>
+        <div class="progress-track" aria-hidden="true"><div id="progressBar" class="progress-bar"></div></div>
+        <article class="question-card">
+          <p id="questionCategory" class="eyebrow"></p>
+          <h1 id="question-title"></h1>
+          <div id="choices" class="choices"></div>
+        </article>
+        <div class="question-actions">
+          <button id="backBtn" class="secondary-btn" type="button">戻る</button>
+          <button id="nextBtn" class="primary-btn" type="button">次へ</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="summary" class="screen result-screen" aria-labelledby="summary-title">
+      <p class="eyebrow">結果サマリー</p>
+      <h1 id="summary-title">あなたの事故時不安タイプは…</h1>
+      <div id="topResult" class="top-result"></div>
+      <div id="scoreList" class="score-list"></div>
+      <p id="compareReason" class="callout"></p>
+      <div class="screen-actions">
+        <button class="primary-btn" type="button" data-nav="detail">詳細理由を見る</button>
+        <button class="secondary-btn" type="button" data-nav="actions">次のアクション</button>
+      </div>
+    </section>
+
+    <section id="detail" class="screen result-screen" aria-labelledby="detail-title">
+      <p class="eyebrow">詳細理由</p>
+      <h1 id="detail-title">なぜこのタイプに近いのか</h1>
+      <div id="detailBody" class="detail-grid"></div>
+      <div class="screen-actions">
+        <button class="secondary-btn" type="button" data-nav="summary">結果サマリーへ戻る</button>
+        <button class="primary-btn" type="button" data-nav="actions">次のアクションへ</button>
+      </div>
+    </section>
+
+    <section id="actions" class="screen result-screen" aria-labelledby="actions-title">
+      <p class="eyebrow">次のアクション</p>
+      <h1 id="actions-title">結果を保険選びの軸にする</h1>
+      <div class="action-cards">
+        <article><h2>詳細を見る</h2><p>一致度が高い理由を確認し、事故時に何を重視したいかを言葉にしておきましょう。</p></article>
+        <article><h2>他のタイプも比較する</h2><p>上位だけでなく、条件次第のタイプも確認すると見落としを減らせます。</p></article>
+        <article><h2>価格だけならダイレクト型も選択肢</h2><p>保険料だけを下げたい場合は、ダイレクト型や一括見積りも選択肢です。</p></article>
+        <article><h2>契約前に確認する</h2><p>実際の契約判断には補償内容・保険料・車両条件の確認が必要です。</p></article>
+      </div>
+      <div class="screen-actions"><button class="secondary-btn" type="button" data-nav="summary">結果へ戻る</button><button class="primary-btn" type="button" id="restartBtn">もう一度診断する</button></div>
+    </section>
+
+    <section id="sources" class="screen result-screen" aria-labelledby="sources-title">
+      <p class="eyebrow">出典・参考資料</p>
+      <h1 id="sources-title">この診断の根拠</h1>
+      <p>この診断は、各社の公式サイト、商品説明資料、重要事項説明書、公開情報、公的統計などをもとに、事故時に差が出やすいポイントを整理しています。</p>
+      <ul class="source-list">
+        <li><a href="#">あいおいニッセイ同和損保 公式サイト</a></li>
+        <li><a href="#">東京海上日動 公式サイト</a></li>
+        <li><a href="#">損保ジャパン 公式サイト</a></li>
+        <li><a href="#">三井住友海上 公式サイト</a></li>
+        <li><a href="#">共栄火災 公式サイト</a></li>
+        <li><a href="#">金融庁「自動車保険の概況」</a></li>
+        <li><a href="#">国土交通省「交通事故統計」</a></li>
+        <li><a href="#">一般社団法人 日本損害保険協会</a></li>
+        <li><a href="#">各社パンフレット・商品説明資料・重要事項説明書</a></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="disclaimer">
+    <strong>免責事項</strong>
+    <p>この診断は、特定の保険商品の加入をすすめるものではありません。結果は、回答内容から見た「事故時の不安タイプ」と各社の特徴の近さを示すものです。実際の契約判断には、補償内容・保険料・車両条件などの確認が必要です。</p>
+  </footer>
+  <script src="script.js"></script>
+</body>
+</html>
