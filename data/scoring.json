@@ -1,19 +1,17 @@
 {
   "q1": {
     "A": {
-      "aioi_type": 4
+      "ms_type": 1
     },
-    "B": {
-      "aioi_type": 4
-    },
+    "B": {},
     "C": {
-      "aioi_type": 4
+      "aioi_type": 1
     },
     "D": {
-      "kyoei_type": 4
+      "kyoei_type": 1
     },
     "E": {
-      "kyoei_type": 4
+      "kyoei_type": 2
     }
   },
   "q2": {
@@ -46,7 +44,7 @@
       "ms_type": 2
     },
     "C": {
-      "aioi_type": 4
+      "aioi_type": 1
     },
     "D": {
       "sompo_type": 4
@@ -54,9 +52,7 @@
     "E": {
       "kyoei_type": 4
     },
-    "F": {
-      "kyoei_type": 4
-    }
+    "F": {}
   },
   "q4": {
     "A": {
@@ -72,8 +68,8 @@
       "aioi_type": 2
     },
     "D": {
-      "aioi_type": 4,
-      "sompo_type": 2
+      "ms_type": 3,
+      "aioi_type": 1
     },
     "E": {
       "kyoei_type": 4
@@ -95,9 +91,7 @@
     "C": {
       "kyoei_type": 4
     },
-    "D": {
-      "direct_type": 4
-    },
+    "D": {},
     "E": {
       "ms_type": 4,
       "tokio_type": 2
@@ -146,18 +140,13 @@
     "E": {
       "kyoei_type": 4
     },
-    "F": {
-      "direct_type": 4,
-      "kyoei_type": 1
-    }
+    "F": {}
   },
   "q8": {
     "A": {
       "aioi_type": 4
     },
-    "B": {
-      "direct_type": 4
-    },
+    "B": {},
     "C": {
       "sompo_type": 4
     },
@@ -225,9 +214,7 @@
       "ms_type": 4,
       "tokio_type": 2
     },
-    "F": {
-      "kyoei_type": 4
-    }
+    "F": {}
   },
   "q12": {
     "A": {
@@ -235,28 +222,20 @@
       "kyoei_type": 1
     },
     "B": {
-      "kyoei_type": 4,
-      "direct_type": 1
+      "kyoei_type": 2
     },
     "C": {
       "tokio_type": 4,
-      "direct_type": 1,
-      "kyoei_type": 1,
-      "ms_type": 2
+      "ms_type": 1
     },
     "D": {
       "ms_type": 4,
-      "direct_type": 1,
-      "kyoei_type": 1,
-      "tokio_type": 2
+      "tokio_type": 1
     },
     "E": {
-      "aioi_type": 4,
-      "direct_type": 1,
-      "kyoei_type": 1
+      "aioi_type": 2
     },
     "F": {
-      "direct_type": 4,
       "kyoei_type": 1
     }
   },
@@ -265,10 +244,7 @@
       "aioi_type": 4,
       "kyoei_type": 1
     },
-    "B": {
-      "direct_type": 4,
-      "kyoei_type": 1
-    },
+    "B": {},
     "C": {
       "kyoei_type": 4
     },
@@ -307,9 +283,7 @@
     }
   },
   "q15": {
-    "A": {
-      "direct_type": 4
-    },
+    "A": {},
     "B": {
       "tokio_type": 4,
       "ms_type": 2
@@ -322,9 +296,7 @@
       "ms_type": 4,
       "tokio_type": 2
     },
-    "E": {
-      "kyoei_type": 4
-    }
+    "E": {}
   },
   "q16": {
     "A": {
@@ -342,9 +314,7 @@
     "D": {
       "kyoei_type": 4
     },
-    "E": {
-      "direct_type": 4
-    }
+    "E": {}
   },
   "q17": {
     "A": {
@@ -389,59 +359,42 @@
   },
   "q19": {
     "A": {
-      "aioi_type": 4,
-      "direct_type": 1,
-      "kyoei_type": 1
+      "aioi_type": 1
     },
-    "B": {
-      "direct_type": 4,
-      "kyoei_type": 1
-    },
+    "B": {},
     "C": {
-      "kyoei_type": 4,
-      "direct_type": 1
+      "kyoei_type": 2
     },
     "D": {
-      "kyoei_type": 4,
-      "direct_type": 1
+      "kyoei_type": 2
     },
     "E": {
       "direct_type": 4,
       "kyoei_type": 1
     },
     "F": {
-      "kyoei_type": 4,
-      "direct_type": 1
+      "kyoei_type": 1
     }
   },
   "q20": {
     "A": {
-      "aioi_type": 4,
-      "direct_type": 1,
-      "kyoei_type": 1,
-      "sompo_type": 2
+      "aioi_type": 3,
+      "sompo_type": 1
     },
     "B": {
       "tokio_type": 4,
-      "direct_type": 1,
-      "kyoei_type": 1,
-      "ms_type": 2
+      "ms_type": 1
     },
     "C": {
       "ms_type": 4,
-      "direct_type": 1,
-      "kyoei_type": 1,
-      "tokio_type": 2
+      "tokio_type": 1
     },
     "D": {
-      "sompo_type": 4,
-      "direct_type": 1,
-      "kyoei_type": 1,
-      "aioi_type": 2
+      "sompo_type": 3,
+      "aioi_type": 1
     },
     "E": {
-      "kyoei_type": 4,
-      "direct_type": 1
+      "kyoei_type": 2
     },
     "F": {
       "direct_type": 4,

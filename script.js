@@ -73,18 +73,23 @@ function nextQuestion() {
 
 function calculateScores() {
   const scores = Object.fromEntries(TYPE_ORDER.map((type) => [type, 0]));
-  let maxPossible = 0;
+  const maxScores = Object.fromEntries(TYPE_ORDER.map((type) => [type, 0]));
   state.questions.forEach((question) => {
     const key = state.answers[question.id];
     const points = state.scoring[question.id]?.[key] || {};
-    maxPossible += 4;
     Object.entries(points).forEach(([type, value]) => { scores[type] += value; });
+
+    const choices = state.scoring[question.id] || {};
+    TYPE_ORDER.forEach((type) => {
+      const questionMax = Math.max(0, ...Object.values(choices).map((choicePoints) => choicePoints[type] || 0));
+      maxScores[type] += questionMax;
+    });
   });
   return TYPE_ORDER.map((type) => {
-    const raw = scores[type] / maxPossible;
+    const raw = maxScores[type] > 0 ? scores[type] / maxScores[type] : 0;
     const percent = Math.min(95, Math.round(raw * 100 / 5) * 5);
-    return { type, score: scores[type], percent, ...state.results[type] };
-  }).sort((a, b) => b.score - a.score || TYPE_ORDER.indexOf(a.type) - TYPE_ORDER.indexOf(b.type));
+    return { type, score: scores[type], maxScore: maxScores[type], percent, ...state.results[type] };
+  }).sort((a, b) => b.percent - a.percent || b.score - a.score || TYPE_ORDER.indexOf(a.type) - TYPE_ORDER.indexOf(b.type));
 }
 
 function labelFor(percent) {
@@ -113,7 +118,7 @@ function renderResults() {
 
 function renderDetail() {
   const top = state.ranked[0];
-  const lowItems = state.ranked.slice(3);
+  const lowItems = state.ranked.slice(1);
   $("detailBody").innerHTML = `
     <article><h2>なぜ一致度が高いのか</h2><p>${top.highReason}</p></article>
     <article><h2>まず比較する理由</h2><p>${top.type === "direct_type" ? "保険料だけを下げたい意向が強いため、ダイレクト型や一括見積りも含めて価格軸を確認する理由があります。" : `5社の中では、まず${top.company}を比較する理由があります。回答内容と事故時の不安軸が近いためです。`}</p></article>
