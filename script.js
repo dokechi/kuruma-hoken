@@ -51,15 +51,21 @@ function renderCases() {
     ["分岐型", MODEL_CASES.filter((item) => item.category === "branch")]
   ];
   container.innerHTML = groups.map(([label, cases]) => `
-    <section class="case-group" aria-label="${label}">
-      <h2>${label}</h2>
+    <section class="case-group case-group-${label === "会社直結型" ? "direct" : "branch"}" aria-label="${label}">
+      <div class="case-group-heading">
+        <span class="badge ${label === "会社直結型" ? "badge-direct" : "badge-branch"}">${label}</span>
+        <h2>${label}</h2>
+        <p>${label === "会社直結型" ? "候補会社が比較軸として見えやすい5ケースです。まずはこちらから近い使い方を探してください。" : "車の使い方や不安の種類で候補が分かれる5ケースです。条件を整理しながら確認します。"}</p>
+      </div>
       <div class="case-card-grid">
         ${cases.map((modelCase) => `
-          <article class="case-card">
-            <span class="badge">${categoryLabel(modelCase.category)}</span>
+          <article class="case-card ${modelCase.category === "direct" ? "is-direct" : "is-branch"}">
+            <span class="badge ${modelCase.category === "direct" ? "badge-direct" : "badge-branch"}">${categoryLabel(modelCase.category)}</span>
             <h3>${escapeHtml(modelCase.title)}</h3>
-            <p><strong>代表車種・場面：</strong>${escapeHtml(modelCase.shortDescription)}</p>
-            <p class="axis"><strong>このケースで見る軸：</strong>${escapeHtml(modelCase.decisionCriteria?.[0] || "付帯サービスの重視点")}</p>
+            <dl class="case-card-meta">
+              <div><dt>見る軸</dt><dd>${escapeHtml(modelCase.decisionCriteria?.[0] || "付帯サービスの重視点")}</dd></div>
+              <div><dt>代表例</dt><dd>${escapeHtml(modelCase.shortDescription)}</dd></div>
+            </dl>
             <button type="button" class="secondary-btn" data-case-id="${modelCase.id}">詳細を見る</button>
           </article>`).join("")}
       </div>
@@ -87,23 +93,38 @@ function renderCaseDetail(caseId) {
   const sources = (modelCase.sourceIds || []).map((id) => SOURCE_REGISTRY.find((source) => source.id === id)).filter(Boolean);
   $("caseDetailBody").innerHTML = `
     <article class="case-detail-panel">
-      <span class="badge">${categoryLabel(modelCase.category)}</span>
+      <span class="badge ${modelCase.category === "direct" ? "badge-direct" : "badge-branch"}">${categoryLabel(modelCase.category)}</span>
       <h1 id="case-detail-title">${escapeHtml(modelCase.title)}</h1>
-      <p class="callout">当社取扱5社の中で、特定の付帯サービスを重視した場合の第一比較候補を整理します。${escapeHtml(modelCase.importantNotice)}</p>
-      <section><h2>1. このケースに近い人</h2>${listItems(modelCase.representativeExamples)}</section>
-      <section><h2>2. 会社選定に必要な条件</h2>${listItems(modelCase.decisionCriteria)}</section>
-      <section><h2>3. 第一比較候補、または分岐</h2><p><strong>${escapeHtml(modelCase.primaryCandidate)}</strong></p></section>
-      <section><h2>4. 第一候補にした理由</h2><p>${escapeHtml(modelCase.selectionReason)}</p></section>
-      <section><h2>5. 他社を今回の主役にしなかった理由</h2>${renderComparisonTable(modelCase.comparisons, "why")}</section>
-      <section><h2>6. 他社が主役になる条件</h2>${renderComparisonTable(modelCase.comparisons, "win")}</section>
-      <section><h2>7. 細かい条件・対象外条件</h2>${listItems(modelCase.smallConditions)}</section>
-      <section><h2>8. ミスマッチが起きる点</h2><p>${escapeHtml(modelCase.mismatchRisk)}</p></section>
-      <section><h2>9. このページでは判断できないこと</h2>${listItems(modelCase.cannotDecideHere)}</section>
-      <section><h2>10. 結論</h2><p>${escapeHtml(modelCase.conclusion)}</p><p class="callout">${escapeHtml(modelCase.finalNotice)}</p></section>
-      <section><h2>11. 根拠資料</h2>${renderSources(sources)}</section>
-      <section><h2>12. 情報確認日</h2><p>情報確認日：2026年6月25日。商品資料によって対象となる契約始期日が異なります。損保ジャパンは2026年1月始期資料と2026年7月始期資料を混同しないで表示しています。</p></section>
+      <section class="conclusion-box" aria-label="このケースの結論">
+        <p class="eyebrow">このケースの第一比較候補</p>
+        <h2>${escapeHtml(modelCase.primaryCandidate)}</h2>
+        <p class="conclusion-text">${escapeHtml(modelCase.conclusion)}</p>
+        <div class="reason-line"><strong>理由：</strong><span>${escapeHtml(modelCase.selectionReason)}</span></div>
+        <div class="reason-line muted"><strong>ただし：</strong><span>他社が勝つ条件もあります。事故現場の不安、家族見守り、低負担の事故自動通報、使用目的の変動などを重視する場合は下の比較を確認してください。</span></div>
+      </section>
+      <section><h2>このケースに近い人</h2>${listItems(modelCase.representativeExamples)}</section>
+      <section><h2>会社選定に必要な条件</h2>${listItems(modelCase.decisionCriteria)}</section>
+      <div class="accordion-stack">
+        <details><summary>会社ごとの比較を見る</summary>${renderComparisonCards(modelCase.comparisons)}</details>
+        <details><summary>他社を今回の主役にしなかった理由</summary>${renderComparisonTable(modelCase.comparisons, "why")}</details>
+        <details><summary>他社が主役になる条件</summary>${renderComparisonTable(modelCase.comparisons, "win")}</details>
+        <details><summary>細かい条件・対象外条件</summary>${listItems(modelCase.smallConditions)}</details>
+        <details><summary>ミスマッチが起きる点</summary><p>${escapeHtml(modelCase.mismatchRisk)}</p></details>
+        <details><summary>このページでは判断できないこと</summary>${listItems(modelCase.cannotDecideHere)}</details>
+        <details><summary>根拠資料を見る</summary>${renderSources(sources)}<p class="source-note">情報確認日：2026年6月25日。商品資料によって対象となる契約始期日が異なります。損保ジャパンは2026年1月始期資料と2026年7月始期資料を混同しないで表示しています。</p></details>
+      </div>
+      <p class="detail-disclaimer">${escapeHtml(modelCase.finalNotice)} ${escapeHtml(modelCase.importantNotice)}</p>
     </article>`;
   showScreen("caseDetail");
+}
+
+function renderComparisonCards(comparisons) {
+  return `<div class="comparison-cards">${(comparisons || []).map((item) => `<article class="company-compare-card">
+    <h3>${escapeHtml(item.company)}</h3>
+    <p><strong>強み</strong>${escapeHtml(item.strength)}</p>
+    <p><strong>今回主役にしない理由</strong>${escapeHtml(item.whyNotPrimaryHere)}</p>
+    <p><strong>この会社が主役になる条件</strong>${escapeHtml(item.whenThisCompanyWins)}</p>
+  </article>`).join("")}</div>`;
 }
 
 function renderComparisonTable(comparisons, mode) {
