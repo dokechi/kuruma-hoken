@@ -3,18 +3,19 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>自動車保険タイプ診断</title>
-  <meta name="description" content="保険証券なしで20問に答えるだけ。事故時の不安タイプと、最初に比較すべき保険会社タイプを整理します。">
+  <title>自動車保険モデルケース比較</title>
+  <meta name="description" content="保険証券なしでOK。車種・年代・使い方ごとのモデルケースから、自動車保険を見るポイントを整理します。">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header class="site-header">
     <a class="brand" href="#home" data-nav="home" aria-label="トップへ">
       <span class="cat-mark" aria-hidden="true">=^･ω･^=</span>
-      <span>自動車保険タイプ診断</span>
+      <span>自動車保険モデルケース比較</span>
     </a>
     <nav class="top-nav" aria-label="画面移動">
       <button type="button" data-nav="home">トップ</button>
+      <button type="button" data-nav="cases">モデルケース</button>
       <button type="button" data-nav="sources">出典</button>
     </nav>
   </header>
@@ -23,22 +24,42 @@
     <section id="home" class="screen active hero" aria-labelledby="home-title">
       <div class="hero-copy">
         <p class="eyebrow">個人情報・証券情報の入力なし</p>
-        <h1 id="home-title">保険証券なしでOK。<br>20問で、事故のときに困りやすいポイントがわかります。</h1>
+        <h1 id="home-title">保険証券なしでOK。<br>まずは、自分に近いケースを選んでください。</h1>
         <p>自動車保険は、保険料だけでは選びきれません。<br>車の使い方、運転する人、事故のときに不安なことによって、見るべきポイントが変わります。</p>
-        <p>この診断では、ふだん見落としやすい条件まで含めて、あなたに近いタイプを整理します。</p>
-        <p>まずは証券なしで、自分の保険選びの軸を確認できます。</p>
-        <button id="startBtn" class="primary-btn" type="button">診断をはじめる</button>
-        <p class="note">この診断は、特定の保険商品の加入をすすめるものではありません。結果は、回答内容から見た「事故時の不安タイプ」と各社の特徴の近さを示すものです。</p>
+        <p>このサイトでは、ふだん見落としやすい条件まで含めて、車の使い方ごとに保険を見るポイントを整理しています。</p>
+        <div class="hero-actions">
+          <button class="primary-btn" type="button" data-nav="cases">自分に近いケースを選ぶ</button>
+          <button class="secondary-btn" type="button" data-nav="sources">この診断の根拠を見る</button>
+        </div>
+        <p class="subtle-link"><button id="startBtn" type="button">詳しく診断したい方はこちら</button></p>
+        <p class="note">保険会社の優劣ではなく、車の使い方との相性を整理するためのサイトです。</p>
       </div>
-      <aside class="hero-card" aria-label="診断の特徴">
+      <aside class="hero-card" aria-label="サイトの特徴">
         <div class="line-cat" aria-hidden="true"></div>
-        <h2>ブラウザ内で完結</h2>
+        <h2>モデルケースから確認</h2>
         <ul>
-          <li>ログインなし</li>
-          <li>データ保存なし</li>
-          <li>保険料・等級・更新月は聞きません</li>
+          <li>車種・年代・使い方で探せます</li>
+          <li>事故時の不安ごとに整理します</li>
+          <li>大きな診断ボタンは置いていません</li>
         </ul>
       </aside>
+    </section>
+
+    <section id="cases" class="screen result-screen" aria-labelledby="cases-title">
+      <p class="eyebrow">モデルケース一覧</p>
+      <h1 id="cases-title">自分に近いケースを選ぶ</h1>
+      <p>近い車の使い方を選ぶと、見落としやすいポイントと、まず比較する理由があるタイプを確認できます。</p>
+      <div id="caseCards" class="case-cards" aria-label="モデルケース一覧"></div>
+      <p class="diagnosis-link"><button type="button" id="startBtnFromCases">詳しく診断したい方はこちら</button></p>
+    </section>
+
+    <section id="caseDetail" class="screen result-screen" aria-labelledby="case-detail-title">
+      <p class="eyebrow">モデルケース詳細</p>
+      <div id="caseDetailBody"></div>
+      <div class="screen-actions">
+        <button class="secondary-btn" type="button" data-nav="cases">モデルケース一覧へ戻る</button>
+        <button class="secondary-btn quiet" type="button" id="startBtnFromDetail">詳しく診断したい方はこちら</button>
+      </div>
     </section>
 
     <section id="question" class="screen" aria-labelledby="question-title">
@@ -111,7 +132,8 @@
 
   <footer class="disclaimer">
     <strong>免責事項</strong>
-    <p>この診断は、特定の保険商品の加入をすすめるものではありません。結果は、回答内容から見た「事故時の不安タイプ」と各社の特徴の近さを示すものです。実際の契約判断には、補償内容・保険料・車両条件などの確認が必要です。</p>
+    <p>このサイトは、特定の保険商品の加入をすすめるものではありません。内容は、車の使い方や事故時の不安から、保険を見るポイントを整理するものです。実際の契約判断には、補償内容・保険料・車両条件などの確認が必要です。</p>
+    <p><button class="footer-link" type="button" data-nav="question">詳しく診断したい方はこちら</button></p>
   </footer>
   <script src="script.js"></script>
 </body>

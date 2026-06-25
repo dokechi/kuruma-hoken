@@ -1,3 +1,56 @@
+const MODEL_CASES = [
+  {
+    id: "nbox_commute_40s",
+    title: "N-BOXで毎日通勤している40代",
+    type: "あいおいニッセイ同和損保型",
+    axis: "安全運転がどう評価されるか",
+    close: "毎日の通勤で同じ道を走ることが多く、運転の丁寧さや急操作の少なさを保険選びの軸にしたい人。",
+    overlooked: "保険料だけを見ると、日々の安全運転や運転傾向がどう扱われるかを見落としやすいです。",
+    reason: "安全運転がどう評価されるかを確認したい使い方なので、まず比較する理由があります。",
+    mismatch: "事故時の連絡体制や家族同乗時の不安を最優先にすると、見るべき軸が少しズレやすいです。"
+  },
+  {
+    id: "sienta_freed_family",
+    title: "シエンタ・フリードで子どもを乗せる人",
+    type: "東京海上日動型",
+    axis: "事故時の初動、連絡、家族同乗時の不安",
+    close: "送迎や買い物で子どもを乗せる機会があり、事故直後に何をすればよいかを重視したい人。",
+    overlooked: "補償額や保険料だけで比べると、家族が同乗しているときの初動対応や連絡の安心感を見落としやすいです。",
+    reason: "事故時の初動、連絡、家族同乗時の不安を整理したい使い方なので、まず比較する理由があります。",
+    mismatch: "一人で夜道を走る不安や、見守り機能を最優先にすると、見るべき軸がズレやすいです。"
+  },
+  {
+    id: "night_shift_solo",
+    title: "夜勤明け・現場帰りに一人で走る人",
+    type: "損保ジャパン型",
+    axis: "夜道や郊外で事故現場に一人になる不安",
+    close: "夜勤明け、早朝、現場帰りなど、人通りが少ない時間帯や場所を一人で走ることがある人。",
+    overlooked: "日中の街中での事故を前提に考えると、夜道や郊外で事故現場に一人になる不安を見落としやすいです。",
+    reason: "事故現場で一人になる不安を重視する使い方なので、まず比較する理由があります。",
+    mismatch: "家族同乗時の連絡や安全運転評価を最優先にすると、見るべき軸がズレやすいです。"
+  },
+  {
+    id: "new_driver_child",
+    title: "子どもが初めて車に乗る家庭",
+    type: "三井住友海上型",
+    axis: "親が状況を把握できるか、見守り",
+    close: "免許を取ったばかりの子どもが運転し、親として運転状況や事故時の状況把握を気にしている家庭。",
+    overlooked: "年齢条件や保険料だけに目が向くと、親が状況を把握できるか、見守れるかを見落としやすいです。",
+    reason: "初めて運転する家族の見守りを重視する使い方なので、まず比較する理由があります。",
+    mismatch: "本人の安全運転評価や高齢者向けの分かりやすさを最優先にすると、見るべき軸がズレやすいです。"
+  },
+  {
+    id: "move_wagonr_senior",
+    title: "ムーヴ・ワゴンRで買い物・病院に使う60代以上",
+    type: "共栄火災型",
+    axis: "分かりやすさ、使いやすさ",
+    close: "近所の買い物、通院、家族の用事などで軽自動車を使い、説明の分かりやすさを重視したい人。",
+    overlooked: "安さや補償の多さだけで比べると、困ったときに理解しやすいか、使いやすいかを見落としやすいです。",
+    reason: "分かりやすさ、使いやすさを重視する使い方なので、まず比較する理由があります。",
+    mismatch: "テレマティクスによる安全運転評価や若い家族の見守りを最優先にすると、見るべき軸がズレやすいです。"
+  }
+];
+
 const TYPE_ORDER = ["aioi_type", "tokio_type", "sompo_type", "ms_type", "kyoei_type", "direct_type"];
 const state = { questions: [], scoring: {}, results: {}, index: 0, answers: {}, ranked: [] };
 const $ = (id) => document.getElementById(id);
@@ -10,17 +63,51 @@ async function init() {
   ]);
   Object.assign(state, { questions, scoring, results });
   bindEvents();
+  renderCases();
   renderQuestion();
 }
 
 function bindEvents() {
-  $("startBtn").addEventListener("click", () => showScreen("question"));
+  ["startBtn", "startBtnFromCases", "startBtnFromDetail"].forEach((id) => $(id)?.addEventListener("click", () => showScreen("question")));
   $("restartBtn").addEventListener("click", restart);
   $("backBtn").addEventListener("click", previousQuestion);
   $("nextBtn").addEventListener("click", nextQuestion);
   document.querySelectorAll("[data-nav]").forEach((button) => {
     button.addEventListener("click", () => showScreen(button.dataset.nav));
   });
+}
+
+
+function renderCases() {
+  const container = $("caseCards");
+  if (!container) return;
+  container.innerHTML = MODEL_CASES.map((modelCase) => `
+    <button type="button" class="case-card" data-case-id="${modelCase.id}">
+      <span class="badge">${modelCase.type}</span>
+      <h2>${modelCase.title}</h2>
+      <p class="axis"><strong>見るべき軸：</strong>${modelCase.axis}</p>
+    </button>`).join("");
+  document.querySelectorAll("[data-case-id]").forEach((button) => {
+    button.addEventListener("click", () => renderCaseDetail(button.dataset.caseId));
+  });
+}
+
+function renderCaseDetail(caseId) {
+  const modelCase = MODEL_CASES.find((item) => item.id === caseId) || MODEL_CASES[0];
+  $("caseDetailBody").innerHTML = `
+    <article class="case-detail-panel">
+      <span class="badge">${modelCase.type}</span>
+      <h1 id="case-detail-title">${modelCase.title}</h1>
+      <p>保険会社の優劣ではなく、車の使い方との相性です。このタイプに近い人は、ここを見落としやすいです。</p>
+      <div class="case-detail-grid">
+        <article><h2>このケースに近い人</h2><p>${modelCase.close}</p></article>
+        <article><h2>見落としやすいポイント</h2><p>${modelCase.overlooked}</p></article>
+        <article><h2>まず比較する理由があるタイプ</h2><p>${modelCase.type}は、${modelCase.reason}</p></article>
+        <article><h2>他タイプだとズレやすい点</h2><p>${modelCase.mismatch}</p></article>
+        <article><h2>注意書き</h2><p>このサイトは、特定の保険商品の加入をすすめるものではありません。実際の契約判断には、補償内容・保険料・車両条件などの確認が必要です。</p></article>
+      </div>
+    </article>`;
+  showScreen("caseDetail");
 }
 
 function showScreen(id) {
@@ -131,7 +218,7 @@ function restart() {
   state.answers = {};
   state.ranked = [];
   renderQuestion();
-  showScreen("home");
+  showScreen("cases");
 }
 
 init().catch(() => {
