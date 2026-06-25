@@ -1,69 +1,26 @@
-const MODEL_CASES = [
-  {
-    id: "nbox_commute_40s",
-    title: "N-BOXで毎日通勤している40代",
-    type: "あいおいニッセイ同和損保型",
-    axis: "安全運転がどう評価されるか",
-    close: "毎日の通勤で同じ道を走ることが多く、運転の丁寧さや急操作の少なさを保険選びの軸にしたい人。",
-    overlooked: "保険料だけを見ると、日々の安全運転や運転傾向がどう扱われるかを見落としやすいです。",
-    reason: "安全運転がどう評価されるかを確認したい使い方なので、まず比較する理由があります。",
-    mismatch: "事故時の連絡体制や家族同乗時の不安を最優先にすると、見るべき軸が少しズレやすいです。"
-  },
-  {
-    id: "sienta_freed_family",
-    title: "シエンタ・フリードで子どもを乗せる人",
-    type: "東京海上日動型",
-    axis: "事故時の初動、連絡、家族同乗時の不安",
-    close: "送迎や買い物で子どもを乗せる機会があり、事故直後に何をすればよいかを重視したい人。",
-    overlooked: "補償額や保険料だけで比べると、家族が同乗しているときの初動対応や連絡の安心感を見落としやすいです。",
-    reason: "事故時の初動、連絡、家族同乗時の不安を整理したい使い方なので、まず比較する理由があります。",
-    mismatch: "一人で夜道を走る不安や、見守り機能を最優先にすると、見るべき軸がズレやすいです。"
-  },
-  {
-    id: "night_shift_solo",
-    title: "夜勤明け・現場帰りに一人で走る人",
-    type: "損保ジャパン型",
-    axis: "夜道や郊外で事故現場に一人になる不安",
-    close: "夜勤明け、早朝、現場帰りなど、人通りが少ない時間帯や場所を一人で走ることがある人。",
-    overlooked: "日中の街中での事故を前提に考えると、夜道や郊外で事故現場に一人になる不安を見落としやすいです。",
-    reason: "事故現場で一人になる不安を重視する使い方なので、まず比較する理由があります。",
-    mismatch: "家族同乗時の連絡や安全運転評価を最優先にすると、見るべき軸がズレやすいです。"
-  },
-  {
-    id: "new_driver_child",
-    title: "子どもが初めて車に乗る家庭",
-    type: "三井住友海上型",
-    axis: "親が状況を把握できるか、見守り",
-    close: "免許を取ったばかりの子どもが運転し、親として運転状況や事故時の状況把握を気にしている家庭。",
-    overlooked: "年齢条件や保険料だけに目が向くと、親が状況を把握できるか、見守れるかを見落としやすいです。",
-    reason: "初めて運転する家族の見守りを重視する使い方なので、まず比較する理由があります。",
-    mismatch: "本人の安全運転評価や高齢者向けの分かりやすさを最優先にすると、見るべき軸がズレやすいです。"
-  },
-  {
-    id: "move_wagonr_senior",
-    title: "ムーヴ・ワゴンRで買い物・病院に使う60代以上",
-    type: "共栄火災型",
-    axis: "分かりやすさ、使いやすさ",
-    close: "近所の買い物、通院、家族の用事などで軽自動車を使い、説明の分かりやすさを重視したい人。",
-    overlooked: "安さや補償の多さだけで比べると、困ったときに理解しやすいか、使いやすいかを見落としやすいです。",
-    reason: "分かりやすさ、使いやすさを重視する使い方なので、まず比較する理由があります。",
-    mismatch: "テレマティクスによる安全運転評価や若い家族の見守りを最優先にすると、見るべき軸がズレやすいです。"
-  }
-];
+let MODEL_CASES = [];
+let SOURCE_REGISTRY = [];
 
 const TYPE_ORDER = ["aioi_type", "tokio_type", "sompo_type", "ms_type", "kyoei_type", "direct_type"];
 const state = { questions: [], scoring: {}, results: {}, index: 0, answers: {}, ranked: [] };
+const categoryLabel = (category) => category === "direct" ? "会社直結型" : "分岐型";
+const GLOBAL_DISCLAIMER = "本ページは、当社取扱5社について、特定の付帯サービスを重視する場合の比較の入口を示すものです。保険料、基本補償、保険金支払条件、特約、引受可否、代理店対応等を含む総合評価ではありません。掲載車種・年代は代表例です。実際の商品選択時には、補償内容、保険料、車両条件、契約始期、引受条件等の確認が必要です。";
 const $ = (id) => document.getElementById(id);
 
 async function init() {
-  const [questions, scoring, results] = await Promise.all([
+  const [questions, scoring, results, modelCases, sourceRegistry] = await Promise.all([
     fetch("data/questions.json").then((r) => r.json()),
     fetch("data/scoring.json").then((r) => r.json()),
-    fetch("data/results.json").then((r) => r.json())
+    fetch("data/results.json").then((r) => r.json()),
+    fetch("data/model-cases.json").then((r) => r.json()),
+    fetch("data/source-registry.json").then((r) => r.json())
   ]);
+  MODEL_CASES = modelCases;
+  SOURCE_REGISTRY = sourceRegistry;
   Object.assign(state, { questions, scoring, results });
   bindEvents();
   renderCases();
+  renderSourcesPage();
   renderQuestion();
 }
 
@@ -78,36 +35,106 @@ function bindEvents() {
 }
 
 
+function escapeHtml(value) {
+  return String(value ?? "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char]));
+}
+
+function listItems(items) {
+  return `<ul>${(items || []).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>`;
+}
+
 function renderCases() {
   const container = $("caseCards");
   if (!container) return;
-  container.innerHTML = MODEL_CASES.map((modelCase) => `
-    <button type="button" class="case-card" data-case-id="${modelCase.id}">
-      <span class="badge">${modelCase.type}</span>
-      <h2>${modelCase.title}</h2>
-      <p class="axis"><strong>見るべき軸：</strong>${modelCase.axis}</p>
-    </button>`).join("");
+  const groups = [
+    ["会社直結型", MODEL_CASES.filter((item) => item.category === "direct")],
+    ["分岐型", MODEL_CASES.filter((item) => item.category === "branch")]
+  ];
+  container.innerHTML = groups.map(([label, cases]) => `
+    <section class="case-group" aria-label="${label}">
+      <h2>${label}</h2>
+      <div class="case-card-grid">
+        ${cases.map((modelCase) => `
+          <article class="case-card">
+            <span class="badge">${categoryLabel(modelCase.category)}</span>
+            <h3>${escapeHtml(modelCase.title)}</h3>
+            <p><strong>代表車種・場面：</strong>${escapeHtml(modelCase.shortDescription)}</p>
+            <p class="axis"><strong>このケースで見る軸：</strong>${escapeHtml(modelCase.decisionCriteria?.[0] || "付帯サービスの重視点")}</p>
+            <button type="button" class="secondary-btn" data-case-id="${modelCase.id}">詳細を見る</button>
+          </article>`).join("")}
+      </div>
+    </section>`).join("") + renderModelCaseFaq();
   document.querySelectorAll("[data-case-id]").forEach((button) => {
     button.addEventListener("click", () => renderCaseDetail(button.dataset.caseId));
   });
 }
 
+function renderModelCaseFaq() {
+  const faqs = [
+    ["なぜN-BOXならあいおいなのですか？", "N-BOX自体が理由ではありません。高頻度運転、安全運転スコアへの関心、500km以上の走行見込み、継続時の段階制割引を重視することが理由です。"],
+    ["安全運転割引はあいおいだけですか？", "いいえ。他社にも運転評価や割引があります。このケースでは段階制の評価を重視するため、あいおい型を第一比較候補にしています。"],
+    ["ALSOKは損保ジャパンだけですか？", "いいえ。共栄火災にも所定条件でALSOK現場急行があります。損保ジャパン型は、通信ドラレコ、通知、運転診断、ALSOKを一体で求める人の比較候補です。"],
+    ["東京海上日動の月額500円型が一番高機能ですか？", "いいえ。低負担型です。後方カメラ、家族見守り、360度撮影、現場急行を重視する場合は他社型も比較します。"],
+    ["三井住友海上の360度型なら死角はありませんか？", "いいえ。車両構造による死角があり、後方車両のナンバーを記録できない場合があります。"],
+    ["60代以上なら共栄火災ですか？", "いいえ。年齢だけでは判断しません。使用目的が変わりやすく、使用目的による保険料差や変更手続きを避けたい場合の比較候補です。"],
+    ["保険料を比較せずに会社を決められますか？", "決められません。本サイトは、付帯サービス面で最初に比較する候補を整理するもので、最終契約判断ではありません。"]
+  ];
+  return `<section class="faq-panel"><h2>比較前提FAQ</h2>${faqs.map(([q,a]) => `<details><summary>${q}</summary><p>${a}</p></details>`).join("")}</section>`;
+}
+
 function renderCaseDetail(caseId) {
   const modelCase = MODEL_CASES.find((item) => item.id === caseId) || MODEL_CASES[0];
+  const sources = (modelCase.sourceIds || []).map((id) => SOURCE_REGISTRY.find((source) => source.id === id)).filter(Boolean);
   $("caseDetailBody").innerHTML = `
     <article class="case-detail-panel">
-      <span class="badge">${modelCase.type}</span>
-      <h1 id="case-detail-title">${modelCase.title}</h1>
-      <p>保険会社の優劣ではなく、車の使い方との相性です。このタイプに近い人は、ここを見落としやすいです。</p>
-      <div class="case-detail-grid">
-        <article><h2>このケースに近い人</h2><p>${modelCase.close}</p></article>
-        <article><h2>見落としやすいポイント</h2><p>${modelCase.overlooked}</p></article>
-        <article><h2>まず比較する理由があるタイプ</h2><p>${modelCase.type}は、${modelCase.reason}</p></article>
-        <article><h2>他タイプだとズレやすい点</h2><p>${modelCase.mismatch}</p></article>
-        <article><h2>注意書き</h2><p>このサイトは、特定の保険商品の加入をすすめるものではありません。実際の契約判断には、補償内容・保険料・車両条件などの確認が必要です。</p></article>
-      </div>
+      <span class="badge">${categoryLabel(modelCase.category)}</span>
+      <h1 id="case-detail-title">${escapeHtml(modelCase.title)}</h1>
+      <p class="callout">当社取扱5社の中で、特定の付帯サービスを重視した場合の第一比較候補を整理します。${escapeHtml(modelCase.importantNotice)}</p>
+      <section><h2>1. このケースに近い人</h2>${listItems(modelCase.representativeExamples)}</section>
+      <section><h2>2. 会社選定に必要な条件</h2>${listItems(modelCase.decisionCriteria)}</section>
+      <section><h2>3. 第一比較候補、または分岐</h2><p><strong>${escapeHtml(modelCase.primaryCandidate)}</strong></p></section>
+      <section><h2>4. 第一候補にした理由</h2><p>${escapeHtml(modelCase.selectionReason)}</p></section>
+      <section><h2>5. 他社を今回の主役にしなかった理由</h2>${renderComparisonTable(modelCase.comparisons, "why")}</section>
+      <section><h2>6. 他社が主役になる条件</h2>${renderComparisonTable(modelCase.comparisons, "win")}</section>
+      <section><h2>7. 細かい条件・対象外条件</h2>${listItems(modelCase.smallConditions)}</section>
+      <section><h2>8. ミスマッチが起きる点</h2><p>${escapeHtml(modelCase.mismatchRisk)}</p></section>
+      <section><h2>9. このページでは判断できないこと</h2>${listItems(modelCase.cannotDecideHere)}</section>
+      <section><h2>10. 結論</h2><p>${escapeHtml(modelCase.conclusion)}</p><p class="callout">${escapeHtml(modelCase.finalNotice)}</p></section>
+      <section><h2>11. 根拠資料</h2>${renderSources(sources)}</section>
+      <section><h2>12. 情報確認日</h2><p>情報確認日：2026年6月25日。商品資料によって対象となる契約始期日が異なります。損保ジャパンは2026年1月始期資料と2026年7月始期資料を混同しないで表示しています。</p></section>
     </article>`;
   showScreen("caseDetail");
+}
+
+function renderComparisonTable(comparisons, mode) {
+  const head = mode === "why" ? "今回主役にしない理由" : "主役になる条件";
+  return `<div class="comparison-table" role="table">
+    <div class="comparison-row comparison-head" role="row"><div>会社</div><div>強み</div><div>${head}</div></div>
+    ${(comparisons || []).map((item) => `<div class="comparison-row" role="row">
+      <div data-label="会社">${escapeHtml(item.company)}</div>
+      <div data-label="強み">${escapeHtml(item.strength)}</div>
+      <div data-label="${head}">${escapeHtml(mode === "why" ? item.whyNotPrimaryHere : item.whenThisCompanyWins)}</div>
+    </div>`).join("")}
+  </div>`;
+}
+
+function renderSources(sources) {
+  if (!sources.length) return '<p>このケースに直接関係する公式資料は登録されていません。</p>';
+  return `<ul class="source-list detail-sources">${sources.map((source) => `<li>
+    <a href="${escapeHtml(source.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(source.title)}</a>
+    <p><strong>${escapeHtml(source.company)}</strong>／対象始期日：${escapeHtml(source.applicableFrom)}／確認日：2026年6月25日</p>
+    <p>${escapeHtml(source.note)}</p>
+  </li>`).join("")}</ul>`;
+}
+
+function renderSourcesPage() {
+  const list = document.querySelector("#sources .source-list");
+  if (!list || !SOURCE_REGISTRY.length) return;
+  list.innerHTML = SOURCE_REGISTRY.map((source) => `<li>
+    <a href="${escapeHtml(source.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(source.title)}</a>
+    <p><strong>${escapeHtml(source.company)}</strong>／対象始期日：${escapeHtml(source.applicableFrom)}／情報確認日：2026年6月25日</p>
+    <p>${escapeHtml(source.note)}</p>
+  </li>`).join("");
 }
 
 function showScreen(id) {
