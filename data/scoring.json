@@ -16,7 +16,7 @@
   },
   "q2": {
     "A": {
-      "aioi_type": 4
+      "aioi_type": 1
     },
     "B": {
       "tokio_type": 4,
@@ -89,7 +89,7 @@
       "ms_type": 2
     },
     "C": {
-      "kyoei_type": 4
+      "kyoei_type": 1
     },
     "D": {},
     "E": {
@@ -160,7 +160,8 @@
   },
   "q9": {
     "A": {
-      "aioi_type": 4
+      "direct_type": 1,
+      "aioi_type": 1
     },
     "B": {
       "tokio_type": 4,
@@ -198,21 +199,21 @@
   },
   "q11": {
     "A": {
-      "tokio_type": 4,
-      "ms_type": 2
+      "tokio_type": 1,
+      "sompo_type": 1,
+      "ms_type": 1
     },
     "B": {
-      "sompo_type": 4
+      "tokio_type": 1,
+      "sompo_type": 1
     },
-    "C": {
-      "aioi_type": 4
-    },
-    "D": {
-      "kyoei_type": 4
-    },
+    "C": {},
+    "D": {},
     "E": {
-      "ms_type": 4,
-      "tokio_type": 2
+      "aioi_type": 1,
+      "tokio_type": 1,
+      "sompo_type": 1,
+      "ms_type": 1
     },
     "F": {}
   },
@@ -240,19 +241,16 @@
     }
   },
   "q13": {
-    "A": {
-      "aioi_type": 4,
-      "kyoei_type": 1
-    },
+    "A": {},
     "B": {},
     "C": {
-      "kyoei_type": 4
+      "kyoei_type": 2
     },
     "D": {
-      "kyoei_type": 4
+      "kyoei_type": 2
     },
     "E": {
-      "kyoei_type": 4
+      "kyoei_type": 2
     }
   },
   "q14": {
