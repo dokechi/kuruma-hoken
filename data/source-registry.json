@@ -1,0 +1,146 @@
+[
+  {
+    "id": "aioi-driving-discount",
+    "company": "あいおいニッセイ同和損保",
+    "title": "運転特性割引",
+    "url": "https://adcc-faq.aioinissaydowa.co.jp/faq/show/3135?category_id=19&site_domain=default",
+    "applicableFrom": "契約条件により異なります",
+    "verifiedAt": "2026-06-25",
+    "note": "安全運転スコア・運転特性割引に関する公式FAQ。"
+  },
+  {
+    "id": "aioi-plus",
+    "company": "あいおいニッセイ同和損保",
+    "title": "タフ・見守るクルマの保険プラス",
+    "url": "https://www.aioinissaydowa.co.jp/corporate/service/telematics/plus.html",
+    "applicableFrom": "契約条件により異なります",
+    "verifiedAt": "2026-06-25",
+    "note": "通信型ドラレコ・運転レポート等に関する公式ページ。"
+  },
+  {
+    "id": "aioi-purpose",
+    "company": "あいおいニッセイ同和損保",
+    "title": "使用目的",
+    "url": "https://adcc-faq.aioinissaydowa.co.jp/faq/show/413?site_domain=default",
+    "applicableFrom": "契約条件により異なります",
+    "verifiedAt": "2026-06-25",
+    "note": "使用目的の考え方に関する公式FAQ。"
+  },
+  {
+    "id": "tokio-dap",
+    "company": "東京海上日動",
+    "title": "ドライブエージェント パーソナル",
+    "url": "https://www.tokiomarine-nichido.co.jp/service/auto/total-assist/shohin/dap.html",
+    "applicableFrom": "契約条件により異なります",
+    "verifiedAt": "2026-06-25",
+    "note": "DAPの機能に関する公式ページ。"
+  },
+  {
+    "id": "tokio-dap-fee",
+    "company": "東京海上日動",
+    "title": "DAP特約保険料",
+    "url": "https://faq.tokiomarine-nichido.co.jp/faq/show/697?category_id=343&site_domain=default",
+    "applicableFrom": "契約条件により異なります",
+    "verifiedAt": "2026-06-25",
+    "note": "DAP特約保険料に関する公式FAQ。"
+  },
+  {
+    "id": "tokio-2026-pamphlet",
+    "company": "東京海上日動",
+    "title": "2026年商品パンフレット",
+    "url": "https://www.tokiomarine-nichido.co.jp/service/pdf/total_assist_pamphlet_260101.pdf",
+    "applicableFrom": "2026年1月1日以降始期",
+    "verifiedAt": "2026-06-25",
+    "note": "2026年商品パンフレット。"
+  },
+  {
+    "id": "sompo-driving",
+    "company": "損保ジャパン",
+    "title": "つながるドラレコ Driving!",
+    "url": "https://www.sompo-japan.co.jp/kinsurance/automobile/thekuruma/tsunagaru-dorareco/",
+    "applicableFrom": "契約条件により異なります",
+    "verifiedAt": "2026-06-25",
+    "note": "Driving!の公式ページ。"
+  },
+  {
+    "id": "sompo-2026-01",
+    "company": "損保ジャパン",
+    "title": "2026年1月始期資料",
+    "url": "https://www.sompo-japan.co.jp/-/media/SJNK/files/kinsurance/automobile/thekuruma/thekuruma2601.pdf?la=ja-JP",
+    "applicableFrom": "2026年1月始期",
+    "verifiedAt": "2026-06-25",
+    "note": "THE クルマの保険パンフレット。2026年7月始期資料とは混同しない。"
+  },
+  {
+    "id": "sompo-2026-07",
+    "company": "損保ジャパン",
+    "title": "2026年7月始期資料",
+    "url": "https://www.sompo-japan.co.jp/-/media/SJNK/files/kinsurance/automobile/driving/driving2607.pdf?la=ja-JP",
+    "applicableFrom": "2026年7月始期",
+    "verifiedAt": "2026-06-25",
+    "note": "Driving!資料。2026年1月始期資料とは混同しない。"
+  },
+  {
+    "id": "ms-mimamoru",
+    "company": "三井住友海上",
+    "title": "見守るクルマの保険",
+    "url": "https://www.ms-ins.com/personal/car/gk/mimamoru-dr.html",
+    "applicableFrom": "契約条件により異なります",
+    "verifiedAt": "2026-06-25",
+    "note": "見守るクルマの保険公式ページ。"
+  },
+  {
+    "id": "ms-premium",
+    "company": "三井住友海上",
+    "title": "プレミアムドラレコ型資料",
+    "url": "https://www.ms-ins.com/pdf/personal/car/gk_mimamoru-dr-premium.pdf",
+    "applicableFrom": "契約条件により異なります",
+    "verifiedAt": "2026-06-25",
+    "note": "プレミアムドラレコ型資料。"
+  },
+  {
+    "id": "ms-2026-pamphlet",
+    "company": "三井住友海上",
+    "title": "2026年自動車保険パンフレット",
+    "url": "https://www.ms-ins.com/pdf/personal/car/gk.pdf",
+    "applicableFrom": "2026年始期資料",
+    "verifiedAt": "2026-06-25",
+    "note": "GK クルマの保険パンフレット。"
+  },
+  {
+    "id": "kyoei-kurumaru",
+    "company": "共栄火災",
+    "title": "KAPくるまる",
+    "url": "https://www.kyoeikasai.co.jp/personal/car/kapkurumaru/",
+    "applicableFrom": "契約条件により異なります",
+    "verifiedAt": "2026-06-25",
+    "note": "KAPくるまる公式ページ。"
+  },
+  {
+    "id": "kyoei-alsok",
+    "company": "共栄火災",
+    "title": "ALSOK現場急行サービス利用規約",
+    "url": "https://www.kyoeikasai.co.jp/pdf/info/info20251201_alsok.pdf",
+    "applicableFrom": "2025年12月1日以降",
+    "verifiedAt": "2026-06-25",
+    "note": "ALSOK現場急行サービス利用規約。"
+  },
+  {
+    "id": "aioi-business",
+    "company": "あいおいニッセイ同和損保",
+    "title": "個人用と事業用の違い",
+    "url": "https://adcc-faq.aioinissaydowa.co.jp/faq/show/3039?category_id=50&site_domain=default",
+    "applicableFrom": "契約条件により異なります",
+    "verifiedAt": "2026-06-25",
+    "note": "個人用・事業用の違いに関する公式FAQ。"
+  },
+  {
+    "id": "sompo-car-target",
+    "company": "損保ジャパン",
+    "title": "THE クルマの保険 対象自動車",
+    "url": "https://www.sompo-japan.co.jp/kinsurance/automobile/thekuruma/cost/",
+    "applicableFrom": "契約条件により異なります",
+    "verifiedAt": "2026-06-25",
+    "note": "THE クルマの保険の対象自動車に関する公式ページ。"
+  }
+]
