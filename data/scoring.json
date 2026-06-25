@@ -316,21 +316,18 @@
   },
   "q17": {
     "A": {
-      "tokio_type": 4,
-      "ms_type": 2
-    },
-    "B": {
-      "kyoei_type": 4
-    },
-    "C": {
-      "sompo_type": 4
-    },
-    "D": {
-      "ms_type": 4,
       "tokio_type": 2
     },
+    "B": {
+      "kyoei_type": 3
+    },
+    "C": {},
+    "D": {
+      "ms_type": 4,
+      "tokio_type": 1
+    },
     "E": {
-      "aioi_type": 4
+      "aioi_type": 1
     }
   },
   "q18": {
