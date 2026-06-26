@@ -2,7 +2,7 @@ let MODEL_CASES = [];
 let SOURCE_REGISTRY = [];
 
 const TYPE_ORDER = ["aioi_type", "tokio_type", "sompo_type", "ms_type", "kyoei_type", "direct_type"];
-const state = { questions: [], scoring: {}, results: {}, index: 0, answers: {}, ranked: [], expandedCaseId: null };
+const state = { questions: [], scoring: {}, results: {}, index: 0, answers: {}, ranked: [], selectedCaseId: null, returnCaseId: null };
 const CATEGORY_ORDER = ["自分が毎日使う車", "家族を乗せる車", "家族が運転する車", "仕事・夜間で使う車"];
 const categoryLabel = (category) => category;
 const GLOBAL_DISCLAIMER = "本ページは、当社取扱5社について、特定の付帯サービスを重視する場合の比較の入口を示すものです。保険料、基本補償、保険金支払条件、特約、引受可否、代理店対応等を含む総合評価ではありません。掲載車種・年代は代表例です。実際の商品選択時には、補償内容、保険料、車両条件、契約始期、引受条件等の確認が必要です。";
@@ -56,29 +56,22 @@ function renderCases() {
       </div>
       <div class="case-card-grid">
         ${cases.map((modelCase) => `
-          <article class="case-card ${index % 2 === 0 ? "is-direct" : "is-branch"}${state.expandedCaseId === modelCase.id ? " is-expanded" : ""}" role="button" tabindex="0" data-case-id="${modelCase.id}" aria-expanded="${state.expandedCaseId === modelCase.id}" aria-label="${escapeHtml(modelCase.title)}の詳細を見る">
+          <article class="case-card ${index % 2 === 0 ? "is-direct" : "is-branch"}${state.returnCaseId === modelCase.id ? " is-return-target" : ""}" role="button" tabindex="0" data-case-id="${modelCase.id}" aria-label="${escapeHtml(modelCase.title)}の詳細を見る">
             <div class="case-card-text">
               <h3>${escapeHtml(modelCase.title)}</h3>
               <p>${escapeHtml(modelCase.primaryCandidate)}｜${escapeHtml(modelCase.listSummary || modelCase.conclusion)}</p>
             </div>
-            <span class="case-card-arrow" aria-hidden="true">${state.expandedCaseId === modelCase.id ? "⌃" : "›"}</span>
-          </article>
-          ${state.expandedCaseId === modelCase.id ? renderCaseDetail(modelCase.id) : ""}`).join("")}
+            <span class="case-card-arrow" aria-hidden="true">›</span>
+          </article>`).join("")}
       </div>
     </section>`).join("") + renderModelCaseFaq();
   document.querySelectorAll(".case-card[data-case-id]").forEach((card) => {
-    card.addEventListener("click", () => toggleCaseDetail(card.dataset.caseId));
+    card.addEventListener("click", () => openCaseDetail(card.dataset.caseId));
     card.addEventListener("keydown", (event) => {
       if (event.key === "Enter" || event.key === " ") {
         event.preventDefault();
-        toggleCaseDetail(card.dataset.caseId);
+        openCaseDetail(card.dataset.caseId);
       }
-    });
-  });
-  document.querySelectorAll("[data-close-case]").forEach((button) => {
-    button.addEventListener("click", (event) => {
-      event.stopPropagation();
-      toggleCaseDetail(button.dataset.closeCase);
     });
   });
 }
@@ -96,23 +89,56 @@ function renderModelCaseFaq() {
   return `<section class="faq-panel"><h2>比較前提FAQ</h2>${faqs.map(([q,a]) => `<details><summary>${q}</summary><p>${a}</p></details>`).join("")}</section>`;
 }
 
-function toggleCaseDetail(caseId) {
-  state.expandedCaseId = state.expandedCaseId === caseId ? null : caseId;
-  renderCases();
-
-  if (state.expandedCaseId) {
-    document.querySelector(`.case-card[data-case-id="${CSS.escape(state.expandedCaseId)}"]`)?.scrollIntoView({ block: "nearest", behavior: "auto" });
-  }
+function openCaseDetail(caseId) {
+  state.selectedCaseId = caseId;
+  state.returnCaseId = caseId;
+  renderCaseDetailPage(caseId);
+  showScreen("caseDetail");
 }
+
+function returnToCaseList() {
+  const caseId = state.returnCaseId || state.selectedCaseId;
+  showScreen("cases", { scrollTop: false });
+  requestAnimationFrame(() => {
+    const target = caseId ? document.querySelector(`.case-card[data-case-id="${CSS.escape(caseId)}"]`) : null;
+    target?.scrollIntoView({ block: "center", behavior: "auto" });
+    target?.focus({ preventScroll: true });
+  });
+}
+
+function moveCase(offset) {
+  const currentIndex = MODEL_CASES.findIndex((item) => item.id === state.selectedCaseId);
+  const next = MODEL_CASES[currentIndex + offset];
+  if (!next) return;
+  openCaseDetail(next.id);
+}
+
+function renderCaseDetailPage(caseId) {
+  const container = $("caseDetailBody");
+  if (!container) return;
+  container.innerHTML = renderCaseDetail(caseId);
+  bindCaseDetailControls();
+}
+
+function bindCaseDetailControls() {
+  document.querySelectorAll("[data-return-cases]").forEach((button) => {
+    button.addEventListener("click", returnToCaseList);
+  });
+  document.querySelectorAll("[data-case-step]").forEach((button) => {
+    button.addEventListener("click", () => moveCase(Number(button.dataset.caseStep)));
+  });
+}
+
 
 function renderCaseDetail(caseId) {
   const modelCase = MODEL_CASES.find((item) => item.id === caseId) || MODEL_CASES[0];
   const sources = (modelCase.sourceIds || []).map((id) => SOURCE_REGISTRY.find((source) => source.id === id)).filter(Boolean);
   return `
-    <article class="case-detail-panel inline-case-detail" data-case-id="${escapeHtml(modelCase.id)}">
+    <article class="case-detail-panel" data-case-id="${escapeHtml(modelCase.id)}">
+      ${renderCaseDetailNavigation(modelCase.id, "top")}
       <span class="badge">${categoryLabel(modelCase.category)}</span>
       <p class="inline-detail-kicker">この場面の詳しい理由</p>
-      <h1>${escapeHtml(modelCase.title)}</h1>
+      <h1 id="case-detail-title">${escapeHtml(modelCase.title)}</h1>
       <section class="conclusion-box" aria-label="この場面の結論">
         <p class="eyebrow">この場面の第一比較候補</p>
         <h2>${escapeHtml(modelCase.primaryCandidate)}</h2>
@@ -129,9 +155,23 @@ function renderCaseDetail(caseId) {
         <details><summary>根拠資料</summary>${renderSources(sources)}<p class="source-note">情報確認日：2026年6月25日。商品資料によって対象となる契約始期日が異なります。損保ジャパンは2026年1月始期資料と2026年7月始期資料を混同しないで表示しています。</p></details>
       </div>
       <p class="detail-disclaimer">${escapeHtml(modelCase.finalNotice)} ${escapeHtml(modelCase.importantNotice)}</p>
-      <div class="inline-detail-actions"><button class="secondary-btn quiet" type="button" data-close-case="${escapeHtml(modelCase.id)}">閉じる</button></div>
+      ${renderCaseDetailNavigation(modelCase.id, "bottom")}
     </article>`;
 }
+
+function renderCaseDetailNavigation(caseId, position) {
+  const currentIndex = MODEL_CASES.findIndex((item) => item.id === caseId);
+  const hasPrevious = currentIndex > 0;
+  const hasNext = currentIndex >= 0 && currentIndex < MODEL_CASES.length - 1;
+  return `<nav class="case-detail-nav case-detail-nav-${position}" aria-label="場面詳細の移動">
+    <button class="secondary-btn quiet" type="button" data-return-cases>← 場面一覧の同じ位置に戻る</button>
+    ${position === "bottom" ? `<div class="case-step-actions">
+      <button class="secondary-btn quiet" type="button" data-case-step="-1" ${hasPrevious ? "" : "disabled"}>前の場面</button>
+      <button class="secondary-btn quiet" type="button" data-case-step="1" ${hasNext ? "" : "disabled"}>次の場面</button>
+    </div>` : ""}
+  </nav>`;
+}
+
 
 function renderComparisonCards(comparisons) {
   return `<div class="comparison-cards">${(comparisons || []).map((item) => `<article class="company-compare-card">
@@ -162,9 +202,11 @@ function renderSourcesPage() {
   </li>`).join("");
 }
 
-function showScreen(id) {
+function showScreen(id, options = {}) {
   document.querySelectorAll(".screen").forEach((screen) => screen.classList.toggle("active", screen.id === id));
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  if (options.scrollTop !== false) {
+    window.scrollTo({ top: 0, behavior: "auto" });
+  }
 }
 
 function renderQuestion() {
