@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>事故時不安ナビ｜自動車保険モデルケース比較</title>
+  <title>事故時不安ナビ｜自動車保険ケース比較</title>
   <meta name="description" content="保険証券なしで、自分に近い車の使い方から、自動車保険を見るポイントを整理します。">
   <link rel="stylesheet" href="style.css">
 </head>
@@ -15,7 +15,7 @@
     </a>
     <nav class="top-nav" aria-label="画面移動">
       <button type="button" data-nav="home">トップ</button>
-      <button type="button" data-nav="cases">モデルケース</button>
+      <button type="button" data-nav="cases">ケースで探す</button>
       <button type="button" data-nav="sources">根拠</button>
     </nav>
   </header>
@@ -23,15 +23,14 @@
   <main>
     <section id="home" class="screen active hero" aria-labelledby="home-title">
       <div class="hero-copy">
-        <p class="eyebrow">証券なし / 個人情報なし / まずはケース選択</p>
+        <p class="eyebrow">証券なし / 個人情報なし / ケースで探す</p>
         <h1 id="home-title">保険料の前に、<br>車の使い方を<br>見る。</h1>
         <p class="lead">自動車保険は、保険料だけでは選びきれません。車の使い方、運転する人、事故のときに不安なことによって、見るべきポイントが変わります。</p>
         <p>このサイトでは、当社取扱5社の中で、特定の付帯サービスを重視した場合の第一比較候補を整理します。保険会社の総合評価ではありません。</p>
         <div class="hero-actions">
-          <button class="primary-btn" type="button" data-nav="cases">自分に近いケースを選ぶ</button>
+          <button class="primary-btn" type="button" data-nav="cases">自分に近いケースを見る</button>
           <button class="secondary-btn" type="button" data-nav="sources">根拠資料を見る</button>
         </div>
-        <p class="subtle-link"><button id="startBtn" type="button">20問で詳しく診断する</button></p>
         <p class="note">保険会社の優劣ではなく、車の使い方との相性を整理するためのサイトです。</p>
       </div>
       <aside class="hero-card" aria-label="サイトの特徴">
@@ -47,19 +46,17 @@
     </section>
 
     <section id="cases" class="screen result-screen" aria-labelledby="cases-title">
-      <p class="eyebrow">MODEL CASE MAP</p>
-      <h1 id="cases-title">車の使い方から、比較の入口を選ぶ</h1>
+      <p class="eyebrow">CASE MAP</p>
+      <h1 id="cases-title">自分に近いケースを見る</h1>
       <p>近い車の使い方を選ぶと、付帯サービス面で第一比較候補にする理由と、他社との比較ポイントを会社ごとのカードで確認できます。</p>
-      <div id="caseCards" class="case-cards" aria-label="モデルケース一覧"></div>
-      <p class="diagnosis-link"><button type="button" id="startBtnFromCases">ケースで迷う場合は20問診断へ</button></p>
+      <div id="caseCards" class="case-cards" aria-label="ケース一覧"></div>
     </section>
 
     <section id="caseDetail" class="screen result-screen" aria-labelledby="case-detail-title">
       <p class="eyebrow">CASE FILE</p>
       <div id="caseDetailBody"></div>
       <div class="screen-actions">
-        <button class="secondary-btn" type="button" data-nav="cases">モデルケース一覧へ戻る</button>
-        <button class="secondary-btn quiet" type="button" id="startBtnFromDetail">20問で詳しく診断する</button>
+        <button class="secondary-btn" type="button" data-nav="cases">ケース一覧へ戻る</button>
       </div>
     </section>
 
@@ -110,7 +107,7 @@
         <article><h2>価格だけならダイレクト型も選択肢</h2><p>保険料だけを下げたい場合は、ダイレクト型や一括見積りも選択肢です。</p></article>
         <article><h2>契約前に確認する</h2><p>実際の契約判断には補償内容・保険料・車両条件の確認が必要です。</p></article>
       </div>
-      <div class="screen-actions"><button class="secondary-btn" type="button" data-nav="summary">結果へ戻る</button><button class="primary-btn" type="button" id="restartBtn">もう一度診断する</button></div>
+      <div class="screen-actions"><button class="secondary-btn" type="button" data-nav="summary">結果へ戻る</button><button class="primary-btn" type="button" id="restartBtn">ケース一覧へ戻る</button></div>
     </section>
 
     <section id="sources" class="screen result-screen" aria-labelledby="sources-title">
@@ -134,7 +131,6 @@
   <footer class="disclaimer">
     <strong>免責事項</strong>
     <p>本ページは、当社取扱5社について、特定の付帯サービスを重視する場合の比較の入口を示すものです。保険料、基本補償、保険金支払条件、特約、引受可否、代理店対応等を含む総合評価ではありません。掲載車種・年代は代表例です。実際の商品選択時には、補償内容、保険料、車両条件、契約始期、引受条件等の確認が必要です。</p>
-    <p><button class="footer-link" type="button" data-nav="question">20問で詳しく診断する</button></p>
   </footer>
   <script src="script.js"></script>
 </body>
