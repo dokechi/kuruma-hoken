@@ -55,7 +55,7 @@ function renderCases() {
       <div class="case-group-heading">
         <span class="badge ${label === "会社直結型" ? "badge-direct" : "badge-branch"}">${label}</span>
         <h2>${label}</h2>
-        <p>${label === "会社直結型" ? "候補会社が比較軸として見えやすい5ケースです。まずはこちらから近い使い方を探してください。" : "車の使い方や不安の種類で候補が分かれる5ケースです。条件を整理しながら確認します。"}</p>
+        <p>${label === "会社直結型" ? "候補会社が比較軸として見えやすい5つの場面です。まずはこちらから近い使い方を探してください。" : "車の使い方や不安の種類で候補が分かれる5つの場面です。条件を整理しながら確認します。"}</p>
       </div>
       <div class="case-card-grid">
         ${cases.map((modelCase) => `
@@ -95,14 +95,14 @@ function renderCaseDetail(caseId) {
     <article class="case-detail-panel">
       <span class="badge ${modelCase.category === "direct" ? "badge-direct" : "badge-branch"}">${categoryLabel(modelCase.category)}</span>
       <h1 id="case-detail-title">${escapeHtml(modelCase.title)}</h1>
-      <section class="conclusion-box" aria-label="このケースの結論">
-        <p class="eyebrow">このケースの第一比較候補</p>
+      <section class="conclusion-box" aria-label="この場面の結論">
+        <p class="eyebrow">この場面の第一比較候補</p>
         <h2>${escapeHtml(modelCase.primaryCandidate)}</h2>
         <p class="conclusion-text">${escapeHtml(modelCase.conclusion)}</p>
         <div class="reason-line"><strong>理由：</strong><span>${escapeHtml(modelCase.selectionReason)}</span></div>
         <div class="reason-line muted"><strong>ただし：</strong><span>他社が勝つ条件もあります。事故現場の不安、家族見守り、低負担の事故自動通報、使用目的の変動などを重視する場合は下の比較を確認してください。</span></div>
       </section>
-      <section><h2>このケースに近い人</h2>${listItems(modelCase.representativeExamples)}</section>
+      <section><h2>この場面に近い人</h2>${listItems(modelCase.representativeExamples)}</section>
       <section><h2>会社選定に必要な条件</h2>${listItems(modelCase.decisionCriteria)}</section>
       <div class="accordion-stack">
         <details><summary>他社と比較する</summary>${renderComparisonCards(modelCase.comparisons)}</details>
@@ -126,7 +126,7 @@ function renderComparisonCards(comparisons) {
 
 
 function renderSources(sources) {
-  if (!sources.length) return '<p>このケースに直接関係する公式資料は登録されていません。</p>';
+  if (!sources.length) return '<p>この場面に直接関係する公式資料は登録されていません。</p>';
   return `<ul class="source-list detail-sources">${sources.map((source) => `<li>
     <a href="${escapeHtml(source.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(source.title)}</a>
     <p><strong>${escapeHtml(source.company)}</strong>／対象始期日：${escapeHtml(source.applicableFrom)}／確認日：2026年6月25日</p>
