@@ -3,7 +3,7 @@ let SOURCE_REGISTRY = [];
 
 const TYPE_ORDER = ["aioi_type", "tokio_type", "sompo_type", "ms_type", "kyoei_type", "direct_type"];
 const state = { questions: [], scoring: {}, results: {}, index: 0, answers: {}, ranked: [] };
-const categoryLabel = (category) => category === "direct" ? "会社直結型" : "分岐型";
+const categoryLabel = (category) => category === "direct" ? "近い使い方" : "条件で確認";
 const GLOBAL_DISCLAIMER = "本ページは、当社取扱5社について、特定の付帯サービスを重視する場合の比較の入口を示すものです。保険料、基本補償、保険金支払条件、特約、引受可否、代理店対応等を含む総合評価ではありません。掲載車種・年代は代表例です。実際の商品選択時には、補償内容、保険料、車両条件、契約始期、引受条件等の確認が必要です。";
 const $ = (id) => document.getElementById(id);
 
@@ -26,14 +26,13 @@ async function init() {
 
 function bindEvents() {
   ["startBtn", "startBtnFromCases", "startBtnFromDetail"].forEach((id) => $(id)?.addEventListener("click", () => showScreen("question")));
-  $("restartBtn").addEventListener("click", restart);
-  $("backBtn").addEventListener("click", previousQuestion);
-  $("nextBtn").addEventListener("click", nextQuestion);
+  $("restartBtn")?.addEventListener("click", restart);
+  $("backBtn")?.addEventListener("click", previousQuestion);
+  $("nextBtn")?.addEventListener("click", nextQuestion);
   document.querySelectorAll("[data-nav]").forEach((button) => {
     button.addEventListener("click", () => showScreen(button.dataset.nav));
   });
 }
-
 
 function escapeHtml(value) {
   return String(value ?? "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char]));
@@ -47,18 +46,28 @@ function renderCases() {
   const container = $("caseCards");
   if (!container) return;
   const groups = [
-    ["会社直結型", MODEL_CASES.filter((item) => item.category === "direct")],
-    ["分岐型", MODEL_CASES.filter((item) => item.category === "branch")]
+    {
+      key: "direct",
+      label: "近い使い方から探す",
+      cases: MODEL_CASES.filter((item) => item.category === "direct"),
+      description: "車の使い方から、まず見える候補を確認します。近いケースがあれば、そのまま詳細へ進んでください。"
+    },
+    {
+      key: "branch",
+      label: "不安の種類から探す",
+      cases: MODEL_CASES.filter((item) => item.category === "branch"),
+      description: "事故現場の不安、家族の見守り、使用目的の変化など、条件で候補が分かれるケースです。"
+    }
   ];
-  container.innerHTML = groups.map(([label, cases]) => `
-    <section class="case-group case-group-${label === "会社直結型" ? "direct" : "branch"}" aria-label="${label}">
+  container.innerHTML = groups.map((group) => `
+    <section class="case-group case-group-${group.key}" aria-label="${group.label}">
       <div class="case-group-heading">
-        <span class="badge ${label === "会社直結型" ? "badge-direct" : "badge-branch"}">${label}</span>
-        <h2>${label}</h2>
-        <p>${label === "会社直結型" ? "候補会社が比較軸として見えやすい5ケースです。まずはこちらから近い使い方を探してください。" : "車の使い方や不安の種類で候補が分かれる5ケースです。条件を整理しながら確認します。"}</p>
+        <span class="badge ${group.key === "direct" ? "badge-direct" : "badge-branch"}">${group.label}</span>
+        <h2>${group.label}</h2>
+        <p>${group.description}</p>
       </div>
       <div class="case-card-grid">
-        ${cases.map((modelCase) => `
+        ${group.cases.map((modelCase) => `
           <article class="case-card ${modelCase.category === "direct" ? "is-direct" : "is-branch"}">
             <span class="badge ${modelCase.category === "direct" ? "badge-direct" : "badge-branch"}">${categoryLabel(modelCase.category)}</span>
             <h3>${escapeHtml(modelCase.title)}</h3>
@@ -124,7 +133,6 @@ function renderComparisonCards(comparisons) {
   </article>`).join("")}</div>`;
 }
 
-
 function renderSources(sources) {
   if (!sources.length) return '<p>このケースに直接関係する公式資料は登録されていません。</p>';
   return `<ul class="source-list detail-sources">${sources.map((source) => `<li>
@@ -182,7 +190,6 @@ function previousQuestion() {
 }
 
 function nextQuestion() {
-  if (!state.answers[state.questions[state.index].id]) return;
   if (state.index < state.questions.length - 1) {
     state.index += 1;
     renderQuestion();
