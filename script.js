@@ -2,7 +2,7 @@ let MODEL_CASES = [];
 let SOURCE_REGISTRY = [];
 
 const TYPE_ORDER = ["aioi_type", "tokio_type", "sompo_type", "ms_type", "kyoei_type", "direct_type"];
-const state = { questions: [], scoring: {}, results: {}, index: 0, answers: {}, ranked: [] };
+const state = { questions: [], scoring: {}, results: {}, index: 0, answers: {}, ranked: [], casesScrollY: 0 };
 const CATEGORY_ORDER = ["自分が毎日使う車", "家族を乗せる車", "家族が運転する車", "仕事・夜間で使う車"];
 const categoryLabel = (category) => category;
 const GLOBAL_DISCLAIMER = "本ページは、当社取扱5社について、特定の付帯サービスを重視する場合の比較の入口を示すものです。保険料、基本補償、保険金支払条件、特約、引受可否、代理店対応等を含む総合評価ではありません。掲載車種・年代は代表例です。実際の商品選択時には、補償内容、保険料、車両条件、契約始期、引受条件等の確認が必要です。";
@@ -31,7 +31,11 @@ function bindEvents() {
   $("backBtn").addEventListener("click", previousQuestion);
   $("nextBtn").addEventListener("click", nextQuestion);
   document.querySelectorAll("[data-nav]").forEach((button) => {
-    button.addEventListener("click", () => showScreen(button.dataset.nav));
+    button.addEventListener("click", () => {
+      const activeScreen = document.querySelector(".screen.active")?.id;
+      const restoreCasesScroll = activeScreen === "caseDetail" && button.dataset.nav === "cases";
+      showScreen(button.dataset.nav, { restoreCasesScroll });
+    });
   });
 }
 
@@ -90,6 +94,7 @@ function renderModelCaseFaq() {
 }
 
 function renderCaseDetail(caseId) {
+  state.casesScrollY = window.scrollY;
   const modelCase = MODEL_CASES.find((item) => item.id === caseId) || MODEL_CASES[0];
   const sources = (modelCase.sourceIds || []).map((id) => SOURCE_REGISTRY.find((source) => source.id === id)).filter(Boolean);
   $("caseDetailBody").innerHTML = `
@@ -145,9 +150,10 @@ function renderSourcesPage() {
   </li>`).join("");
 }
 
-function showScreen(id) {
+function showScreen(id, options = {}) {
   document.querySelectorAll(".screen").forEach((screen) => screen.classList.toggle("active", screen.id === id));
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  const top = options.restoreCasesScroll ? state.casesScrollY : 0;
+  window.scrollTo({ top, behavior: "smooth" });
 }
 
 function renderQuestion() {
