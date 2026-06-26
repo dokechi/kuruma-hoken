@@ -58,11 +58,10 @@ function renderCases() {
       <div class="case-card-grid">
         ${cases.map((modelCase) => `
           <article class="case-card ${index % 2 === 0 ? "is-direct" : "is-branch"}">
-            <span class="badge ${index % 2 === 0 ? "badge-direct" : "badge-branch"}">${categoryLabel(modelCase.category)}</span>
             <h3>${escapeHtml(modelCase.title)}</h3>
             <dl class="case-card-meta">
-              <div><dt>見る軸</dt><dd>${escapeHtml(modelCase.decisionCriteria?.[0] || "付帯サービスの重視点")}</dd></div>
-              <div><dt>代表例</dt><dd>${escapeHtml(modelCase.shortDescription)}</dd></div>
+              <div><dt>まず見る会社・タイプ</dt><dd>${escapeHtml(modelCase.primaryCandidate)}</dd></div>
+              <div><dt>詳細理由の要約</dt><dd>${escapeHtml(modelCase.listSummary || modelCase.conclusion)}</dd></div>
             </dl>
             <button type="button" class="secondary-btn" data-case-id="${modelCase.id}">詳細を見る</button>
           </article>`).join("")}
@@ -97,16 +96,16 @@ function renderCaseDetail(caseId) {
         <p class="eyebrow">この場面の第一比較候補</p>
         <h2>${escapeHtml(modelCase.primaryCandidate)}</h2>
         <p class="conclusion-text">${escapeHtml(modelCase.conclusion)}</p>
-        <div class="reason-line"><strong>理由：</strong><span>${escapeHtml(modelCase.selectionReason)}</span></div>
+        <div class="reason-line"><strong>選定理由：</strong><span>${escapeHtml(modelCase.selectionReason)}</span></div>
         <div class="reason-line muted"><strong>ただし：</strong><span>他社が勝つ条件もあります。事故現場の不安、家族見守り、低負担の事故自動通報、使用目的の変動などを重視する場合は下の比較を確認してください。</span></div>
       </section>
       <section><h2>この場面に近い人</h2>${listItems(modelCase.representativeExamples)}</section>
-      <section><h2>会社選定に必要な条件</h2>${listItems(modelCase.decisionCriteria)}</section>
+      <section><h2>この場面で見るポイント</h2>${listItems(modelCase.decisionCriteria)}</section>
       <div class="accordion-stack">
-        <details><summary>他社と比較する</summary>${renderComparisonCards(modelCase.comparisons)}</details>
+        <details><summary>他社と比べる</summary>${renderComparisonCards(modelCase.comparisons)}</details>
         <details><summary>細かい条件・対象外条件</summary>${listItems(modelCase.smallConditions)}</details>
         <details><summary>このページでは判断できないこと</summary>${listItems(modelCase.cannotDecideHere)}</details>
-        <details><summary>根拠資料を見る</summary>${renderSources(sources)}<p class="source-note">情報確認日：2026年6月25日。商品資料によって対象となる契約始期日が異なります。損保ジャパンは2026年1月始期資料と2026年7月始期資料を混同しないで表示しています。</p></details>
+        <details><summary>根拠資料</summary>${renderSources(sources)}<p class="source-note">情報確認日：2026年6月25日。商品資料によって対象となる契約始期日が異なります。損保ジャパンは2026年1月始期資料と2026年7月始期資料を混同しないで表示しています。</p></details>
       </div>
       <p class="detail-disclaimer">${escapeHtml(modelCase.finalNotice)} ${escapeHtml(modelCase.importantNotice)}</p>
     </article>`;
