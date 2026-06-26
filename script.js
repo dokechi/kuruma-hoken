@@ -101,7 +101,7 @@ function toggleCaseDetail(caseId) {
   renderCases();
 
   if (state.expandedCaseId) {
-    document.querySelector(`.case-detail-panel[data-case-id="${CSS.escape(state.expandedCaseId)}"]`)?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    document.querySelector(`.case-card[data-case-id="${CSS.escape(state.expandedCaseId)}"]`)?.scrollIntoView({ block: "nearest", behavior: "auto" });
   }
 }
 
@@ -111,6 +111,7 @@ function renderCaseDetail(caseId) {
   return `
     <article class="case-detail-panel inline-case-detail" data-case-id="${escapeHtml(modelCase.id)}">
       <span class="badge">${categoryLabel(modelCase.category)}</span>
+      <p class="inline-detail-kicker">この場面の詳しい理由</p>
       <h1>${escapeHtml(modelCase.title)}</h1>
       <section class="conclusion-box" aria-label="この場面の結論">
         <p class="eyebrow">この場面の第一比較候補</p>
