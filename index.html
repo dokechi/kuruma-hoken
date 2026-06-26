@@ -3,62 +3,63 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>自動車保険モデルケース比較</title>
-  <meta name="description" content="保険証券なしでOK。車種・年代・使い方ごとのモデルケースから、自動車保険を見るポイントを整理します。">
+  <title>事故時不安ナビ｜自動車保険モデルケース比較</title>
+  <meta name="description" content="保険証券なしで、自分に近い車の使い方から、自動車保険を見るポイントを整理します。">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header class="site-header">
     <a class="brand" href="#home" data-nav="home" aria-label="トップへ">
-      <span class="cat-mark" aria-hidden="true">=^･ω･^=</span>
-      <span>自動車保険モデルケース比較</span>
+      <span class="cat-mark" aria-hidden="true">ROUTE</span>
+      <span>事故時不安ナビ</span>
     </a>
     <nav class="top-nav" aria-label="画面移動">
       <button type="button" data-nav="home">トップ</button>
       <button type="button" data-nav="cases">モデルケース</button>
-      <button type="button" data-nav="sources">出典</button>
+      <button type="button" data-nav="sources">根拠</button>
     </nav>
   </header>
 
   <main>
     <section id="home" class="screen active hero" aria-labelledby="home-title">
       <div class="hero-copy">
-        <p class="eyebrow">個人情報・証券情報の入力なし</p>
-        <h1 id="home-title">保険証券なしでOK。<br>まずは、自分に近いケースを選んでください。</h1>
-        <p>自動車保険は、保険料だけでは選びきれません。<br>車の使い方、運転する人、事故のときに不安なことによって、見るべきポイントが変わります。</p>
+        <p class="eyebrow">証券なし / 個人情報なし / まずはケース選択</p>
+        <h1 id="home-title">保険料の前に、<br>車の使い方を見る。</h1>
+        <p class="lead">自動車保険は、保険料だけでは選びきれません。車の使い方、運転する人、事故のときに不安なことによって、見るべきポイントが変わります。</p>
         <p>このサイトでは、当社取扱5社の中で、特定の付帯サービスを重視した場合の第一比較候補を整理します。保険会社の総合評価ではありません。</p>
         <div class="hero-actions">
           <button class="primary-btn" type="button" data-nav="cases">自分に近いケースを選ぶ</button>
-          <button class="secondary-btn" type="button" data-nav="sources">この診断の根拠を見る</button>
+          <button class="secondary-btn" type="button" data-nav="sources">根拠資料を見る</button>
         </div>
-        <p class="subtle-link"><button id="startBtn" type="button">詳しく診断したい方はこちら</button></p>
+        <p class="subtle-link"><button id="startBtn" type="button">20問で詳しく診断する</button></p>
         <p class="note">保険会社の優劣ではなく、車の使い方との相性を整理するためのサイトです。</p>
       </div>
       <aside class="hero-card" aria-label="サイトの特徴">
         <div class="line-cat" aria-hidden="true"></div>
-        <h2>モデルケースから確認</h2>
+        <p class="eyebrow">WHERE TO LOOK</p>
+        <h2>見る場所は3つだけ</h2>
         <ul>
-          <li>車種・年代・使い方で探せます</li>
-          <li>事故時の不安ごとに整理します</li>
-          <li>大きな診断ボタンは置いていません</li>
+          <li><span>01</span>車の使い方</li>
+          <li><span>02</span>事故時の不安</li>
+          <li><span>03</span>第一比較候補</li>
         </ul>
       </aside>
     </section>
 
     <section id="cases" class="screen result-screen" aria-labelledby="cases-title">
-      <p class="eyebrow">モデルケース一覧</p>
-      <h1 id="cases-title">自分に近いケースを選ぶ</h1>
+      <p class="eyebrow">MODEL CASE MAP</p>
+      <h1 id="cases-title">車の使い方から、比較の入口を選ぶ</h1>
       <p>近い車の使い方を選ぶと、付帯サービス面で第一比較候補にする理由と、他社との比較ポイントを会社ごとのカードで確認できます。</p>
       <div id="caseCards" class="case-cards" aria-label="モデルケース一覧"></div>
-      <p class="diagnosis-link"><button type="button" id="startBtnFromCases">詳しく診断したい方はこちら</button></p>
+      <p class="diagnosis-link"><button type="button" id="startBtnFromCases">ケースで迷う場合は20問診断へ</button></p>
     </section>
 
     <section id="caseDetail" class="screen result-screen" aria-labelledby="case-detail-title">
-      <p class="eyebrow">モデルケース詳細</p>
+      <p class="eyebrow">CASE FILE</p>
       <div id="caseDetailBody"></div>
       <div class="screen-actions">
         <button class="secondary-btn" type="button" data-nav="cases">モデルケース一覧へ戻る</button>
-        <button class="secondary-btn quiet" type="button" id="startBtnFromDetail">詳しく診断したい方はこちら</button>
+        <button class="secondary-btn quiet" type="button" id="startBtnFromDetail">20問で詳しく診断する</button>
       </div>
     </section>
 
@@ -79,8 +80,8 @@
     </section>
 
     <section id="summary" class="screen result-screen" aria-labelledby="summary-title">
-      <p class="eyebrow">結果サマリー</p>
-      <h1 id="summary-title">あなたの事故時不安タイプは…</h1>
+      <p class="eyebrow">RESULT</p>
+      <h1 id="summary-title">いちばん近い事故時不安タイプは…</h1>
       <div id="topResult" class="top-result"></div>
       <div id="scoreList" class="score-list"></div>
       <p id="compareReason" class="callout"></p>
@@ -91,7 +92,7 @@
     </section>
 
     <section id="detail" class="screen result-screen" aria-labelledby="detail-title">
-      <p class="eyebrow">詳細理由</p>
+      <p class="eyebrow">WHY THIS TYPE</p>
       <h1 id="detail-title">なぜこのタイプに近いのか</h1>
       <div id="detailBody" class="detail-grid"></div>
       <div class="screen-actions">
@@ -101,7 +102,7 @@
     </section>
 
     <section id="actions" class="screen result-screen" aria-labelledby="actions-title">
-      <p class="eyebrow">次のアクション</p>
+      <p class="eyebrow">NEXT ACTION</p>
       <h1 id="actions-title">結果を保険選びの軸にする</h1>
       <div class="action-cards">
         <article><h2>詳細を見る</h2><p>一致度が高い理由を確認し、事故時に何を重視したいかを言葉にしておきましょう。</p></article>
@@ -113,8 +114,8 @@
     </section>
 
     <section id="sources" class="screen result-screen" aria-labelledby="sources-title">
-      <p class="eyebrow">出典・参考資料</p>
-      <h1 id="sources-title">この診断の根拠</h1>
+      <p class="eyebrow">SOURCE FILE</p>
+      <h1 id="sources-title">この比較の根拠</h1>
       <p>各社の公式サイト・商品説明資料など一次情報をもとに、付帯サービス面の比較入口を整理しています。情報確認日：2026年6月25日。商品資料によって対象となる契約始期日が異なります。</p>
       <ul class="source-list">
         <li><a href="#">あいおいニッセイ同和損保 公式サイト</a></li>
@@ -133,7 +134,7 @@
   <footer class="disclaimer">
     <strong>免責事項</strong>
     <p>本ページは、当社取扱5社について、特定の付帯サービスを重視する場合の比較の入口を示すものです。保険料、基本補償、保険金支払条件、特約、引受可否、代理店対応等を含む総合評価ではありません。掲載車種・年代は代表例です。実際の商品選択時には、補償内容、保険料、車両条件、契約始期、引受条件等の確認が必要です。</p>
-    <p><button class="footer-link" type="button" data-nav="question">詳しく診断したい方はこちら</button></p>
+    <p><button class="footer-link" type="button" data-nav="question">20問で詳しく診断する</button></p>
   </footer>
   <script src="script.js"></script>
 </body>
