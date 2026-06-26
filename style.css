@@ -18,7 +18,7 @@
   --content:1120px;
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
+html{scroll-behavior:auto}
 body{
   margin:0;
   min-height:100vh;
@@ -310,51 +310,6 @@ h2{font-size:1.35rem;line-height:1.42;margin:0 0 10px;letter-spacing:-.025em}.he
   }
 }
 
-/* Inline case detail expansion */
-.case-card.is-expanded{
-  background:#fff0f6;
-  box-shadow:inset 5px 0 0 var(--rose-500);
-  border-bottom-color:transparent;
-}
-.case-card.is-expanded .case-card-arrow{
-  color:var(--rose-600);
-  font-size:1.1rem;
-  font-weight:900;
-}
-.inline-case-detail{
-  margin:-1px 0 14px;
-  border-top-left-radius:0;
-  border-top-right-radius:0;
-  border-top:0;
-  border-left:5px solid var(--rose-500);
-  background:linear-gradient(180deg,#fff0f6 0%,#fff 18%,var(--rose-50) 100%);
-  box-shadow:var(--shadow-sm);
-  animation:inlineDetailOpen .12s ease-out;
-}
-.inline-case-detail h1{
-  font-size:clamp(1.7rem,3vw,2.5rem);
-}
-.inline-detail-kicker{
-  margin:14px 0 6px;
-  color:var(--rose-700);
-  font-size:.88rem;
-  font-weight:950;
-  letter-spacing:.04em;
-}
-@keyframes inlineDetailOpen{
-  from{opacity:.7;transform:translateY(-3px)}
-  to{opacity:1;transform:translateY(0)}
-}
-.inline-detail-actions{
-  display:flex;
-  justify-content:flex-end;
-  margin-top:24px;
-}
-@media(max-width:760px){
-  .inline-case-detail{padding:22px 16px;margin-bottom:10px}
-  .inline-detail-actions{display:block}
-}
-
 /* Lightweight company chips on the top page */
 .current-companies{
   display:grid;
@@ -397,4 +352,49 @@ h2{font-size:1.35rem;line-height:1.42;margin:0 0 10px;letter-spacing:-.025em}.he
   .current-companies-title{font-size:.84rem}
   .company-chips{gap:6px}
   .company-chips li{min-height:26px;padding:3px 8px;font-size:.7rem}
+}
+
+/* Page-based case detail navigation */
+.inline-detail-kicker{
+  margin:14px 0 6px;
+  color:var(--rose-600);
+  font-size:.88rem;
+  font-weight:950;
+  letter-spacing:.04em;
+}
+.case-card.is-return-target{
+  background:var(--rose-50);
+  box-shadow:inset 4px 0 0 var(--rose-500);
+}
+.case-detail-nav{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.case-detail-nav-top{
+  margin-bottom:24px;
+}
+.case-detail-nav-bottom{
+  margin-top:30px;
+  padding-top:22px;
+  border-top:1px solid #e5e7eb;
+}
+.case-step-actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.case-step-actions .secondary-btn:disabled{
+  opacity:.45;
+  cursor:not-allowed;
+  transform:none;
+}
+@media(max-width:760px){
+  .case-detail-nav,
+  .case-step-actions{
+    display:grid;
+    width:100%;
+  }
 }
