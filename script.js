@@ -3,7 +3,8 @@ let SOURCE_REGISTRY = [];
 
 const TYPE_ORDER = ["aioi_type", "tokio_type", "sompo_type", "ms_type", "kyoei_type", "direct_type"];
 const state = { questions: [], scoring: {}, results: {}, index: 0, answers: {}, ranked: [] };
-const categoryLabel = (category) => category === "direct" ? "会社直結型" : "分岐型";
+const CATEGORY_ORDER = ["自分が毎日使う車", "家族を乗せる車", "家族が運転する車", "仕事・夜間で使う車"];
+const categoryLabel = (category) => category;
 const GLOBAL_DISCLAIMER = "本ページは、当社取扱5社について、特定の付帯サービスを重視する場合の比較の入口を示すものです。保険料、基本補償、保険金支払条件、特約、引受可否、代理店対応等を含む総合評価ではありません。掲載車種・年代は代表例です。実際の商品選択時には、補償内容、保険料、車両条件、契約始期、引受条件等の確認が必要です。";
 const $ = (id) => document.getElementById(id);
 
@@ -46,21 +47,18 @@ function listItems(items) {
 function renderCases() {
   const container = $("caseCards");
   if (!container) return;
-  const groups = [
-    ["会社直結型", MODEL_CASES.filter((item) => item.category === "direct")],
-    ["分岐型", MODEL_CASES.filter((item) => item.category === "branch")]
-  ];
-  container.innerHTML = groups.map(([label, cases]) => `
-    <section class="case-group case-group-${label === "会社直結型" ? "direct" : "branch"}" aria-label="${label}">
+  const groups = CATEGORY_ORDER.map((label) => [label, MODEL_CASES.filter((item) => item.category === label)]);
+  container.innerHTML = groups.map(([label, cases], index) => `
+    <section class="case-group case-group-${index % 2 === 0 ? "direct" : "branch"}" aria-label="${label}">
       <div class="case-group-heading">
-        <span class="badge ${label === "会社直結型" ? "badge-direct" : "badge-branch"}">${label}</span>
+        <span class="badge ${index % 2 === 0 ? "badge-direct" : "badge-branch"}">${label}</span>
         <h2>${label}</h2>
-        <p>${label === "会社直結型" ? "候補会社が比較軸として見えやすい5つの場面です。まずはこちらから近い使い方を探してください。" : "車の使い方や不安の種類で候補が分かれる5つの場面です。条件を整理しながら確認します。"}</p>
+        <p>車の使い方が近い場面から、事故時に重視したい付帯サービスの違いを確認できます。</p>
       </div>
       <div class="case-card-grid">
         ${cases.map((modelCase) => `
-          <article class="case-card ${modelCase.category === "direct" ? "is-direct" : "is-branch"}">
-            <span class="badge ${modelCase.category === "direct" ? "badge-direct" : "badge-branch"}">${categoryLabel(modelCase.category)}</span>
+          <article class="case-card ${index % 2 === 0 ? "is-direct" : "is-branch"}">
+            <span class="badge ${index % 2 === 0 ? "badge-direct" : "badge-branch"}">${categoryLabel(modelCase.category)}</span>
             <h3>${escapeHtml(modelCase.title)}</h3>
             <dl class="case-card-meta">
               <div><dt>見る軸</dt><dd>${escapeHtml(modelCase.decisionCriteria?.[0] || "付帯サービスの重視点")}</dd></div>
@@ -93,7 +91,7 @@ function renderCaseDetail(caseId) {
   const sources = (modelCase.sourceIds || []).map((id) => SOURCE_REGISTRY.find((source) => source.id === id)).filter(Boolean);
   $("caseDetailBody").innerHTML = `
     <article class="case-detail-panel">
-      <span class="badge ${modelCase.category === "direct" ? "badge-direct" : "badge-branch"}">${categoryLabel(modelCase.category)}</span>
+      <span class="badge">${categoryLabel(modelCase.category)}</span>
       <h1 id="case-detail-title">${escapeHtml(modelCase.title)}</h1>
       <section class="conclusion-box" aria-label="この場面の結論">
         <p class="eyebrow">この場面の第一比較候補</p>
