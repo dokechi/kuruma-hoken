@@ -57,18 +57,23 @@ function renderCases() {
       </div>
       <div class="case-card-grid">
         ${cases.map((modelCase) => `
-          <article class="case-card ${index % 2 === 0 ? "is-direct" : "is-branch"}">
-            <h3>${escapeHtml(modelCase.title)}</h3>
-            <dl class="case-card-meta">
-              <div><dt>まず見る会社・タイプ</dt><dd>${escapeHtml(modelCase.primaryCandidate)}</dd></div>
-              <div><dt>詳細理由の要約</dt><dd>${escapeHtml(modelCase.listSummary || modelCase.conclusion)}</dd></div>
-            </dl>
-            <button type="button" class="secondary-btn" data-case-id="${modelCase.id}">詳細を見る</button>
+          <article class="case-card ${index % 2 === 0 ? "is-direct" : "is-branch"}" role="button" tabindex="0" data-case-id="${modelCase.id}" aria-label="${escapeHtml(modelCase.title)}の詳細を見る">
+            <div class="case-card-text">
+              <h3>${escapeHtml(modelCase.title)}</h3>
+              <p>${escapeHtml(modelCase.primaryCandidate)}｜${escapeHtml(modelCase.listSummary || modelCase.conclusion)}</p>
+            </div>
+            <span class="case-card-arrow" aria-hidden="true">›</span>
           </article>`).join("")}
       </div>
     </section>`).join("") + renderModelCaseFaq();
-  document.querySelectorAll("[data-case-id]").forEach((button) => {
-    button.addEventListener("click", () => renderCaseDetail(button.dataset.caseId));
+  document.querySelectorAll(".case-card[data-case-id]").forEach((card) => {
+    card.addEventListener("click", () => renderCaseDetail(card.dataset.caseId));
+    card.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        renderCaseDetail(card.dataset.caseId);
+      }
+    });
   });
 }
 

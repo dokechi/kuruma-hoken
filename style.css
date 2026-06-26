@@ -226,3 +226,31 @@ h2{font-size:1.35rem;line-height:1.42;margin:0 0 10px;letter-spacing:-.025em}.he
     padding-top:54px;
   }
 }
+
+/* Compact case list */
+.case-group{margin-top:24px;padding-top:0}
+.case-group-heading{margin-bottom:8px;max-width:none}
+.case-group-heading .badge{display:none}
+.case-group-heading h2{font-size:.98rem;line-height:1.4;margin:0 0 2px;padding:0;border:0;color:var(--plum-900);letter-spacing:-.01em}
+.case-group-heading p{font-size:.82rem;line-height:1.55;color:var(--slate-500)}
+.case-card-grid{display:grid;grid-template-columns:1fr;gap:0;border-top:1px solid #edf0f3;background:#fff}
+.case-card{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:12px;min-height:72px;padding:10px 6px 10px 0;border:0;border-bottom:1px solid #edf0f3;border-radius:0;background:transparent;box-shadow:none;color:var(--plum-900);transition:background .16s ease,color .16s ease}
+.case-card.is-direct,.case-card.is-branch{border-top:0}
+.case-card:hover,.case-card:focus-visible{transform:none;box-shadow:none;border-color:#edf0f3;background:var(--rose-50);outline:0}
+.case-card:focus-visible{box-shadow:inset 3px 0 0 var(--rose-500)}
+.case-card-text{min-width:0}
+.case-card h3{font-size:.98rem;line-height:1.35;margin:0 0 2px;color:var(--plum-900);letter-spacing:-.01em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.case-card p{margin:0;color:var(--plum-700);font-size:.84rem;line-height:1.45;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+.case-card-arrow{color:var(--slate-500);font-size:1.45rem;line-height:1;font-weight:400;padding:0 2px}
+.case-card-meta,.case-card .secondary-btn{display:none}
+
+@media(max-width:760px){
+  .case-group{margin-top:22px}
+  .case-group-heading{margin-bottom:6px}
+  .case-group-heading h2{font-size:.94rem}
+  .case-group-heading p{font-size:.78rem;line-height:1.45}
+  .case-card-grid{display:block}
+  .case-card-grid .case-card,.case-card{margin-top:0;min-height:64px;padding:8px 4px 8px 0}
+  .case-card h3{font-size:.94rem;line-height:1.3}
+  .case-card p{font-size:.8rem;line-height:1.4}
+}
