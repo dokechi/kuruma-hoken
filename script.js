@@ -230,7 +230,7 @@ function renderResults() {
       <p>${item.name}</p>
     </article>`).join("");
   $("compareReason").textContent = top.type === "direct_type"
-    ? "価格重視タイプが最も近い結果です。代理店型5社へ無理に進む必要はなく、ダイレクト型や一括見積りも選択肢です。"
+    ? "価格重視タイプが最も近い結果です。この診断結果だけで加入を断定せず、補償内容・車両条件・契約条件を確認してください。"
     : `5社の中では、まず${top.company}を比較する理由があります。ただし、加入を断定するものではありません。`;
   renderDetail();
 }
@@ -238,9 +238,12 @@ function renderResults() {
 function renderDetail() {
   const top = state.ranked[0];
   const lowItems = state.ranked.slice(1);
+  const highReason = top.type === "direct_type"
+    ? "保険料や価格への関心が強い回答が多いため、このタイプの一致度が高くなっています。"
+    : top.highReason;
   $("detailBody").innerHTML = `
-    <article><h2>なぜ一致度が高いのか</h2><p>${top.highReason}</p></article>
-    <article><h2>まず比較する理由</h2><p>${top.type === "direct_type" ? "保険料だけを下げたい意向が強いため、ダイレクト型や一括見積りも含めて価格軸を確認する理由があります。" : `5社の中では、まず${top.company}を比較する理由があります。回答内容と事故時の不安軸が近いためです。`}</p></article>
+    <article><h2>なぜ一致度が高いのか</h2><p>${highReason}</p></article>
+    <article><h2>まず比較する理由</h2><p>${top.type === "direct_type" ? "保険料への関心が強い結果です。実際の契約判断では、価格だけでなく補償内容・車両条件・契約条件も合わせて確認してください。" : `5社の中では、まず${top.company}を比較する理由があります。回答内容と事故時の不安軸が近いためです。`}</p></article>
     <article><h2>なぜ他のタイプが低いのか</h2><p>${lowItems.map((item) => `${item.company}は${item.lowReason}`).join(" ")}</p></article>
     <article><h2>低いタイプの見方</h2><p>一致度が低いタイプは、その会社が悪いのではなく、今回の回答で見えた不安とはズレやすいという意味です。実際の契約判断では補償内容・保険料・車両条件などを確認してください。</p></article>`;
 }
