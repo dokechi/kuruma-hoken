@@ -106,15 +106,15 @@ h2{font-size:1.35rem;line-height:1.42;margin:0 0 10px;letter-spacing:-.025em}.he
 .badge-direct{background:var(--rose-50);color:var(--rose-600);border-color:var(--rose-200)}
 .badge-branch{background:#f6f7f9;color:var(--plum-700);border-color:#e5e7eb}
 .case-card-grid{align-items:stretch}
-.case-card{display:flex;flex-direction:column;gap:12px;padding:28px}
+.case-card{display:flex;flex-direction:column;gap:8px;padding:20px 22px}
 .case-card.is-direct{border-top:5px solid var(--rose-500)}
 .case-card.is-branch{border-top:5px solid #d0d5dd}
-.case-card h3{font-size:1.18rem;line-height:1.55;margin:0;letter-spacing:-.015em}
-.case-card-meta{display:grid;gap:12px;margin:0;color:var(--plum-700)}
-.case-card-meta div{padding-top:12px;border-top:1px solid #edf0f3}
+.case-card h3{font-size:1.08rem;line-height:1.42;margin:0;letter-spacing:-.015em}
+.case-card-meta{display:grid;gap:8px;margin:0;color:var(--plum-700);font-size:.94rem}
+.case-card-meta div{padding-top:8px;border-top:1px solid #edf0f3}
 .case-card-meta dt{font-weight:950;color:var(--plum-900);font-size:.9rem;margin-bottom:2px}
-.case-card-meta dd{margin:0;line-height:1.75}
-.case-card .secondary-btn{margin-top:auto;align-self:flex-start}
+.case-card-meta dd{margin:0;line-height:1.55}
+.case-card .secondary-btn{margin-top:4px;align-self:flex-start;min-height:42px;padding:8px 16px;font-size:.92rem}
 
 .case-detail-panel{background:#fff}
 .case-detail-panel h1{max-width:900px;margin-bottom:24px}
