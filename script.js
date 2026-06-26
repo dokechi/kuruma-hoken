@@ -2,7 +2,7 @@ let MODEL_CASES = [];
 let SOURCE_REGISTRY = [];
 
 const TYPE_ORDER = ["aioi_type", "tokio_type", "sompo_type", "ms_type", "kyoei_type", "direct_type"];
-const state = { questions: [], scoring: {}, results: {}, index: 0, answers: {}, ranked: [], casesScrollY: 0 };
+const state = { questions: [], scoring: {}, results: {}, index: 0, answers: {}, ranked: [], expandedCaseId: null };
 const CATEGORY_ORDER = ["自分が毎日使う車", "家族を乗せる車", "家族が運転する車", "仕事・夜間で使う車"];
 const categoryLabel = (category) => category;
 const GLOBAL_DISCLAIMER = "本ページは、当社取扱5社について、特定の付帯サービスを重視する場合の比較の入口を示すものです。保険料、基本補償、保険金支払条件、特約、引受可否、代理店対応等を含む総合評価ではありません。掲載車種・年代は代表例です。実際の商品選択時には、補償内容、保険料、車両条件、契約始期、引受条件等の確認が必要です。";
@@ -26,16 +26,12 @@ async function init() {
 }
 
 function bindEvents() {
-  ["startBtn", "startBtnFromCases", "startBtnFromDetail"].forEach((id) => $(id)?.addEventListener("click", () => showScreen("question")));
+  ["startBtn", "startBtnFromCases"].forEach((id) => $(id)?.addEventListener("click", () => showScreen("question")));
   $("restartBtn").addEventListener("click", restart);
   $("backBtn").addEventListener("click", previousQuestion);
   $("nextBtn").addEventListener("click", nextQuestion);
   document.querySelectorAll("[data-nav]").forEach((button) => {
-    button.addEventListener("click", () => {
-      const activeScreen = document.querySelector(".screen.active")?.id;
-      const restoreCasesScroll = activeScreen === "caseDetail" && button.dataset.nav === "cases";
-      showScreen(button.dataset.nav, { restoreCasesScroll });
-    });
+    button.addEventListener("click", () => showScreen(button.dataset.nav));
   });
 }
 
@@ -60,22 +56,29 @@ function renderCases() {
       </div>
       <div class="case-card-grid">
         ${cases.map((modelCase) => `
-          <article class="case-card ${index % 2 === 0 ? "is-direct" : "is-branch"}" role="button" tabindex="0" data-case-id="${modelCase.id}" aria-label="${escapeHtml(modelCase.title)}の詳細を見る">
+          <article class="case-card ${index % 2 === 0 ? "is-direct" : "is-branch"}${state.expandedCaseId === modelCase.id ? " is-expanded" : ""}" role="button" tabindex="0" data-case-id="${modelCase.id}" aria-expanded="${state.expandedCaseId === modelCase.id}" aria-label="${escapeHtml(modelCase.title)}の詳細を見る">
             <div class="case-card-text">
               <h3>${escapeHtml(modelCase.title)}</h3>
               <p>${escapeHtml(modelCase.primaryCandidate)}｜${escapeHtml(modelCase.listSummary || modelCase.conclusion)}</p>
             </div>
-            <span class="case-card-arrow" aria-hidden="true">›</span>
-          </article>`).join("")}
+            <span class="case-card-arrow" aria-hidden="true">${state.expandedCaseId === modelCase.id ? "⌃" : "›"}</span>
+          </article>
+          ${state.expandedCaseId === modelCase.id ? renderCaseDetail(modelCase.id) : ""}`).join("")}
       </div>
     </section>`).join("") + renderModelCaseFaq();
   document.querySelectorAll(".case-card[data-case-id]").forEach((card) => {
-    card.addEventListener("click", () => renderCaseDetail(card.dataset.caseId));
+    card.addEventListener("click", () => toggleCaseDetail(card.dataset.caseId));
     card.addEventListener("keydown", (event) => {
       if (event.key === "Enter" || event.key === " ") {
         event.preventDefault();
-        renderCaseDetail(card.dataset.caseId);
+        toggleCaseDetail(card.dataset.caseId);
       }
+    });
+  });
+  document.querySelectorAll("[data-close-case]").forEach((button) => {
+    button.addEventListener("click", (event) => {
+      event.stopPropagation();
+      toggleCaseDetail(button.dataset.closeCase);
     });
   });
 }
@@ -93,14 +96,22 @@ function renderModelCaseFaq() {
   return `<section class="faq-panel"><h2>比較前提FAQ</h2>${faqs.map(([q,a]) => `<details><summary>${q}</summary><p>${a}</p></details>`).join("")}</section>`;
 }
 
+function toggleCaseDetail(caseId) {
+  state.expandedCaseId = state.expandedCaseId === caseId ? null : caseId;
+  renderCases();
+
+  if (state.expandedCaseId) {
+    document.querySelector(`.case-detail-panel[data-case-id="${CSS.escape(state.expandedCaseId)}"]`)?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+  }
+}
+
 function renderCaseDetail(caseId) {
-  state.casesScrollY = window.scrollY;
   const modelCase = MODEL_CASES.find((item) => item.id === caseId) || MODEL_CASES[0];
   const sources = (modelCase.sourceIds || []).map((id) => SOURCE_REGISTRY.find((source) => source.id === id)).filter(Boolean);
-  $("caseDetailBody").innerHTML = `
-    <article class="case-detail-panel">
+  return `
+    <article class="case-detail-panel inline-case-detail" data-case-id="${escapeHtml(modelCase.id)}">
       <span class="badge">${categoryLabel(modelCase.category)}</span>
-      <h1 id="case-detail-title">${escapeHtml(modelCase.title)}</h1>
+      <h1>${escapeHtml(modelCase.title)}</h1>
       <section class="conclusion-box" aria-label="この場面の結論">
         <p class="eyebrow">この場面の第一比較候補</p>
         <h2>${escapeHtml(modelCase.primaryCandidate)}</h2>
@@ -117,8 +128,8 @@ function renderCaseDetail(caseId) {
         <details><summary>根拠資料</summary>${renderSources(sources)}<p class="source-note">情報確認日：2026年6月25日。商品資料によって対象となる契約始期日が異なります。損保ジャパンは2026年1月始期資料と2026年7月始期資料を混同しないで表示しています。</p></details>
       </div>
       <p class="detail-disclaimer">${escapeHtml(modelCase.finalNotice)} ${escapeHtml(modelCase.importantNotice)}</p>
+      <div class="inline-detail-actions"><button class="secondary-btn quiet" type="button" data-close-case="${escapeHtml(modelCase.id)}">閉じる</button></div>
     </article>`;
-  showScreen("caseDetail");
 }
 
 function renderComparisonCards(comparisons) {
@@ -150,10 +161,9 @@ function renderSourcesPage() {
   </li>`).join("");
 }
 
-function showScreen(id, options = {}) {
+function showScreen(id) {
   document.querySelectorAll(".screen").forEach((screen) => screen.classList.toggle("active", screen.id === id));
-  const top = options.restoreCasesScroll ? state.casesScrollY : 0;
-  window.scrollTo({ top, behavior: "smooth" });
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 function renderQuestion() {
