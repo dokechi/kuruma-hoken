@@ -124,17 +124,6 @@ function renderComparisonCards(comparisons) {
   </article>`).join("")}</div>`;
 }
 
-function renderComparisonTable(comparisons, mode) {
-  const head = mode === "why" ? "今回主役にしない理由" : "主役になる条件";
-  return `<div class="comparison-table" role="table">
-    <div class="comparison-row comparison-head" role="row"><div>会社</div><div>強み</div><div>${head}</div></div>
-    ${(comparisons || []).map((item) => `<div class="comparison-row" role="row">
-      <div data-label="会社">${escapeHtml(item.company)}</div>
-      <div data-label="強み">${escapeHtml(item.strength)}</div>
-      <div data-label="${head}">${escapeHtml(mode === "why" ? item.whyNotPrimaryHere : item.whenThisCompanyWins)}</div>
-    </div>`).join("")}
-  </div>`;
-}
 
 function renderSources(sources) {
   if (!sources.length) return '<p>このケースに直接関係する公式資料は登録されていません。</p>';
