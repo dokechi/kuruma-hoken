@@ -53,7 +53,6 @@ function renderCases() {
       <div class="case-group-heading">
         <span class="badge ${index % 2 === 0 ? "badge-direct" : "badge-branch"}">${label}</span>
         <h2>${label}</h2>
-        <p>車の使い方が近い場面から、事故時に重視したい付帯サービスの違いを確認できます。</p>
       </div>
       <div class="case-card-grid">
         ${cases.map((modelCase) => `
