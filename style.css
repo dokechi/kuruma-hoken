@@ -447,3 +447,10 @@ h2{font-size:1.35rem;line-height:1.42;margin:0 0 10px;letter-spacing:-.025em}.he
     padding-inline:7px;
   }
 }
+
+/* Multipage navigation */
+.top-nav a{border:0;background:transparent;color:var(--plum-700);padding:6px 8px;border-radius:999px;cursor:pointer;font-weight:800;font-size:.84rem;text-decoration:none}
+.top-nav a:hover{background:var(--rose-50);color:var(--rose-600)}
+a.primary-btn,a.secondary-btn{display:inline-flex;align-items:center;justify-content:center;text-decoration:none}
+.page-cases .result-screen,.page-case-detail .result-screen,.page-background .result-screen,.page-sources .result-screen{padding-top:clamp(46px,7vw,78px)}
+.page-cases #cases-title{font-size:clamp(2.1rem,5vw,4.2rem)}
