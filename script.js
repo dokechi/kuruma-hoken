@@ -207,6 +207,22 @@ function showScreen(id, options = {}) {
   if (options.scrollTop !== false) {
     window.scrollTo({ top: 0, behavior: "auto" });
   }
+  if (id === "cases" && options.scrollTop !== false) {
+    highlightCasesArrival();
+  }
+}
+
+function highlightCasesArrival() {
+  const casesScreen = $("cases");
+  if (!casesScreen) return;
+  casesScreen.classList.remove("cases-just-shown");
+  window.clearTimeout(highlightCasesArrival.timer);
+  requestAnimationFrame(() => {
+    casesScreen.classList.add("cases-just-shown");
+    highlightCasesArrival.timer = window.setTimeout(() => {
+      casesScreen.classList.remove("cases-just-shown");
+    }, 650);
+  });
 }
 
 function renderQuestion() {
