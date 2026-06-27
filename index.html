@@ -7,19 +7,19 @@
   <meta name="description" content="似ていて選びにくい自動車保険5社を、読者の場面ごとに整理するページです。">
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="page-home">
   <header class="site-header">
-    <a class="brand" href="#home" data-nav="home" aria-label="トップへ">
+    <a class="brand" href="index.html" aria-label="トップへ">
       <span class="cat-mark" aria-hidden="true">=^･ω･^=</span>
       <span>車の保険って、どこも同じに見える。で、何が違うの？</span>
     </a>
     <nav class="top-nav" aria-label="補足情報">
-      <button type="button" data-nav="sources">出典</button>
+      <a href="sources.html">出典</a>
     </nav>
   </header>
 
   <main>
-    <section id="home" class="screen active hero" aria-labelledby="home-title">
+    <section class="screen active hero" aria-labelledby="home-title">
       <div class="first-view">
         <h1 id="home-title" class="hero-title">
           <span>車の保険って、</span>
@@ -37,104 +37,10 @@
           </ul>
         </div>
         <div class="hero-actions single-action">
-          <button class="primary-btn" type="button" data-nav="cases">自分に近い場面を見る</button>
-          <button class="secondary-btn hero-sub-btn" type="button" data-nav="background">作成の経緯</button>
+          <a class="primary-btn" href="cases.html">自分に近い場面を見る</a>
+          <a class="secondary-btn hero-sub-btn" href="background.html">作成の経緯</a>
         </div>
       </div>
-    </section>
-
-    <section id="cases" class="screen result-screen" aria-labelledby="cases-title">
-      <p class="eyebrow">場面一覧</p>
-      <h1 id="cases-title">いちばん近い使い方を選ぶ</h1>
-      <p class="cases-lead">この中から、いちばん近い使い方を選んでください。</p>
-      <p>車の使い方が近い場面から、事故時に重視したい付帯サービスの違いを確認できます。近い場面を選ぶと、第一比較候補にする理由と、他社との比較ポイントを確認できます。</p>
-      <div id="caseCards" class="case-cards" aria-label="場面一覧"></div>
-      <p class="diagnosis-link"><button type="button" id="startBtnFromCases">詳しく診断したい方はこちら</button></p>
-    </section>
-
-    <section id="caseDetail" class="screen result-screen" aria-labelledby="case-detail-title">
-      <div id="caseDetailBody"></div>
-    </section>
-
-    <section id="question" class="screen" aria-labelledby="question-title">
-      <div class="question-shell">
-        <div class="progress-meta"><span id="questionCount">質問 1 / 20</span><span id="answeredCount">未回答</span></div>
-        <div class="progress-track" aria-hidden="true"><div id="progressBar" class="progress-bar"></div></div>
-        <article class="question-card">
-          <p id="questionCategory" class="eyebrow"></p>
-          <h1 id="question-title"></h1>
-          <div id="choices" class="choices"></div>
-        </article>
-        <div class="question-actions">
-          <button id="backBtn" class="secondary-btn" type="button">戻る</button>
-          <button id="nextBtn" class="primary-btn" type="button">次へ</button>
-        </div>
-      </div>
-    </section>
-
-    <section id="summary" class="screen result-screen" aria-labelledby="summary-title">
-      <p class="eyebrow">結果サマリー</p>
-      <h1 id="summary-title">あなたの事故時不安タイプは…</h1>
-      <div id="topResult" class="top-result"></div>
-      <div id="scoreList" class="score-list"></div>
-      <p id="compareReason" class="callout"></p>
-      <div class="screen-actions">
-        <button class="primary-btn" type="button" data-nav="detail">詳細理由を見る</button>
-        <button class="secondary-btn" type="button" data-nav="actions">次のアクション</button>
-      </div>
-    </section>
-
-    <section id="detail" class="screen result-screen" aria-labelledby="detail-title">
-      <p class="eyebrow">詳細理由</p>
-      <h1 id="detail-title">なぜこのタイプに近いのか</h1>
-      <div id="detailBody" class="detail-grid"></div>
-      <div class="screen-actions">
-        <button class="secondary-btn" type="button" data-nav="summary">結果サマリーへ戻る</button>
-        <button class="primary-btn" type="button" data-nav="actions">次のアクションへ</button>
-      </div>
-    </section>
-
-    <section id="actions" class="screen result-screen" aria-labelledby="actions-title">
-      <p class="eyebrow">次のアクション</p>
-      <h1 id="actions-title">結果を保険選びの軸にする</h1>
-      <div class="action-cards">
-        <article><h2>詳細を見る</h2><p>一致度が高い理由を確認し、事故時に何を重視したいかを言葉にしておきましょう。</p></article>
-        <article><h2>他のタイプも比較する</h2><p>上位だけでなく、条件次第のタイプも確認すると見落としを減らせます。</p></article>
-        <article><h2>契約前に確認する</h2><p>実際の契約判断には補償内容・保険料・車両条件の確認が必要です。</p></article>
-      </div>
-      <div class="screen-actions"><button class="secondary-btn" type="button" data-nav="summary">結果へ戻る</button><button class="primary-btn" type="button" id="restartBtn">もう一度診断する</button></div>
-    </section>
-
-
-
-    <section id="background" class="screen result-screen" aria-labelledby="background-title">
-      <p class="eyebrow">作成の経緯</p>
-      <h1 id="background-title">似ていて選びにくい、をほどくために</h1>
-      <div class="background-reading" aria-label="作成の経緯">
-        <p>自動車保険って、パンフレットを見るとだいたい全部良さそうに見えます。</p>
-        <p>事故対応もある。<br>ドラレコもある。<br>ロードサービスもある。<br>家族への通知もある。</p>
-        <p>でも、選ぶ側からすると、<br>「で、自分の場合はどこを見るの？」<br>ってなりませんか。</p>
-        <p>このページは、保険会社の優劣を決めるためではありません。</p>
-        <p>今は、あいおいニッセイ同和損保、東京海上日動、損保ジャパン、三井住友海上、共栄火災の5社を、<br>事故の場面ごとに見たとき、どこに違いが出るのかを整理しています。</p>
-        <p>なんとなく良さそう、で選ばないための入口です。</p>
-      </div>
-    </section>
-
-    <section id="sources" class="screen result-screen" aria-labelledby="sources-title">
-      <p class="eyebrow">出典・参考資料</p>
-      <h1 id="sources-title">このページの出典</h1>
-      <p>各社の公式サイト・商品説明資料など一次情報をもとに、付帯サービス面の比較入口を整理しています。情報確認日：2026年6月25日。商品資料によって対象となる契約始期日が異なります。</p>
-      <ul class="source-list">
-        <li><a href="#">あいおいニッセイ同和損保 公式サイト</a></li>
-        <li><a href="#">東京海上日動 公式サイト</a></li>
-        <li><a href="#">損保ジャパン 公式サイト</a></li>
-        <li><a href="#">三井住友海上 公式サイト</a></li>
-        <li><a href="#">共栄火災 公式サイト</a></li>
-        <li><a href="#">金融庁「自動車保険の概況」</a></li>
-        <li><a href="#">国土交通省「交通事故統計」</a></li>
-        <li><a href="#">一般社団法人 日本損害保険協会</a></li>
-        <li><a href="#">各社パンフレット・商品説明資料・重要事項説明書</a></li>
-      </ul>
     </section>
   </main>
 
@@ -142,6 +48,5 @@
     <strong>免責事項</strong>
     <p>本ページは、当社取扱5社について、特定の付帯サービスを重視する場合の比較の入口を示すものです。保険料、基本補償、保険金支払条件、特約、引受可否、代理店対応等を含む総合評価ではありません。掲載車種・年代は代表例です。実際の商品選択時には、補償内容、保険料、車両条件、契約始期、引受条件等の確認が必要です。</p>
   </footer>
-  <script src="script.js"></script>
 </body>
 </html>
