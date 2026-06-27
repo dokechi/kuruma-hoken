@@ -23,6 +23,13 @@ async function init() {
   renderCases();
   renderSourcesPage();
   renderQuestion();
+  showInitialScreen();
+  window.addEventListener("popstate", showInitialScreen);
+}
+
+function showInitialScreen() {
+  const id = window.location.hash.replace("#", "") || "home";
+  showScreen($(id)?.classList.contains("screen") ? id : "home", { updateHash: false });
 }
 
 function bindEvents() {
@@ -203,26 +210,20 @@ function renderSourcesPage() {
 }
 
 function showScreen(id, options = {}) {
-  document.querySelectorAll(".screen").forEach((screen) => screen.classList.toggle("active", screen.id === id));
+  const target = $(id);
+  if (!target?.classList.contains("screen")) return;
+
+  document.querySelectorAll(".screen").forEach((screen) => {
+    screen.classList.toggle("active", screen.id === id);
+  });
+
+  if (options.updateHash !== false && window.location.hash !== `#${id}`) {
+    history.pushState({ screen: id }, "", `#${id}`);
+  }
+
   if (options.scrollTop !== false) {
     window.scrollTo({ top: 0, behavior: "auto" });
   }
-  if (id === "cases" && options.scrollTop !== false) {
-    highlightCasesArrival();
-  }
-}
-
-function highlightCasesArrival() {
-  const casesScreen = $("cases");
-  if (!casesScreen) return;
-  casesScreen.classList.remove("cases-just-shown");
-  window.clearTimeout(highlightCasesArrival.timer);
-  requestAnimationFrame(() => {
-    casesScreen.classList.add("cases-just-shown");
-    highlightCasesArrival.timer = window.setTimeout(() => {
-      casesScreen.classList.remove("cases-just-shown");
-    }, 650);
-  });
 }
 
 function renderQuestion() {
