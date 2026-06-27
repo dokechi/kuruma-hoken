@@ -2,7 +2,7 @@ let MODEL_CASES = [];
 let SOURCE_REGISTRY = [];
 
 const TYPE_ORDER = ["aioi_type", "tokio_type", "sompo_type", "ms_type", "kyoei_type", "direct_type"];
-const state = { questions: [], scoring: {}, results: {}, index: 0, answers: {}, ranked: [], selectedCaseId: null, returnCaseId: null };
+const state = { questions: [], scoring: {}, results: {}, index: 0, answers: {}, ranked: [], selectedCaseId: null, returnCaseId: null, lastCaseScrollY: 0 };
 const CATEGORY_ORDER = ["自分が毎日使う車", "家族を乗せる車", "家族が運転する車", "仕事・夜間で使う車"];
 const categoryLabel = (category) => category;
 const GLOBAL_DISCLAIMER = "本ページは、当社取扱5社について、特定の付帯サービスを重視する場合の比較の入口を示すものです。保険料、基本補償、保険金支払条件、特約、引受可否、代理店対応等を含む総合評価ではありません。掲載車種・年代は代表例です。実際の商品選択時には、補償内容、保険料、車両条件、契約始期、引受条件等の確認が必要です。";
@@ -45,6 +45,19 @@ function bindEvents() {
   document.querySelectorAll("[data-nav]").forEach((button) => {
     button.addEventListener("click", () => showScreen(button.dataset.nav));
   });
+  window.addEventListener("popstate", () => {
+    const caseId = decodeURIComponent(window.location.hash.replace("#", ""));
+    if ($("caseDetailOverlay") && MODEL_CASES.some((item) => item.id === caseId)) {
+      openCaseDetail(caseId, { updateHash: false });
+    } else if ($("caseDetailOverlay")?.getAttribute("aria-hidden") === "false") {
+      returnToCaseList({ updateHash: false });
+    }
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && $("caseDetailOverlay")?.getAttribute("aria-hidden") === "false") {
+      returnToCaseList();
+    }
+  });
 }
 
 
@@ -71,9 +84,10 @@ function renderCases() {
           <article class="case-card ${index % 2 === 0 ? "is-direct" : "is-branch"}${state.returnCaseId === modelCase.id ? " is-return-target" : ""}" role="button" tabindex="0" id="${modelCase.id}" data-case-id="${modelCase.id}" aria-label="${escapeHtml(modelCase.title)}の詳細を見る">
             <div class="case-card-text">
               <h3>${escapeHtml(modelCase.title)}</h3>
-              <p>${escapeHtml(modelCase.primaryCandidate)}｜${escapeHtml(modelCase.listSummary || modelCase.conclusion)}</p>
+              <p class="case-card-candidate">${escapeHtml(modelCase.primaryCandidate)}</p>
+              <p class="case-card-point">${escapeHtml(modelCase.listSummary || modelCase.conclusion)}</p>
             </div>
-            <span class="case-card-arrow" aria-hidden="true">›</span>
+            <span class="case-card-action" aria-hidden="true">詳細を見る</span>
           </article>`).join("")}
       </div>
     </section>`).join("") + renderModelCaseFaq();
@@ -101,13 +115,49 @@ function renderModelCaseFaq() {
   return `<section class="faq-panel"><h2>比較前提FAQ</h2>${faqs.map(([q,a]) => `<details><summary>${q}</summary><p>${a}</p></details>`).join("")}</section>`;
 }
 
-function openCaseDetail(caseId) {
-  window.location.href = `case.html?id=${encodeURIComponent(caseId)}`;
+function openCaseDetail(caseId, options = {}) {
+  const overlay = $("caseDetailOverlay");
+  if (!$("caseDetailBody")) return;
+  const exists = MODEL_CASES.some((item) => item.id === caseId);
+  if (!exists) return;
+  state.lastCaseScrollY = window.scrollY;
+  state.selectedCaseId = caseId;
+  state.returnCaseId = caseId;
+  renderCaseDetailPage(caseId);
+  if (!overlay) {
+    if (options.updateHash !== false) {
+      history.pushState({ caseId }, "", `case.html?id=${encodeURIComponent(caseId)}`);
+    }
+    return;
+  }
+  overlay.setAttribute("aria-hidden", "false");
+  document.body.classList.add("detail-open");
+  document.querySelectorAll(".case-card.is-return-target").forEach((card) => card.classList.remove("is-return-target"));
+  document.querySelector(`.case-card[data-case-id="${CSS.escape(caseId)}"]`)?.classList.add("is-return-target");
+  if (options.updateHash !== false && window.location.hash !== `#${caseId}`) {
+    history.pushState({ caseId }, "", `#${caseId}`);
+  }
+  requestAnimationFrame(() => overlay.querySelector("[data-return-cases]")?.focus({ preventScroll: true }));
 }
 
-function returnToCaseList() {
+function returnToCaseList(options = {}) {
+  const overlay = $("caseDetailOverlay");
+  if (!overlay) {
+    const caseId = state.returnCaseId || state.selectedCaseId;
+    window.location.href = caseId ? `cases.html#${encodeURIComponent(caseId)}` : "cases.html";
+    return;
+  }
+  overlay.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("detail-open");
   const caseId = state.returnCaseId || state.selectedCaseId;
-  window.location.href = caseId ? `cases.html#${encodeURIComponent(caseId)}` : "cases.html";
+  if (options.updateHash !== false && window.location.hash) {
+    history.pushState({}, "", window.location.pathname);
+  }
+  requestAnimationFrame(() => {
+    const target = caseId ? document.querySelector(`.case-card[data-case-id="${CSS.escape(caseId)}"]`) : null;
+    window.scrollTo({ top: state.lastCaseScrollY, behavior: "auto" });
+    target?.focus({ preventScroll: true });
+  });
 }
 
 function renderCasePageFromUrl() {
@@ -124,6 +174,10 @@ function restoreCaseListPosition() {
   if (!$("caseCards") || !window.location.hash) return;
   const caseId = decodeURIComponent(window.location.hash.slice(1));
   requestAnimationFrame(() => {
+    if ($("caseDetailOverlay") && MODEL_CASES.some((item) => item.id === caseId)) {
+      openCaseDetail(caseId, { updateHash: false });
+      return;
+    }
     const target = caseId ? document.querySelector(`.case-card[data-case-id="${CSS.escape(caseId)}"]`) : null;
     target?.scrollIntoView({ block: "center", behavior: "auto" });
     target?.focus({ preventScroll: true });
@@ -134,7 +188,7 @@ function moveCase(offset) {
   const currentIndex = MODEL_CASES.findIndex((item) => item.id === state.selectedCaseId);
   const next = MODEL_CASES[currentIndex + offset];
   if (!next) return;
-  window.location.href = `case.html?id=${encodeURIComponent(next.id)}`;
+  openCaseDetail(next.id);
 }
 
 function renderCaseDetailPage(caseId) {
@@ -150,6 +204,9 @@ function bindCaseDetailControls() {
   });
   document.querySelectorAll("[data-case-step]").forEach((button) => {
     button.addEventListener("click", () => moveCase(Number(button.dataset.caseStep)));
+  });
+  document.querySelectorAll("[data-close-case-detail]").forEach((button) => {
+    button.addEventListener("click", () => returnToCaseList());
   });
 }
 
