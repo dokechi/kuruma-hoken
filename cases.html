@@ -22,9 +22,14 @@
     <section class="screen active result-screen" aria-labelledby="cases-title">
       <p class="eyebrow">場面一覧</p>
       <h1 id="cases-title">いちばん近い使い方を選ぶ</h1>
-      <p class="cases-lead">この中から、いちばん近い使い方を選んでください。</p>
-      <p>車の使い方が近い場面から、事故時に重視したい付帯サービスの違いを確認できます。近い場面を選ぶと、第一比較候補にする理由と、他社との比較ポイントを確認できます。</p>
+      <p class="cases-lead">近い使い方を選ぶと、まず比較する候補と、その理由が見られます。</p>
       <div id="caseCards" class="case-cards" aria-label="場面一覧"></div>
+      <div id="caseDetailOverlay" class="case-detail-overlay" aria-hidden="true">
+        <div class="case-detail-backdrop" data-close-case-detail></div>
+        <section class="case-detail-sheet" role="dialog" aria-modal="true" aria-labelledby="case-detail-title">
+          <div id="caseDetailBody"></div>
+        </section>
+      </div>
     </section>
   </main>
 
