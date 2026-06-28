@@ -76,7 +76,6 @@ function renderCases() {
   container.innerHTML = groups.map(([label, cases], index) => `
     <section class="case-group case-group-${index % 2 === 0 ? "direct" : "branch"}" aria-label="${label}">
       <div class="case-group-heading">
-        <span class="badge ${index % 2 === 0 ? "badge-direct" : "badge-branch"}">${label}</span>
         <h2>${label}</h2>
       </div>
       <div class="case-card-grid">
