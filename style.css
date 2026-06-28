@@ -212,9 +212,8 @@ h2{font-size:1.35rem;line-height:1.42;margin:0 0 10px;letter-spacing:-.025em}.he
 /* Compact case list */
 .case-cards{display:block}
 .case-group{margin-top:24px;padding-top:0}
-.case-group-heading{margin-bottom:8px;max-width:none}
-.case-group-heading .badge{display:none}
-.case-group-heading h2{font-size:.98rem;line-height:1.4;margin:0 0 2px;padding:0;border:0;color:var(--plum-900);letter-spacing:-.01em}
+.case-group-heading{margin-bottom:6px;max-width:none}
+.case-group-heading h2{font-size:.96rem;line-height:1.45;margin:0;padding:0;border:0;color:var(--plum-700);font-weight:800;letter-spacing:-.005em}
 .case-group-heading p{font-size:.82rem;line-height:1.55;color:var(--slate-500)}
 .case-card-grid{display:grid;grid-template-columns:1fr;gap:0;border-top:1px solid #edf0f3;background:#fff}
 .case-card{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:12px;min-height:72px;padding:10px 6px 10px 0;border:0;border-bottom:1px solid #edf0f3;border-radius:0;background:transparent;box-shadow:none;color:var(--plum-900);transition:background .08s ease,color .08s ease,box-shadow .08s ease}
@@ -227,9 +226,9 @@ h2{font-size:1.35rem;line-height:1.42;margin:0 0 10px;letter-spacing:-.025em}.he
 .case-card-arrow{color:var(--slate-500);font-size:1.45rem;line-height:1;font-weight:400;padding:0 2px}
 
 @media(max-width:760px){
-  .case-group{margin-top:22px}
-  .case-group-heading{margin-bottom:6px}
-  .case-group-heading h2{font-size:.94rem}
+  .case-group{margin-top:20px}
+  .case-group-heading{margin-bottom:5px}
+  .case-group-heading h2{font-size:.9rem;line-height:1.45;font-weight:800}
   .case-group-heading p{font-size:.78rem;line-height:1.45}
   .case-card-grid{display:block}
   .case-card-grid .case-card,.case-card{margin-top:0;min-height:64px;padding:8px 4px 8px 0}
