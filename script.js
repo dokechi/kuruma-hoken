@@ -56,6 +56,31 @@ const COMPANY_COMPARISON = [
   { key: "kyoei", label: "共栄", types: ["kyoei_type"], values: ["△", "△", "○", "△", "◎"] }
 ];
 const COMPARISON_ROWS = ["安全運転", "家族同乗", "夜間事故", "見守り", "使い方変化"];
+const CHECK_DETAILS = {
+  "安全運転スコア": "日々の運転を点数で見て、継続時の割引条件まで確認できます。",
+  "走行データの取得条件": "500kmなど、データが有効になる条件を先に確認できます。",
+  "継続時の割引": "初年度だけでなく、続けた時に効く割引を比較軸にできます。",
+  "事故自動通報": "事故時に自分で連絡できない不安を減らせるかを見ます。",
+  "事故時の通話": "事故直後にオペレーターと話せるかを確認します。",
+  "家族同乗時の初動": "子どもや家族を乗せる車で、初動対応を優先して見ます。",
+  "音声通話": "事故直後に車内から相談できるかを確認します。",
+  "SOS": "事故以外の緊急時にも助けを呼べるかを見ます。",
+  "通信ドラレコ": "映像・通知・診断をまとめて使えるかを確認します。",
+  "事故通知": "家族や代理店へ早く伝わるかを見ます。",
+  "現場急行": "一人で事故現場に残る不安を減らせるかを確認します。",
+  "位置確認": "家族が今どこにいるかを把握しやすいかを見ます。",
+  "運転状況共有": "急操作などの運転状況を家族と共有できるかを確認します。",
+  "見守り機能": "高齢の親や子どもの運転を見守りたい時に合うかを見ます。",
+  "使用目的": "通勤・送迎・仕事など使い方が変わる前提で確認します。",
+  "車ごとの使い方": "1台ごとに運転者や用途が違う場合に比較先を分けます。",
+  "変更手続き": "用途が変わった時の手続き負担を先に確認します。",
+  "分かりやすさ": "複雑な条件を相談しながら整理しやすいかを見ます。",
+  "電話・担当者への相談": "自分だけで判断しにくい時に相談しやすいかを確認します。",
+  "使用目的の変化": "使い方が変わりやすい車で条件変更の負担を見ます。",
+  "保険料": "価格だけでなく、補償内容と合わせて比較します。",
+  "補償内容": "基本補償や特約の中身を必ず確認します。",
+  "車両条件": "車種・年式・運転者条件などで合う候補が変わります。"
+};
 
 function resultDescription(type) {
   return RESULT_DESCRIPTIONS[type] || "回答内容に近い候補を、比較の入口として確認したい人向け。";
@@ -76,17 +101,17 @@ function renderComparisonTable(type) {
   const highlightKey = highlightedCompanyKey(type);
   return `<table class="result-comparison-table">
     <thead><tr><th scope="col">場面</th>${COMPANY_COMPARISON.map((company) => `<th scope="col" class="${company.key === highlightKey ? "is-highlighted" : ""}">${escapeHtml(company.label)}</th>`).join("")}</tr></thead>
-    <tbody>${COMPARISON_ROWS.map((row, rowIndex) => `<tr><th scope="row">${escapeHtml(row)}</th>${COMPANY_COMPARISON.map((company) => `<td class="${company.key === highlightKey ? "is-highlighted" : ""}">${company.values[rowIndex]}</td>`).join("")}</tr>`).join("")}</tbody>
+    <tbody>${COMPARISON_ROWS.map((row, rowIndex) => `<tr><th scope="row">${escapeHtml(row)}</th>${COMPANY_COMPARISON.map((company) => `<td data-company="${escapeHtml(company.label)}" class="${company.key === highlightKey ? "is-highlighted" : ""}">${company.values[rowIndex]}</td>`).join("")}</tr>`).join("")}</tbody>
   </table>`;
 }
 
 function otherFitItems(type) {
   const items = [
-    { types: ["sompo_type", "nightWork"], text: "夜間・一人の事故現場が不安 → 損保ジャパン型" },
-    { types: ["ms_type", "familyWatch"], text: "家族の位置確認を重視 → 三井住友海上型" },
-    { types: ["aioi_type", "daily"], text: "安全運転スコアを重視 → あいおい型" },
-    { types: ["tokio_type", "familyRide"], text: "家族同乗時の事故初動を重視 → 東京海上日動型" },
-    { types: ["kyoei_type"], text: "車の使い方が変わりやすい → 共栄火災型" }
+    { types: ["sompo_type", "nightWork"], text: "夜間・一人の事故現場が一番不安なら、損保ジャパン型も見る" },
+    { types: ["ms_type", "familyWatch"], text: "家族の位置確認を一番重視するなら、三井住友海上型も見る" },
+    { types: ["aioi_type", "daily"], text: "安全運転スコアを一番重視するなら、あいおい型も見る" },
+    { types: ["tokio_type", "familyRide"], text: "家族同乗時の事故初動を一番重視するなら、東京海上日動型も見る" },
+    { types: ["kyoei_type"], text: "車の使い方が変わりやすいなら、共栄火災型も見る" }
   ];
   if (type === "variable") {
     const variablePriorityTypes = ["kyoei_type", "sompo_type", "ms_type"];
@@ -428,12 +453,12 @@ function renderCaseDetail(caseId) {
         <div class="reason-line"><strong>選定理由：</strong><span>${escapeHtml(modelCase.selectionReason)}</span></div>
         <div class="reason-line muted"><strong>ただし：</strong><span>他社が勝つ条件もあります。事故現場の不安、家族見守り、低負担の事故自動通報、使用目的の変動などを重視する場合は下の比較を確認してください。</span></div>
       </section>
-      <section><h2>この場面に近い人</h2>${listItems(modelCase.representativeExamples)}</section>
-      <section><h2>この場面で見るポイント</h2>${listItems(modelCase.decisionCriteria)}</section>
+      <section class="detail-reason-section"><h2>理由は3つだけ</h2>${listItems((modelCase.decisionCriteria || []).slice(0, 3))}</section>
       <div class="accordion-stack">
-        <details><summary>他社と比べる</summary>${renderComparisonCards(modelCase.comparisons)}</details>
-        <details><summary>細かい条件・対象外条件</summary>${listItems(modelCase.smallConditions)}</details>
+        <details open><summary>他社と比べる</summary>${renderComparisonCards(modelCase.comparisons)}</details>
         <details open><summary>根拠を見る</summary>${renderEvidenceClaims(modelCase.evidenceClaims)}</details>
+        <details><summary>この場面に近い人</summary>${listItems(modelCase.representativeExamples)}</details>
+        <details><summary>細かい条件・対象外条件</summary>${listItems(modelCase.smallConditions)}</details>
         <details><summary>このページでは判断できないこと</summary>${listItems(modelCase.cannotDecideHere)}</details>
         <details><summary>根拠資料</summary>${renderSources(sources)}<p class="source-note">情報確認日：2026年6月25日。商品資料によって対象となる契約始期日が異なります。損保ジャパンは2026年1月始期資料と2026年7月始期資料を混同しないで表示しています。</p></details>
       </div>
@@ -667,7 +692,7 @@ function renderResults() {
   if ($("conclusionCandidate")) $("conclusionCandidate").textContent = candidateName;
   if ($("conclusionDescription")) $("conclusionDescription").textContent = resultDescription(top.type);
   $("topResult").innerHTML = `<h2>${escapeHtml(top.name)}</h2>`;
-  $("scoreList").innerHTML = `<div class="reason-card-list">${checksForResult(top.type).map((item) => `<article class="reason-row-card"><span aria-hidden="true">✓</span><p>${escapeHtml(item)}</p></article>`).join("")}</div>`;
+  $("scoreList").innerHTML = `<div class="reason-card-list">${checksForResult(top.type).map((item) => `<article class="reason-row-card"><span aria-hidden="true">✓</span><p><strong>${escapeHtml(item)}</strong><small>${escapeHtml(CHECK_DETAILS[item] || "この条件が、今回の回答に近い比較軸です。")}</small></p></article>`).join("")}</div>`;
   if ($("comparisonGuide")) $("comparisonGuide").textContent = comparisonGuideText(top.type);
   if ($("comparisonTable")) $("comparisonTable").innerHTML = renderComparisonTable(top.type);
   if ($("otherFitList")) $("otherFitList").innerHTML = `<ul>${otherFitItems(top.type).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>`;

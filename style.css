@@ -1636,3 +1636,94 @@ img,svg,canvas,video,iframe{
     padding-inline:12px;
   }
 }
+
+/* Cases page: make the result easier to scan on narrow phones. */
+.reason-row-card p strong{
+  display:block;
+  margin-bottom:2px;
+  color:#0f172a;
+  font-weight:950;
+}
+.reason-row-card p small{
+  display:block;
+  color:#475569;
+  font-size:.88rem;
+  line-height:1.55;
+  font-weight:700;
+}
+.detail-reason-section ul{
+  margin-top:8px;
+}
+@media(max-width:480px){
+  .reason-row-card p small{
+    font-size:.8rem;
+    line-height:1.45;
+  }
+  .result-comparison-table,
+  .result-comparison-table thead,
+  .result-comparison-table tbody,
+  .result-comparison-table tr,
+  .result-comparison-table th,
+  .result-comparison-table td{
+    display:block;
+    width:100%!important;
+  }
+  .result-comparison-table{
+    border:0;
+    border-radius:0;
+    overflow:visible;
+    background:transparent;
+    font-size:1rem;
+  }
+  .result-comparison-table thead{
+    display:none;
+  }
+  .result-comparison-table tbody tr{
+    margin-top:10px;
+    padding:10px;
+    border:1px solid #e5e7eb;
+    border-radius:14px;
+    background:#fff;
+  }
+  .result-comparison-table tbody tr:first-child{
+    margin-top:0;
+  }
+  .result-comparison-table tbody th{
+    padding:0 0 8px;
+    border:0;
+    background:transparent;
+    color:#0f172a;
+    font-size:.9rem;
+    line-height:1.4;
+  }
+  .result-comparison-table tbody td{
+    display:grid;
+    grid-template-columns:minmax(5.5em,1fr) auto;
+    align-items:center;
+    gap:8px;
+    min-height:34px;
+    padding:6px 8px;
+    border:0;
+    border-top:1px solid #eef2f7;
+    border-radius:0;
+    background:transparent;
+    color:#1d4ed8;
+    font-size:1rem;
+    line-height:1;
+    text-align:right;
+  }
+  .result-comparison-table tbody td::before{
+    content:attr(data-company);
+    color:#334155;
+    font-size:.78rem;
+    font-weight:900;
+    line-height:1.3;
+    text-align:left;
+  }
+  .result-comparison-table tbody td.is-highlighted{
+    margin:4px 0;
+    border-top:0;
+    border-radius:10px;
+    background:#dbeafe;
+  }
+}
