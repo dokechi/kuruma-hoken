@@ -58,22 +58,22 @@ const COMPANY_COMPARISON = [
 const COMPARISON_ROWS = ["安全運転", "家族同乗", "夜間事故", "見守り", "使い方変化"];
 const CHECK_DETAILS = {
   "安全運転スコア": "日々の運転を点数で見られるか。",
-  "走行データの取得条件": "走行距離などの条件を先に確認。",
-  "継続時の割引": "続けた時の割引も比較軸に。",
-  "事故自動通報": "事故時に連絡できない不安を減らす。",
+  "走行データの取得条件": "走行距離など条件を先に確認。",
+  "継続時の割引": "継続時の割引も確認。",
+  "事故自動通報": "事故時に連絡できない不安へ備える。",
   "事故時の通話": "事故直後に相談できるか。",
   "家族同乗時の初動": "家族を乗せる車の初動対応を重視。",
   "音声通話": "車内からすぐ相談できるか。",
   "SOS": "事故以外の緊急時も助けを呼べるか。",
-  "通信ドラレコ": "映像・通知・診断をまとめて確認。",
+  "通信ドラレコ": "映像・通知・診断を確認。",
   "事故通知": "家族や代理店へ早く伝わるか。",
   "現場急行": "一人で現場に残る不安を減らす。",
   "位置確認": "家族の居場所を把握しやすいか。",
   "運転状況共有": "急操作などを家族と共有できるか。",
   "見守り機能": "親や子どもの運転を見守れるか。",
-  "使用目的": "通勤・送迎・仕事など変化前提で確認。",
+  "使用目的": "通勤・送迎・仕事などの変化を確認。",
   "車ごとの使い方": "車ごとに比較先を分ける。",
-  "変更手続き": "用途変更時の手続き負担を見る。",
+  "変更手続き": "用途変更時の負担を見る。",
   "分かりやすさ": "複雑な条件を相談しながら整理しやすいかを見ます。",
   "電話・担当者への相談": "自分だけで判断しにくい時に相談しやすいかを確認します。",
   "使用目的の変化": "使い方が変わりやすい車で条件変更の負担を見ます。",
@@ -107,11 +107,11 @@ function renderComparisonTable(type) {
 
 function otherFitItems(type) {
   const items = [
-    { types: ["sompo_type", "nightWork"], text: "夜間・一人の事故現場が不安なら、損保ジャパン型も候補" },
-    { types: ["ms_type", "familyWatch"], text: "家族の位置確認を重視するなら、三井住友海上型も候補" },
-    { types: ["aioi_type", "daily"], text: "安全運転スコアを重視するなら、あいおい型も候補" },
-    { types: ["tokio_type", "familyRide"], text: "家族同乗時の初動を重視するなら、東京海上日動型も候補" },
-    { types: ["kyoei_type"], text: "使い方が変わりやすいなら、共栄火災型も候補" }
+    { types: ["sompo_type", "nightWork"], text: "夜間・一人の事故現場が不安なら、損保ジャパン型も合います。" },
+    { types: ["ms_type", "familyWatch"], text: "家族の位置確認を重視するなら、三井住友海上型も合います。" },
+    { types: ["aioi_type", "daily"], text: "安全運転スコア重視なら、あいおい型も合います。" },
+    { types: ["tokio_type", "familyRide"], text: "家族同乗時の初動重視なら、東京海上日動型も合います。" },
+    { types: ["kyoei_type"], text: "使い方が変わりやすいなら、共栄火災型も合います。" }
   ];
   if (type === "variable") {
     const variablePriorityTypes = ["kyoei_type", "sompo_type", "ms_type"];
@@ -495,6 +495,12 @@ function getSourcesByIds(sourceIds) {
   return (sourceIds || []).map((id) => SOURCE_REGISTRY.find((source) => source.id === id)).filter(Boolean);
 }
 
+function readableEvidenceClaim(text) {
+  return String(text || "")
+    .replace(/^他社が勝つ条件[:：]\s*/, "他社が合う場合：")
+    .replace(/。／/g, "。 ");
+}
+
 function renderEvidenceClaims(evidenceClaims) {
   if (!Array.isArray(evidenceClaims) || !evidenceClaims.length) return '<p>この場面に紐づく根拠付き注意点は登録されていません。</p>';
   return `<div class="evidence-claims">${evidenceClaims.map((claim) => {
@@ -504,7 +510,7 @@ function renderEvidenceClaims(evidenceClaims) {
         <span class="evidence-group">${escapeHtml(claim.displayGroup)}</span>
         <span class="risk-label">${escapeHtml(claim.riskLevel)}</span>
       </div>
-      <h3>${escapeHtml(claim.claim)}</h3>
+      <h3>${escapeHtml(readableEvidenceClaim(claim.claim))}</h3>
       <p class="evidence-reason"><strong>重要理由</strong>${escapeHtml(claim.whyItMatters)}</p>
       <div class="evidence-source-list" aria-label="この注意点の根拠資料">
         ${sources.map((source) => `<div class="evidence-source-item">

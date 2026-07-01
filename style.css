@@ -1769,3 +1769,58 @@ img,svg,canvas,video,iframe{
     background:#dbeafe;
   }
 }
+
+/* Final cases-detail narrow-phone polish */
+@media(max-width:480px){
+  .page-cases .result-comparison-table tbody tr{
+    padding:12px;
+  }
+  .page-cases .result-comparison-table tbody th{
+    padding-bottom:9px;
+    font-size:.92rem;
+  }
+  .page-cases .result-comparison-table tbody td{
+    grid-template-columns:minmax(6.2em,1fr) auto;
+    min-height:36px;
+    padding:7px 9px;
+  }
+  .page-cases .result-comparison-table tbody td::before{
+    font-size:.8rem;
+  }
+  .detail-open .conclusion-text,
+  .detail-open .company-compare-card p,
+  .detail-open .evidence-card h3,
+  .detail-open .evidence-reason{
+    line-height:1.6;
+  }
+}
+@media(max-width:390px){
+  .page-cases .reason-row-card{
+    gap:8px;
+    padding:10px;
+  }
+  .page-cases .result-comparison-table tbody tr{
+    padding:10px;
+  }
+  .page-cases .result-comparison-table tbody td{
+    grid-template-columns:minmax(5.8em,1fr) auto;
+    padding-inline:8px;
+  }
+}
+@media(max-width:360px){
+  .page-cases .diagnosis-summary-screen.result-screen{
+    padding-inline:10px;
+  }
+  .page-cases .result-conclusion-card,
+  .page-cases .diagnosis-summary-screen .diagnosis-result-section,
+  .page-cases .competitor-comparison,
+  .page-cases .other-fit-section{
+    padding-inline:10px;
+  }
+  .page-cases .result-comparison-table tbody td::before{
+    font-size:.76rem;
+  }
+  .page-cases .other-fit-list li{
+    font-size:.84rem;
+  }
+}
