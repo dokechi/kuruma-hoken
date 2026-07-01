@@ -963,3 +963,110 @@ img,svg,canvas,video,iframe{
     padding:8px 10px;
   }
 }
+
+/* Final top-page first-view layout */
+.page-home .first-view{
+  min-height:min(720px, calc(100svh - 69px));
+  padding:clamp(40px, 7vh, 72px) clamp(18px, 4vw, 32px);
+  display:grid;
+  place-items:center;
+  align-content:initial;
+  justify-items:initial;
+  gap:0;
+}
+.page-home .home-hero-stack{
+  width:min(100%, 760px);
+  margin-inline:auto;
+  display:grid;
+  justify-items:center;
+  text-align:center;
+  gap:clamp(14px, 2.6vh, 22px);
+}
+.page-home .hero-title{
+  width:min(100%, 10.5em);
+  max-width:10.5em;
+  font-size:clamp(3rem, 6.2vw, 5.4rem);
+  line-height:1.08;
+  letter-spacing:-.035em;
+  margin-inline:auto;
+}
+.page-home .hero-title span{
+  white-space:nowrap;
+  overflow-wrap:normal;
+}
+.page-home .hero-subtitle{
+  max-width:520px;
+  margin-inline:auto;
+  font-size:clamp(.95rem, 1.6vw, 1.08rem);
+  line-height:1.7;
+}
+.page-home .current-companies{
+  width:min(100%, 620px);
+  padding:12px 14px;
+  margin-inline:auto;
+}
+.page-home .single-action{
+  width:min(100%, 360px);
+  display:grid;
+  gap:8px;
+  justify-items:stretch;
+  margin-inline:auto;
+}
+.page-home .single-action .primary-btn{
+  width:100%;
+  min-height:52px;
+}
+.page-home .hero-sub-link{
+  color:var(--muted);
+  font-size:.86rem;
+  font-weight:800;
+  line-height:1.5;
+  text-decoration:underline;
+  text-underline-offset:.22em;
+}
+.page-home .hero-sub-link:hover{
+  color:var(--accent-strong);
+}
+@media(max-width:760px){
+  .page-home .first-view{
+    min-height:auto;
+    padding:26px 16px 30px;
+    display:block;
+  }
+  .page-home .home-hero-stack{
+    width:min(100%, 760px);
+    margin-inline:auto;
+    gap:clamp(14px, 2.6vh, 22px);
+  }
+  .page-home .hero-title{
+    width:min(100%, 10.5em);
+    max-width:10.5em;
+    font-size:clamp(1.78rem, 8.9vw, 2.35rem);
+    line-height:1.16;
+    letter-spacing:-.025em;
+  }
+  .page-home .hero-subtitle{
+    max-width:21em;
+    font-size:.9rem;
+    line-height:1.65;
+  }
+  .page-home .current-companies{
+    width:min(100%, 340px);
+    padding:10px 8px;
+    border-radius:14px;
+  }
+  .page-home .company-chips{
+    justify-content:center;
+    gap:6px;
+  }
+  .page-home .company-chips li{
+    min-height:26px;
+    padding:3px 8px;
+    font-size:.68rem;
+  }
+}
+@media(max-width:380px){
+  .page-home .hero-title{
+    font-size:clamp(1.72rem, 8.6vw, 2.05rem);
+  }
+}
