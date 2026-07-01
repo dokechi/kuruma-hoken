@@ -74,7 +74,41 @@
     ],
     "verifiedAt": "2026-06-25",
     "finalNotice": "このページは、付帯サービス面での第一比較候補を整理したものです。実際の契約判断には、補償内容、保険料、車両条件、引受条件等の確認が必要です。",
-    "listSummary": "安全運転スコアと継続時の段階制割引を見たい人向け。"
+    "listSummary": "安全運転スコアと継続時の段階制割引を見たい人向け。",
+    "evidenceClaims": [
+      {
+        "claim": "細かい条件・対象外条件: 初年度には運転特性割引が適用されない場合がある／有効走行距離500km未満ではスコア区分が「なし」になる",
+        "whyItMatters": "付帯サービスの利用条件や対象外条件を確認し、期待する使い方に合うかを資料で確認するため。",
+        "sourceIds": [
+          "aioi-driving-discount",
+          "aioi-plus"
+        ],
+        "appliesTo": "smallConditions",
+        "riskLevel": "high",
+        "displayGroup": "細かい条件・対象外条件"
+      },
+      {
+        "claim": "他社が勝つ条件: 東京海上日動: 低負担で事故自動通報を付けたい場合、または家族車の事故初動を優先する場合。／損保ジャパン: 事故現場への人員派遣を最優先する場合。",
+        "whyItMatters": "第一比較候補を固定せず、重視する付帯サービスが異なる場合に比較先を切り替えるため。",
+        "sourceIds": [
+          "aioi-driving-discount",
+          "aioi-plus"
+        ],
+        "appliesTo": "comparisons.whenThisCompanyWins",
+        "riskLevel": "medium",
+        "displayGroup": "他社が勝つ条件"
+      },
+      {
+        "claim": "このページでは判断できないこと: 基本補償の優劣／個別の保険料／保険金支払条件全般",
+        "whyItMatters": "本ページが付帯サービス面の比較入口であり、契約判断に必要な項目を断定しないことを明示するため。",
+        "sourceIds": [
+          "aioi-driving-discount"
+        ],
+        "appliesTo": "cannotDecideHere",
+        "riskLevel": "low",
+        "displayGroup": "判断不能項目"
+      }
+    ]
   },
   {
     "id": "case5",
@@ -152,7 +186,41 @@
     ],
     "verifiedAt": "2026-06-25",
     "finalNotice": "このページは、付帯サービス面での第一比較候補を整理したものです。実際の契約判断には、補償内容、保険料、車両条件、引受条件等の確認が必要です。",
-    "listSummary": "用途変更時の保険料差や変更手続きを避けたい人向け。"
+    "listSummary": "用途変更時の保険料差や変更手続きを避けたい人向け。",
+    "evidenceClaims": [
+      {
+        "claim": "細かい条件・対象外条件: 通知不要なのは「使用目的」の変更／用途車種、運転者、住所等の他の重要事項まで通知不要になるわけではない",
+        "whyItMatters": "付帯サービスの利用条件や対象外条件を確認し、期待する使い方に合うかを資料で確認するため。",
+        "sourceIds": [
+          "kyoei-kurumaru",
+          "kyoei-alsok"
+        ],
+        "appliesTo": "smallConditions",
+        "riskLevel": "high",
+        "displayGroup": "細かい条件・対象外条件"
+      },
+      {
+        "claim": "他社が勝つ条件: あいおいニッセイ同和損保: 使用目的が固定され、高頻度運転と安全運転評価を重視する場合。／東京海上日動: 使用目的が固定され、事故自動通報を重視する場合。",
+        "whyItMatters": "第一比較候補を固定せず、重視する付帯サービスが異なる場合に比較先を切り替えるため。",
+        "sourceIds": [
+          "kyoei-kurumaru",
+          "kyoei-alsok"
+        ],
+        "appliesTo": "comparisons.whenThisCompanyWins",
+        "riskLevel": "medium",
+        "displayGroup": "他社が勝つ条件"
+      },
+      {
+        "claim": "このページでは判断できないこと: 基本補償の優劣／個別の保険料／保険金支払条件全般",
+        "whyItMatters": "本ページが付帯サービス面の比較入口であり、契約判断に必要な項目を断定しないことを明示するため。",
+        "sourceIds": [
+          "kyoei-kurumaru"
+        ],
+        "appliesTo": "cannotDecideHere",
+        "riskLevel": "low",
+        "displayGroup": "判断不能項目"
+      }
+    ]
   },
   {
     "id": "case2",
@@ -232,7 +300,42 @@
     ],
     "verifiedAt": "2026-06-25",
     "finalNotice": "このページは、付帯サービス面での第一比較候補を整理したものです。実際の契約判断には、補償内容、保険料、車両条件、引受条件等の確認が必要です。",
-    "listSummary": "低負担で事故自動通報・通話・SOSを付けたい家族車向け。"
+    "listSummary": "低負担で事故自動通報・通話・SOSを付けたい家族車向け。",
+    "evidenceClaims": [
+      {
+        "claim": "細かい条件・対象外条件: 月額500円型には後方カメラがない／家族による見守り機能もない",
+        "whyItMatters": "付帯サービスの利用条件や対象外条件を確認し、期待する使い方に合うかを資料で確認するため。",
+        "sourceIds": [
+          "tokio-dap",
+          "tokio-dap-fee"
+        ],
+        "appliesTo": "smallConditions",
+        "riskLevel": "high",
+        "displayGroup": "細かい条件・対象外条件"
+      },
+      {
+        "claim": "他社が勝つ条件: あいおいニッセイ同和損保: 高頻度運転で、安全運転スコアと継続割引を重視する場合。／損保ジャパン: 事故現場へ人が来ることに月額負担以上の価値を感じる場合。",
+        "whyItMatters": "第一比較候補を固定せず、重視する付帯サービスが異なる場合に比較先を切り替えるため。",
+        "sourceIds": [
+          "tokio-dap",
+          "tokio-dap-fee",
+          "tokio-2026-pamphlet"
+        ],
+        "appliesTo": "comparisons.whenThisCompanyWins",
+        "riskLevel": "medium",
+        "displayGroup": "他社が勝つ条件"
+      },
+      {
+        "claim": "このページでは判断できないこと: 基本補償の優劣／個別の保険料／保険金支払条件全般",
+        "whyItMatters": "本ページが付帯サービス面の比較入口であり、契約判断に必要な項目を断定しないことを明示するため。",
+        "sourceIds": [
+          "tokio-dap"
+        ],
+        "appliesTo": "cannotDecideHere",
+        "riskLevel": "low",
+        "displayGroup": "判断不能項目"
+      }
+    ]
   },
   {
     "id": "case7",
@@ -317,7 +420,44 @@
     ],
     "verifiedAt": "2026-06-25",
     "finalNotice": "このページは、付帯サービス面での第一比較候補を整理したものです。実際の契約判断には、補償内容、保険料、車両条件、引受条件等の確認が必要です。",
-    "listSummary": "車ごとに運転者・用途・事故時の重視点を分けて確認。"
+    "listSummary": "車ごとに運転者・用途・事故時の重視点を分けて確認。",
+    "evidenceClaims": [
+      {
+        "claim": "細かい条件・対象外条件: 車が複数あるという事実だけでは、特定会社を第一候補にできない／証券を見ていないため、特約重複・補償不足・保険料高低・運転者範囲は断定しない",
+        "whyItMatters": "付帯サービスの利用条件や対象外条件を確認し、期待する使い方に合うかを資料で確認するため。",
+        "sourceIds": [
+          "aioi-plus",
+          "tokio-dap"
+        ],
+        "appliesTo": "smallConditions",
+        "riskLevel": "high",
+        "displayGroup": "細かい条件・対象外条件"
+      },
+      {
+        "claim": "他社が勝つ条件: あいおいニッセイ同和損保型: 高頻度運転で、安全運転スコアや継続時評価を重視する場合。／東京海上日動型: 追加負担を抑えた事故自動通報・通話を重視する場合。",
+        "whyItMatters": "第一比較候補を固定せず、重視する付帯サービスが異なる場合に比較先を切り替えるため。",
+        "sourceIds": [
+          "aioi-plus",
+          "tokio-dap",
+          "sompo-driving",
+          "ms-mimamoru",
+          "kyoei-kurumaru"
+        ],
+        "appliesTo": "comparisons.whenThisCompanyWins",
+        "riskLevel": "medium",
+        "displayGroup": "他社が勝つ条件"
+      },
+      {
+        "claim": "このページでは判断できないこと: 基本補償の優劣／個別の保険料／保険金支払条件全般",
+        "whyItMatters": "本ページが付帯サービス面の比較入口であり、契約判断に必要な項目を断定しないことを明示するため。",
+        "sourceIds": [
+          "aioi-plus"
+        ],
+        "appliesTo": "cannotDecideHere",
+        "riskLevel": "low",
+        "displayGroup": "判断不能項目"
+      }
+    ]
   },
   {
     "id": "case4",
@@ -399,7 +539,42 @@
     ],
     "verifiedAt": "2026-06-25",
     "finalNotice": "このページは、付帯サービス面での第一比較候補を整理したものです。実際の契約判断には、補償内容、保険料、車両条件、引受条件等の確認が必要です。",
-    "listSummary": "家族が現在位置や運転状況を実際に見守りたい家庭向け。"
+    "listSummary": "家族が現在位置や運転状況を実際に見守りたい家庭向け。",
+    "evidenceClaims": [
+      {
+        "claim": "細かい条件・対象外条件: 専用ドラレコの電源がオフの場合は位置確認できない／360度型でも車両構造により死角が生じる",
+        "whyItMatters": "付帯サービスの利用条件や対象外条件を確認し、期待する使い方に合うかを資料で確認するため。",
+        "sourceIds": [
+          "ms-mimamoru",
+          "ms-premium"
+        ],
+        "appliesTo": "smallConditions",
+        "riskLevel": "high",
+        "displayGroup": "細かい条件・対象外条件"
+      },
+      {
+        "claim": "他社が勝つ条件: 東京海上日動: 見守りより、追加負担を抑えた事故通報を重視する場合。／あいおいニッセイ同和損保: 親子で運転レポートを共有し、安全運転評価を重視する場合。",
+        "whyItMatters": "第一比較候補を固定せず、重視する付帯サービスが異なる場合に比較先を切り替えるため。",
+        "sourceIds": [
+          "ms-mimamoru",
+          "ms-premium",
+          "ms-2026-pamphlet"
+        ],
+        "appliesTo": "comparisons.whenThisCompanyWins",
+        "riskLevel": "medium",
+        "displayGroup": "他社が勝つ条件"
+      },
+      {
+        "claim": "このページでは判断できないこと: 基本補償の優劣／個別の保険料／保険金支払条件全般",
+        "whyItMatters": "本ページが付帯サービス面の比較入口であり、契約判断に必要な項目を断定しないことを明示するため。",
+        "sourceIds": [
+          "ms-mimamoru"
+        ],
+        "appliesTo": "cannotDecideHere",
+        "riskLevel": "low",
+        "displayGroup": "判断不能項目"
+      }
+    ]
   },
   {
     "id": "case6",
@@ -483,7 +658,45 @@
     ],
     "verifiedAt": "2026-06-25",
     "finalNotice": "このページは、付帯サービス面での第一比較候補を整理したものです。実際の契約判断には、補償内容、保険料、車両条件、引受条件等の確認が必要です。",
-    "listSummary": "年齢ではなく家族が確認・支援したい内容で候補を分岐。"
+    "listSummary": "年齢ではなく家族が確認・支援したい内容で候補を分岐。",
+    "evidenceClaims": [
+      {
+        "claim": "細かい条件・対象外条件: 高齢であることや車種だけでは、必要なサービスを決められない／家族がリアルタイム位置・運転状況を確認したいなら三井住友海上型",
+        "whyItMatters": "付帯サービスの利用条件や対象外条件を確認し、期待する使い方に合うかを資料で確認するため。",
+        "sourceIds": [
+          "aioi-plus",
+          "tokio-dap"
+        ],
+        "appliesTo": "smallConditions",
+        "riskLevel": "high",
+        "displayGroup": "細かい条件・対象外条件"
+      },
+      {
+        "claim": "他社が勝つ条件: あいおいニッセイ同和損保型: 高頻度運転で、安全運転スコアや継続時評価を重視する場合。／東京海上日動型: 追加負担を抑えた事故自動通報・通話を重視する場合。",
+        "whyItMatters": "第一比較候補を固定せず、重視する付帯サービスが異なる場合に比較先を切り替えるため。",
+        "sourceIds": [
+          "aioi-plus",
+          "tokio-dap",
+          "sompo-driving",
+          "ms-mimamoru",
+          "kyoei-kurumaru",
+          "kyoei-alsok"
+        ],
+        "appliesTo": "comparisons.whenThisCompanyWins",
+        "riskLevel": "medium",
+        "displayGroup": "他社が勝つ条件"
+      },
+      {
+        "claim": "このページでは判断できないこと: 基本補償の優劣／個別の保険料／保険金支払条件全般",
+        "whyItMatters": "本ページが付帯サービス面の比較入口であり、契約判断に必要な項目を断定しないことを明示するため。",
+        "sourceIds": [
+          "aioi-plus"
+        ],
+        "appliesTo": "cannotDecideHere",
+        "riskLevel": "low",
+        "displayGroup": "判断不能項目"
+      }
+    ]
   },
   {
     "id": "case3",
@@ -563,7 +776,42 @@
     ],
     "verifiedAt": "2026-06-25",
     "finalNotice": "このページは、付帯サービス面での第一比較候補を整理したものです。実際の契約判断には、補償内容、保険料、車両条件、引受条件等の確認が必要です。",
-    "listSummary": "通信ドラレコ・事故通知・ALSOK現場急行を一体で見たい人向け。"
+    "listSummary": "通信ドラレコ・事故通知・ALSOK現場急行を一体で見たい人向け。",
+    "evidenceClaims": [
+      {
+        "claim": "細かい条件・対象外条件: ALSOKは無条件で自動的に派遣されるわけではない／利用者が必要とした場合に依頼する",
+        "whyItMatters": "付帯サービスの利用条件や対象外条件を確認し、期待する使い方に合うかを資料で確認するため。",
+        "sourceIds": [
+          "sompo-driving",
+          "sompo-2026-07"
+        ],
+        "appliesTo": "smallConditions",
+        "riskLevel": "high",
+        "displayGroup": "細かい条件・対象外条件"
+      },
+      {
+        "claim": "他社が勝つ条件: 東京海上日動: 現場派遣より、低負担の事故自動通報を重視する場合。／あいおいニッセイ同和損保: 夜間現場対応ではなく、安全運転評価を優先する場合。",
+        "whyItMatters": "第一比較候補を固定せず、重視する付帯サービスが異なる場合に比較先を切り替えるため。",
+        "sourceIds": [
+          "sompo-driving",
+          "sompo-2026-07",
+          "kyoei-alsok"
+        ],
+        "appliesTo": "comparisons.whenThisCompanyWins",
+        "riskLevel": "medium",
+        "displayGroup": "他社が勝つ条件"
+      },
+      {
+        "claim": "このページでは判断できないこと: 基本補償の優劣／個別の保険料／保険金支払条件全般",
+        "whyItMatters": "本ページが付帯サービス面の比較入口であり、契約判断に必要な項目を断定しないことを明示するため。",
+        "sourceIds": [
+          "sompo-driving"
+        ],
+        "appliesTo": "cannotDecideHere",
+        "riskLevel": "low",
+        "displayGroup": "判断不能項目"
+      }
+    ]
   },
   {
     "id": "case8",
@@ -651,6 +899,43 @@
     ],
     "verifiedAt": "2026-06-25",
     "finalNotice": "このページは、付帯サービス面での第一比較候補を整理したものです。実際の契約判断には、補償内容、保険料、車両条件、引受条件等の確認が必要です。",
-    "listSummary": "会社比較の前に商品区分（個人用・一般用・事業用）を確認。"
+    "listSummary": "会社比較の前に商品区分（個人用・一般用・事業用）を確認。",
+    "evidenceClaims": [
+      {
+        "claim": "細かい条件・対象外条件: 私用や通勤にも使うか／業務にのみ使うか",
+        "whyItMatters": "付帯サービスの利用条件や対象外条件を確認し、期待する使い方に合うかを資料で確認するため。",
+        "sourceIds": [
+          "aioi-business",
+          "sompo-car-target"
+        ],
+        "appliesTo": "smallConditions",
+        "riskLevel": "high",
+        "displayGroup": "細かい条件・対象外条件"
+      },
+      {
+        "claim": "他社が勝つ条件: あいおいニッセイ同和損保型: 高頻度運転で、安全運転スコアや継続時評価を重視する場合。／東京海上日動型: 追加負担を抑えた事故自動通報・通話を重視する場合。",
+        "whyItMatters": "第一比較候補を固定せず、重視する付帯サービスが異なる場合に比較先を切り替えるため。",
+        "sourceIds": [
+          "aioi-business",
+          "sompo-car-target",
+          "aioi-plus",
+          "sompo-driving",
+          "kyoei-kurumaru"
+        ],
+        "appliesTo": "comparisons.whenThisCompanyWins",
+        "riskLevel": "medium",
+        "displayGroup": "他社が勝つ条件"
+      },
+      {
+        "claim": "このページでは判断できないこと: 基本補償の優劣／個別の保険料／保険金支払条件全般",
+        "whyItMatters": "本ページが付帯サービス面の比較入口であり、契約判断に必要な項目を断定しないことを明示するため。",
+        "sourceIds": [
+          "aioi-business"
+        ],
+        "appliesTo": "cannotDecideHere",
+        "riskLevel": "low",
+        "displayGroup": "判断不能項目"
+      }
+    ]
   }
 ]
