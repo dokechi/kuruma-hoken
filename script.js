@@ -88,6 +88,10 @@ function otherFitItems(type) {
     { types: ["tokio_type", "familyRide"], text: "家族同乗時の事故初動を重視 → 東京海上日動型" },
     { types: ["kyoei_type"], text: "車の使い方が変わりやすい → 共栄火災型" }
   ];
+  if (type === "variable") {
+    const variablePriorityTypes = ["kyoei_type", "sompo_type", "ms_type"];
+    return variablePriorityTypes.map((priorityType) => items.find((item) => item.types.includes(priorityType)).text);
+  }
   return items.filter((item) => !item.types.includes(type)).slice(0, 3).map((item) => item.text);
 }
 
