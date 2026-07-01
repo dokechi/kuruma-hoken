@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>車の保険、まずどこを見る？ | 車の保険比較の入口</title>
-  <meta name="description" content="2つだけ選ぶと、車の使い方や事故時の不安に近い、まず見る候補を表示します。結果は比較の入口です。">
+  <meta name="description" content="1つ選ぶと、車の使い方や事故時の不安に近い、まず見る候補を表示します。結果は比較の入口です。">
   <link rel="stylesheet" href="style.css">
 </head>
 <body class="page-cases">
@@ -20,11 +20,11 @@
 
   <main>
     <section id="caseEntry" class="screen active case-entry-screen" aria-labelledby="cases-title">
-      <p class="eyebrow">2問でまず見る候補を確認</p>
+      <p class="eyebrow">1問でまず見る候補を確認</p>
       <h1 id="cases-title">車の保険、まずどこを見る？</h1>
-      <p class="cases-lead">2つだけ選ぶと、車の使い方や事故時の不安に近い「まず見る候補」を表示します。結果は保険の最終判断ではなく、比較の入口です。</p>
+      <p class="cases-lead">1つだけ選ぶと、車の使い方や事故時の不安に近い「まず見る候補」を表示します。結果は保険の最終判断ではなく、比較の入口です。</p>
       <div class="case-entry-actions">
-        <button id="startCaseDiagnosis" class="primary-btn" type="button">2問で確認する</button>
+        <button id="startCaseDiagnosis" class="primary-btn" type="button">1問で確認する</button>
         <button id="showCaseList" class="secondary-btn" type="button">一覧から選ぶ</button>
       </div>
     </section>
@@ -50,22 +50,30 @@
 
     <section id="summary" class="screen result-screen diagnosis-summary-screen" aria-labelledby="summary-title">
       <p class="eyebrow">比較の入口</p>
-      <h1 id="summary-title">診断結果</h1>
-      <section aria-label="あなたのタイプ">
-        <h2>あなたのタイプ</h2>
+      <h1 id="summary-title">あなたは、まずこれを見る</h1>
+      <div id="candidateResult" class="candidate-result"></div>
+      <section aria-label="あなたの車はこれに近いです">
+        <h2>あなたの車はこれに近いです</h2>
         <div id="topResult" class="top-result"></div>
       </section>
-      <section class="diagnosis-result-section" aria-label="まず確認する3つ">
-        <h2>まず確認する3つ</h2>
+      <section class="diagnosis-result-section" aria-label="理由は3つだけ">
+        <h2>理由は3つだけ</h2>
         <div id="scoreList" class="score-list"></div>
       </section>
-      <p id="compareReason" class="callout"></p>
+      <section class="diagnosis-caution" aria-label="ただし注意">
+        <h2>ただし注意</h2>
+        <ul>
+          <li>保険料や基本補償だけで決まるものではありません</li>
+          <li>条件によっては他社が合う場合があります</li>
+          <li>最終判断は契約条件の確認が必要です</li>
+        </ul>
+      </section>
+      <p id="compareReason" class="callout" hidden></p>
       <div id="detailBody" class="detail-grid"></div>
       <div class="diagnosis-result-actions">
-        <button id="candidateBtn" class="primary-btn" type="button">この候補を見る</button>
-        <button id="compareBtn" class="secondary-btn" type="button">他社と比べる</button>
-        <button id="restartBtn" class="secondary-btn quiet" type="button">もう一度選ぶ</button>
+        <button id="candidateBtn" class="primary-btn" type="button">詳しい理由を見る</button>
       </div>
+      <button id="restartBtn" class="text-link restart-link" type="button">選び直す</button>
     </section>
 
     <section id="caseListScreen" class="screen result-screen" aria-labelledby="case-list-title">
