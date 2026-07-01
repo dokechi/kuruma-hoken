@@ -34,6 +34,56 @@ const CASE_Q2 = [
 ];
 const caseDiagnosisState = { q1: "", q2: new Set() };
 
+const RESULT_DESCRIPTIONS = {
+  aioi_type: "毎日の運転データや安全運転スコアを比較の入口にしたい人向け。",
+  tokio_type: "家族を乗せる車で、事故時の初動を重視する人向け。",
+  sompo_type: "夜間や一人の事故現場で、通知や現場対応の不安を減らしたい人向け。",
+  ms_type: "家族が運転する車を、位置確認や見守りで把握したい人向け。",
+  kyoei_type: "使い方が変わる車で、相談しながら整理したい人向け。",
+  direct_type: "保険料や補償内容を先に見比べ、条件を自分で整理したい人向け。",
+  daily: "毎日の運転データや安全運転スコアを比較の入口にしたい人向け。",
+  familyRide: "家族を乗せる車で、事故時の初動を重視する人向け。",
+  familyWatch: "家族が運転する車を、位置確認や見守りで把握したい人向け。",
+  nightWork: "夜間や仕事帰りの事故現場で、初動の不安を減らしたい人向け。",
+  variable: "車ごとに使い方が変わるため、1社に固定せず複数比較したい人向け。"
+};
+
+const COMPANY_COMPARISON = [
+  { key: "aioi", label: "あいおい", types: ["aioi_type", "daily"], values: ["◎", "○", "△", "○", "○"] },
+  { key: "tokio", label: "東京海上", types: ["tokio_type", "familyRide"], values: ["○", "◎", "○", "△", "○"] },
+  { key: "sompo", label: "損保ジャパン", types: ["sompo_type", "nightWork"], values: ["○", "○", "◎", "△", "○"] },
+  { key: "ms", label: "三井住友", types: ["ms_type", "familyWatch"], values: ["○", "◎", "△", "◎", "○"] },
+  { key: "kyoei", label: "共栄火災", types: ["kyoei_type", "variable"], values: ["△", "○", "○", "△", "◎"] }
+];
+const COMPARISON_ROWS = ["安全運転", "家族同乗", "夜間事故", "見守り", "使い方変化"];
+
+function resultDescription(type) {
+  return RESULT_DESCRIPTIONS[type] || "回答内容に近い候補を、比較の入口として確認したい人向け。";
+}
+
+function highlightedCompanyKey(type) {
+  return COMPANY_COMPARISON.find((company) => company.types.includes(type))?.key || "";
+}
+
+function renderComparisonTable(type) {
+  const highlightKey = highlightedCompanyKey(type);
+  return `<table class="comparison-table">
+    <thead><tr><th scope="col">場面</th>${COMPANY_COMPARISON.map((company) => `<th scope="col" class="${company.key === highlightKey ? "is-highlighted" : ""}">${escapeHtml(company.label)}</th>`).join("")}</tr></thead>
+    <tbody>${COMPARISON_ROWS.map((row, rowIndex) => `<tr><th scope="row">${escapeHtml(row)}</th>${COMPANY_COMPARISON.map((company) => `<td class="${company.key === highlightKey ? "is-highlighted" : ""}">${company.values[rowIndex]}</td>`).join("")}</tr>`).join("")}</tbody>
+  </table>`;
+}
+
+function otherFitItems(type) {
+  const items = [
+    { types: ["sompo_type", "nightWork"], text: "夜間・一人の事故現場が不安 → 損保ジャパン型" },
+    { types: ["ms_type", "familyWatch"], text: "家族の位置確認を重視 → 三井住友海上型" },
+    { types: ["aioi_type", "daily"], text: "安全運転スコアを重視 → あいおい型" },
+    { types: ["tokio_type", "familyRide"], text: "家族同乗時の事故初動を重視 → 東京海上日動型" },
+    { types: ["kyoei_type", "variable"], text: "車の使い方が変わりやすい → 共栄火災型" }
+  ];
+  return items.filter((item) => !item.types.includes(type)).slice(0, 3).map((item) => item.text);
+}
+
 async function init() {
   const needsCases = Boolean($("caseCards") || $("caseDetailBody"));
   const needsSources = Boolean(document.querySelector("#sources .source-list") || $("caseDetailBody"));
@@ -204,7 +254,7 @@ function renderCaseDiagnosisResult() {
         </ul>
       </section>
       <div class="diagnosis-result-actions">
-        <button class="primary-btn" type="button" data-result-action="candidate">詳しい理由を見る</button>
+        <button class="primary-btn" type="button" data-result-action="candidate">この候補の根拠を見る</button>
       </div>
       <button class="text-link restart-link" type="button" data-result-action="restart">選び直す</button>
     </article>`;
@@ -602,9 +652,14 @@ function renderResults() {
   state.ranked = calculateScores();
   const top = state.ranked[0];
   if (!top) return;
-  if ($("candidateResult")) $("candidateResult").innerHTML = `<p>${escapeHtml(top.candidate || top.company)}</p>`;
+  const candidateName = top.candidate || top.company;
+  if ($("candidateResult")) $("candidateResult").innerHTML = `<p>${escapeHtml(candidateName)}</p>`;
+  if ($("conclusionCandidate")) $("conclusionCandidate").textContent = candidateName;
+  if ($("conclusionDescription")) $("conclusionDescription").textContent = resultDescription(top.type);
   $("topResult").innerHTML = `<h2>${escapeHtml(top.name)}</h2>`;
-  $("scoreList").innerHTML = `<ul>${checksForResult(top.type).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>`;
+  $("scoreList").innerHTML = `<div class="reason-card-list">${checksForResult(top.type).map((item) => `<article class="reason-row-card"><span aria-hidden="true">✓</span><p>${escapeHtml(item)}</p></article>`).join("")}</div>`;
+  if ($("comparisonTable")) $("comparisonTable").innerHTML = renderComparisonTable(top.type);
+  if ($("otherFitList")) $("otherFitList").innerHTML = `<ul>${otherFitItems(top.type).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>`;
   $("compareReason").textContent = CASE_DIAGNOSIS_TYPES[top.type]
     ? "この1問診断は、使い方や不安に近い比較の入口を示すものです。保険の最終判断ではありません。"
     : top.type === "direct_type"

@@ -52,6 +52,11 @@
       <p class="eyebrow">比較の入口</p>
       <h1 id="summary-title">あなたは、まずこれを見る</h1>
       <div id="candidateResult" class="candidate-result"></div>
+      <section class="result-conclusion-card" aria-label="まず見る候補">
+        <p class="result-conclusion-label">まず見る候補</p>
+        <h2 id="conclusionCandidate">候補</h2>
+        <p id="conclusionDescription">診断結果に応じた短い説明を表示します。</p>
+      </section>
       <section aria-label="あなたの車はこれに近いです">
         <h2>あなたの車はこれに近いです</h2>
         <div id="topResult" class="top-result"></div>
@@ -59,6 +64,18 @@
       <section class="diagnosis-result-section" aria-label="理由は3つだけ">
         <h2>理由は3つだけ</h2>
         <div id="scoreList" class="score-list"></div>
+      </section>
+      <section class="competitor-comparison" aria-label="他社との違いを一瞬で見る">
+        <div class="section-heading-row">
+          <h2>他社との違いを一瞬で見る</h2>
+          <p>回答に近い列を青で表示しています。</p>
+        </div>
+        <div id="comparisonTable" class="comparison-table-wrap"></div>
+        <p class="comparison-note">※会社の優劣ではなく、場面ごとの見やすさです。</p>
+      </section>
+      <section class="other-fit-section" aria-label="他社が勝つ場合">
+        <h2>他社が勝つ場合</h2>
+        <div id="otherFitList" class="other-fit-list"></div>
       </section>
       <section class="diagnosis-caution" aria-label="ただし注意">
         <h2>ただし注意</h2>
@@ -71,7 +88,7 @@
       <p id="compareReason" class="callout" hidden></p>
       <div id="detailBody" class="detail-grid"></div>
       <div class="diagnosis-result-actions">
-        <button id="candidateBtn" class="primary-btn" type="button">詳しい理由を見る</button>
+        <button id="candidateBtn" class="primary-btn" type="button">この候補の根拠を見る</button>
       </div>
       <button id="restartBtn" class="text-link restart-link" type="button">選び直す</button>
     </section>
