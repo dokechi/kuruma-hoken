@@ -57,23 +57,23 @@ const COMPANY_COMPARISON = [
 ];
 const COMPARISON_ROWS = ["安全運転", "家族同乗", "夜間事故", "見守り", "使い方変化"];
 const CHECK_DETAILS = {
-  "安全運転スコア": "日々の運転を点数で見て、継続時の割引条件まで確認できます。",
-  "走行データの取得条件": "500kmなど、データが有効になる条件を先に確認できます。",
-  "継続時の割引": "初年度だけでなく、続けた時に効く割引を比較軸にできます。",
-  "事故自動通報": "事故時に自分で連絡できない不安を減らせるかを見ます。",
-  "事故時の通話": "事故直後にオペレーターと話せるかを確認します。",
-  "家族同乗時の初動": "子どもや家族を乗せる車で、初動対応を優先して見ます。",
-  "音声通話": "事故直後に車内から相談できるかを確認します。",
-  "SOS": "事故以外の緊急時にも助けを呼べるかを見ます。",
-  "通信ドラレコ": "映像・通知・診断をまとめて使えるかを確認します。",
-  "事故通知": "家族や代理店へ早く伝わるかを見ます。",
-  "現場急行": "一人で事故現場に残る不安を減らせるかを確認します。",
-  "位置確認": "家族が今どこにいるかを把握しやすいかを見ます。",
-  "運転状況共有": "急操作などの運転状況を家族と共有できるかを確認します。",
-  "見守り機能": "高齢の親や子どもの運転を見守りたい時に合うかを見ます。",
-  "使用目的": "通勤・送迎・仕事など使い方が変わる前提で確認します。",
-  "車ごとの使い方": "1台ごとに運転者や用途が違う場合に比較先を分けます。",
-  "変更手続き": "用途が変わった時の手続き負担を先に確認します。",
+  "安全運転スコア": "日々の運転を点数で見られるか。",
+  "走行データの取得条件": "走行距離などの条件を先に確認。",
+  "継続時の割引": "続けた時の割引も比較軸に。",
+  "事故自動通報": "事故時に連絡できない不安を減らす。",
+  "事故時の通話": "事故直後に相談できるか。",
+  "家族同乗時の初動": "家族を乗せる車の初動対応を重視。",
+  "音声通話": "車内からすぐ相談できるか。",
+  "SOS": "事故以外の緊急時も助けを呼べるか。",
+  "通信ドラレコ": "映像・通知・診断をまとめて確認。",
+  "事故通知": "家族や代理店へ早く伝わるか。",
+  "現場急行": "一人で現場に残る不安を減らす。",
+  "位置確認": "家族の居場所を把握しやすいか。",
+  "運転状況共有": "急操作などを家族と共有できるか。",
+  "見守り機能": "親や子どもの運転を見守れるか。",
+  "使用目的": "通勤・送迎・仕事など変化前提で確認。",
+  "車ごとの使い方": "車ごとに比較先を分ける。",
+  "変更手続き": "用途変更時の手続き負担を見る。",
   "分かりやすさ": "複雑な条件を相談しながら整理しやすいかを見ます。",
   "電話・担当者への相談": "自分だけで判断しにくい時に相談しやすいかを確認します。",
   "使用目的の変化": "使い方が変わりやすい車で条件変更の負担を見ます。",
@@ -107,11 +107,11 @@ function renderComparisonTable(type) {
 
 function otherFitItems(type) {
   const items = [
-    { types: ["sompo_type", "nightWork"], text: "夜間・一人の事故現場が一番不安なら、損保ジャパン型も見る" },
-    { types: ["ms_type", "familyWatch"], text: "家族の位置確認を一番重視するなら、三井住友海上型も見る" },
-    { types: ["aioi_type", "daily"], text: "安全運転スコアを一番重視するなら、あいおい型も見る" },
-    { types: ["tokio_type", "familyRide"], text: "家族同乗時の事故初動を一番重視するなら、東京海上日動型も見る" },
-    { types: ["kyoei_type"], text: "車の使い方が変わりやすいなら、共栄火災型も見る" }
+    { types: ["sompo_type", "nightWork"], text: "夜間・一人の事故現場が不安なら、損保ジャパン型も候補" },
+    { types: ["ms_type", "familyWatch"], text: "家族の位置確認を重視するなら、三井住友海上型も候補" },
+    { types: ["aioi_type", "daily"], text: "安全運転スコアを重視するなら、あいおい型も候補" },
+    { types: ["tokio_type", "familyRide"], text: "家族同乗時の初動を重視するなら、東京海上日動型も候補" },
+    { types: ["kyoei_type"], text: "使い方が変わりやすいなら、共栄火災型も候補" }
   ];
   if (type === "variable") {
     const variablePriorityTypes = ["kyoei_type", "sompo_type", "ms_type"];
@@ -456,7 +456,7 @@ function renderCaseDetail(caseId) {
       <section class="detail-reason-section"><h2>理由は3つだけ</h2>${listItems((modelCase.decisionCriteria || []).slice(0, 3))}</section>
       <div class="accordion-stack">
         <details open><summary>他社と比べる</summary>${renderComparisonCards(modelCase.comparisons)}</details>
-        <details open><summary>根拠を見る</summary>${renderEvidenceClaims(modelCase.evidenceClaims)}</details>
+        <details><summary>根拠を見る</summary>${renderEvidenceClaims(modelCase.evidenceClaims)}</details>
         <details><summary>この場面に近い人</summary>${listItems(modelCase.representativeExamples)}</details>
         <details><summary>細かい条件・対象外条件</summary>${listItems(modelCase.smallConditions)}</details>
         <details><summary>このページでは判断できないこと</summary>${listItems(modelCase.cannotDecideHere)}</details>
