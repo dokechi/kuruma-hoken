@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>いちばん近い使い方を選ぶ | 車の保険比較の入口</title>
-  <meta name="description" content="自動車保険5社を、車の使い方に近い場面から比較する一覧ページです。">
+  <title>車の保険、まずどこを見る？ | 車の保険比較の入口</title>
+  <meta name="description" content="2つだけ選ぶと、車の使い方に近い比較候補を表示します。既存の場面一覧からも選べます。">
   <link rel="stylesheet" href="style.css">
 </head>
 <body class="page-cases">
@@ -19,9 +19,43 @@
   </header>
 
   <main>
-    <section class="screen active result-screen" aria-labelledby="cases-title">
+    <section id="caseEntry" class="screen active case-entry-screen" aria-labelledby="cases-title">
+      <p class="eyebrow">2問でしぼる</p>
+      <h1 id="cases-title">車の保険、まずどこを見る？</h1>
+      <p class="cases-lead">2つだけ選ぶと、あなたの使い方に近い比較候補を出します。</p>
+      <div class="case-entry-actions">
+        <button id="startCaseDiagnosis" class="primary-btn" type="button">2問でしぼる</button>
+        <button id="showCaseList" class="secondary-btn" type="button">一覧から選ぶ</button>
+      </div>
+    </section>
+
+    <section id="caseDiagnosis" class="screen case-diagnosis-screen" aria-labelledby="case-diagnosis-title">
+      <div class="case-diagnosis-shell">
+        <p class="eyebrow">2問でしぼる</p>
+        <h1 id="case-diagnosis-title">使い方を2つだけ選ぶ</h1>
+        <div class="diagnosis-question">
+          <h2>Q1. この車は主に誰が使いますか？</h2>
+          <div id="caseQ1" class="diagnosis-options" role="radiogroup" aria-label="この車は主に誰が使いますか？"></div>
+        </div>
+        <div class="diagnosis-question">
+          <h2>Q2. この車に当てはまるものを選んでください</h2>
+          <p class="diagnosis-note">複数選択できます。</p>
+          <div id="caseQ2" class="diagnosis-options" aria-label="この車に当てはまるもの"></div>
+        </div>
+        <div class="case-entry-actions diagnosis-submit-actions">
+          <button id="showDiagnosisResult" class="primary-btn" type="button" disabled>診断結果を見る</button>
+          <button class="secondary-btn" type="button" data-case-home>← 戻る</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="caseDiagnosisResult" class="screen case-diagnosis-result-screen" aria-labelledby="diagnosis-result-title">
+      <div id="diagnosisResultBody"></div>
+    </section>
+
+    <section id="caseListScreen" class="screen result-screen" aria-labelledby="case-list-title">
       <p class="eyebrow">場面一覧</p>
-      <h1 id="cases-title">いちばん近い使い方を選ぶ</h1>
+      <h1 id="case-list-title">一覧から選ぶ</h1>
       <p class="cases-lead">近い使い方を選ぶと、まず比較する候補と、その理由が見られます。</p>
       <div id="caseCards" class="case-cards" aria-label="場面一覧"></div>
       <div id="caseDetailOverlay" class="case-detail-overlay" aria-hidden="true">
