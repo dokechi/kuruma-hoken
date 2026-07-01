@@ -51,7 +51,7 @@ async function init() {
   SOURCE_REGISTRY = sourceRegistry;
   const isCasesPage = document.body.classList.contains("page-cases");
   Object.assign(state, {
-    questions: isCasesPage ? questions.filter((question) => question.id?.startsWith("case_")) : questions.filter((question) => !question.id?.startsWith("case_")),
+    questions: isCasesPage ? questions.filter((question) => question.id === "case_q2") : questions.filter((question) => !question.id?.startsWith("case_")),
     scoring,
     results
   });
@@ -79,7 +79,6 @@ function bindEvents() {
     showScreen("caseListScreen", { scrollTop: false });
     openCaseDetail(caseId);
   });
-  $("compareBtn")?.addEventListener("click", () => showScreen("caseListScreen"));
   document.querySelectorAll("[data-nav]").forEach((button) => {
     button.addEventListener("click", () => showScreen(button.dataset.nav));
   });
@@ -101,7 +100,6 @@ function bindEvents() {
       renderCaseDiagnosis();
       showScreen("caseDiagnosis");
     }
-    if (action === "compare") showScreen("caseListScreen");
     if (action === "candidate") {
       showScreen("caseListScreen", { scrollTop: false });
       openCaseDetail(event.target.closest("[data-case-id]")?.dataset.caseId);
@@ -183,10 +181,10 @@ function renderCaseDiagnosisResult() {
   const result = getCaseDiagnosisResult();
   container.innerHTML = `
     <article class="diagnosis-result-card" data-case-id="${escapeHtml(result.caseId)}">
-      <p class="eyebrow">診断結果</p>
-      <h1 id="diagnosis-result-title">診断結果</h1>
+      <p class="eyebrow">比較の入口</p>
+      <h1 id="diagnosis-result-title">あなたは、まずこれを見る</h1>
       <section class="diagnosis-result-section">
-        <h2>あなたのタイプ</h2>
+        <h2>あなたの車はこれに近いです</h2>
         <p>${escapeHtml(result.name)}</p>
       </section>
       <section class="diagnosis-result-section">
@@ -194,14 +192,21 @@ function renderCaseDiagnosisResult() {
         <p>${escapeHtml(result.candidate)}</p>
       </section>
       <section class="diagnosis-result-section">
-        <h2>まず確認する3つ</h2>
+        <h2>理由は3つだけ</h2>
         ${listItems(result.checks)}
       </section>
+      <section class="diagnosis-caution" aria-label="ただし注意">
+        <h2>ただし注意</h2>
+        <ul>
+          <li>保険料や基本補償だけで決まるものではありません</li>
+          <li>条件によっては他社が合う場合があります</li>
+          <li>最終判断は契約条件の確認が必要です</li>
+        </ul>
+      </section>
       <div class="diagnosis-result-actions">
-        <button class="primary-btn" type="button" data-result-action="candidate">この候補を見る</button>
-        <button class="secondary-btn" type="button" data-result-action="compare">他社と比べる</button>
-        <button class="secondary-btn quiet" type="button" data-result-action="restart">もう一度選ぶ</button>
+        <button class="primary-btn" type="button" data-result-action="candidate">詳しい理由を見る</button>
       </div>
+      <button class="text-link restart-link" type="button" data-result-action="restart">選び直す</button>
     </article>`;
 }
 
@@ -597,12 +602,13 @@ function renderResults() {
   state.ranked = calculateScores();
   const top = state.ranked[0];
   if (!top) return;
-  $("topResult").innerHTML = `<span class="badge">まず見る候補</span><h2>${escapeHtml(top.name)}</h2><p>${escapeHtml(top.company || top.candidate)}</p><p>${escapeHtml(top.summary || "この結果は保険の最終判断ではなく、比較の入口です。補償内容・保険料・車両条件なども確認してください。")}</p>`;
+  if ($("candidateResult")) $("candidateResult").innerHTML = `<p>${escapeHtml(top.candidate || top.company)}</p>`;
+  $("topResult").innerHTML = `<h2>${escapeHtml(top.name)}</h2>`;
   $("scoreList").innerHTML = `<ul>${checksForResult(top.type).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>`;
   $("compareReason").textContent = CASE_DIAGNOSIS_TYPES[top.type]
-    ? "この2問診断は、使い方や不安に近い比較の入口を示すものです。保険の最終判断ではありません。"
+    ? "この1問診断は、使い方や不安に近い比較の入口を示すものです。保険の最終判断ではありません。"
     : top.type === "direct_type"
-    ? "価格重視タイプが近い結果です。この診断結果だけで判断せず、補償内容・車両条件・契約条件を確認してください。"
+    ? "価格重視タイプが近い結果です。この結果だけで判断せず、補償内容・車両条件・契約条件を確認してください。"
     : `5社の中では、まず${top.company}を見る理由があります。ただし、契約判断を断定するものではありません。`;
   renderDetail();
 }
