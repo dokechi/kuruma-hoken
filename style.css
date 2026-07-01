@@ -491,6 +491,103 @@ a.primary-btn,a.secondary-btn{display:inline-flex;align-items:center;justify-con
   margin-top:0;
   font-size:1rem;
 }
+.case-entry-screen,
+.case-diagnosis-screen,
+.case-diagnosis-result-screen{
+  max-width:860px;
+}
+.case-entry-actions{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-top:28px;
+}
+.case-diagnosis-shell,
+.diagnosis-result-card{
+  background:#fff;
+  border:1px solid #e5e7eb;
+  border-radius:var(--radius-lg);
+  box-shadow:var(--shadow-sm);
+  padding:clamp(22px,4vw,36px);
+}
+.diagnosis-question{
+  margin-top:26px;
+  padding-top:22px;
+  border-top:1px solid #e5e7eb;
+}
+.diagnosis-question h2,
+.diagnosis-result-section h2{
+  font-size:clamp(1.12rem,3.8vw,1.45rem);
+}
+.diagnosis-note{
+  margin:0 0 12px;
+  color:var(--slate-500);
+  font-size:.92rem;
+}
+.diagnosis-options{
+  display:grid;
+  gap:10px;
+}
+.diagnosis-option{
+  width:100%;
+  min-height:54px;
+  padding:13px 15px;
+  border:2px solid #e5e7eb;
+  border-radius:16px;
+  background:#fff;
+  color:var(--plum-900);
+  text-align:left;
+  font-weight:850;
+  cursor:pointer;
+  line-height:1.55;
+}
+.diagnosis-option:hover,
+.diagnosis-option:focus-visible,
+.diagnosis-option.selected{
+  border-color:var(--rose-500);
+  background:var(--rose-50);
+  outline:0;
+}
+.diagnosis-option.selected:before{
+  content:"✓";
+  display:inline-grid;
+  place-items:center;
+  width:24px;
+  height:24px;
+  margin-right:8px;
+  border-radius:999px;
+  background:var(--rose-500);
+  color:#fff;
+  font-size:.82rem;
+}
+.diagnosis-submit-actions{
+  justify-content:space-between;
+}
+.diagnosis-result-card h1{
+  margin-bottom:22px;
+}
+.diagnosis-result-section{
+  margin-top:18px;
+  padding:18px;
+  border:1px solid #e5e7eb;
+  border-radius:18px;
+  background:#f8fafc;
+}
+.diagnosis-result-section p{
+  margin:0;
+  color:var(--plum-900);
+  font-weight:900;
+}
+.diagnosis-result-section ul{
+  margin:8px 0 0;
+  padding-left:1.25em;
+}
+.diagnosis-result-actions{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+  margin-top:22px;
+}
 .case-card-grid{
   border-top:1px solid #e5e7eb;
 }
@@ -531,23 +628,23 @@ a.primary-btn,a.secondary-btn{display:inline-flex;align-items:center;justify-con
 }
 .case-card-action{
   align-self:center;
+  min-width:28px;
   min-height:32px;
   display:inline-flex;
+  justify-content:center;
   align-items:center;
-  border:1px solid #e5e7eb;
-  border-radius:999px;
-  padding:4px 10px;
-  color:var(--plum-700);
-  font-size:.78rem;
+  border:0;
+  border-radius:0;
+  padding:0;
+  color:var(--slate-500);
+  font-size:1.8rem;
   font-weight:900;
   white-space:nowrap;
-  background:#f8fafc;
+  background:transparent;
 }
 .case-card:hover .case-card-action,
 .case-card:focus-visible .case-card-action{
-  border-color:var(--rose-200);
   color:var(--rose-600);
-  background:#fff;
 }
 .case-detail-overlay[aria-hidden="true"]{
   display:none;
@@ -556,26 +653,23 @@ a.primary-btn,a.secondary-btn{display:inline-flex;align-items:center;justify-con
   position:fixed;
   inset:0;
   z-index:30;
-  display:grid;
-  align-items:end;
+  display:block;
+  background:#fff;
+  overflow:auto;
 }
 .case-detail-backdrop{
-  position:absolute;
-  inset:0;
-  background:rgba(15,23,42,.36);
+  display:none;
 }
 .case-detail-sheet{
-  position:relative;
-  z-index:1;
-  width:min(100%, 960px);
-  max-height:min(88svh, 820px);
-  margin:0 auto;
-  overflow:auto;
+  width:100%;
+  min-height:100svh;
+  max-height:none;
+  margin:0;
+  overflow:visible;
   background:#fff;
-  border:1px solid #e5e7eb;
-  border-radius:22px 22px 0 0;
-  box-shadow:0 -18px 50px rgba(15,23,42,.18);
-  -webkit-overflow-scrolling:touch;
+  border:0;
+  border-radius:0;
+  box-shadow:none;
 }
 .detail-open{
   overflow:hidden;
@@ -617,18 +711,27 @@ a.primary-btn,a.secondary-btn{display:inline-flex;align-items:center;justify-con
   .page-cases .brand span:last-child{font-size:.88rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .page-cases .top-nav{display:flex;border:0;padding:0;background:transparent}
   .page-cases .top-nav a{font-size:.78rem;padding:4px 0}
+  .case-entry-actions,
+  .diagnosis-result-actions{display:grid;grid-template-columns:1fr}
+  .case-entry-screen,
+  .case-diagnosis-screen,
+  .case-diagnosis-result-screen{padding-top:34px}
+  .case-entry-screen h1,
+  .case-diagnosis-screen h1,
+  .case-diagnosis-result-screen h1{font-size:clamp(2rem,10vw,3rem)}
+  .diagnosis-option{min-height:52px;padding:12px 13px;border-radius:14px}
   .case-card-grid .case-card,.case-card{min-height:86px;padding:12px 0;grid-template-columns:minmax(0,1fr) auto;gap:10px}
   .case-card h3{font-size:.96rem;line-height:1.38}
-  .case-card-action{font-size:.72rem;padding-inline:8px}
-  .case-detail-sheet{max-height:86svh;border-radius:18px 18px 0 0}
+  .case-card-action{font-size:1.6rem;padding-inline:0}
+  .case-detail-sheet{max-height:none;border-radius:0}
   .comparison-cards{grid-template-columns:1fr}
   .reason-line{display:block}
   .detail-open .case-detail-panel h1{font-size:1.55rem;line-height:1.28;margin-bottom:14px}
   .detail-open .conclusion-box h2{font-size:1.35rem}
 }
 @media(max-width:380px){
-  .case-card{grid-template-columns:1fr}
-  .case-card-action{justify-self:start;min-height:28px}
+  .case-card{grid-template-columns:minmax(0,1fr) auto}
+  .case-card-action{justify-self:end;min-height:28px}
 }
 
 /* Trust-focused top page palette and first view */
