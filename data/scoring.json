@@ -395,5 +395,52 @@
       "direct_type": 4,
       "kyoei_type": 1
     }
+  },
+  "case_q1": {
+    "self": {
+      "daily": 2
+    },
+    "family": {
+      "familyRide": 2,
+      "variable": 1
+    },
+    "watch": {
+      "familyWatch": 3
+    },
+    "work": {
+      "nightWork": 2,
+      "variable": 1
+    },
+    "different": {
+      "variable": 3
+    }
+  },
+  "case_q2": {
+    "daily": {
+      "daily": 3
+    },
+    "children": {
+      "familyRide": 3
+    },
+    "family-alone": {
+      "familyWatch": 2,
+      "familyRide": 1
+    },
+    "night": {
+      "nightWork": 3
+    },
+    "multi-car": {
+      "variable": 3
+    },
+    "changes": {
+      "variable": 3
+    },
+    "accident-worry": {
+      "familyRide": 2,
+      "nightWork": 2
+    },
+    "unknown": {
+      "variable": 4
+    }
   }
 }

@@ -2,6 +2,7 @@ let MODEL_CASES = [];
 let SOURCE_REGISTRY = [];
 
 const TYPE_ORDER = ["aioi_type", "tokio_type", "sompo_type", "ms_type", "kyoei_type", "direct_type"];
+const CASE_TYPE_ORDER = ["daily", "familyRide", "familyWatch", "nightWork", "variable"];
 const state = { questions: [], scoring: {}, results: {}, index: 0, answers: {}, ranked: [], selectedCaseId: null, returnCaseId: null, lastCaseScrollY: 0 };
 const CATEGORY_ORDER = ["自分が毎日使う車", "家族を乗せる車", "家族が運転する車", "仕事・夜間で使う車"];
 const categoryLabel = (category) => category;
@@ -48,7 +49,12 @@ async function init() {
 
   MODEL_CASES = modelCases;
   SOURCE_REGISTRY = sourceRegistry;
-  Object.assign(state, { questions: document.body.classList.contains("page-cases") ? questions.slice(0, 2) : questions, scoring, results });
+  const isCasesPage = document.body.classList.contains("page-cases");
+  Object.assign(state, {
+    questions: isCasesPage ? questions.filter((question) => question.id?.startsWith("case_")) : questions.filter((question) => !question.id?.startsWith("case_")),
+    scoring,
+    results
+  });
   bindEvents();
   renderCaseDiagnosis();
   renderCases();
@@ -464,24 +470,37 @@ function renderQuestion() {
   const question = state.questions[state.index];
   const total = state.questions.length;
   $("questionCount").textContent = `質問 ${state.index + 1} / ${total}`;
-  $("answeredCount").textContent = state.answers[question.id] ? "回答済み" : "未回答";
+  const hasAnswer = Array.isArray(state.answers[question.id]) ? state.answers[question.id].length > 0 : Boolean(state.answers[question.id]);
+  $("answeredCount").textContent = hasAnswer ? "回答済み" : "未回答";
   $("progressBar").style.width = `${((state.index + 1) / total) * 100}%`;
-  $("questionCategory").textContent = "選択式・証券情報は不要です";
+  $("questionCategory").textContent = question.multiple ? "複数選択・証券情報は不要です" : "単一選択・証券情報は不要です";
   $("question-title").textContent = question.text;
+  const selectedValues = Array.isArray(state.answers[question.id]) ? state.answers[question.id] : [state.answers[question.id]];
   $("choices").innerHTML = question.choices.map((choice) => `
-    <button type="button" class="choice ${state.answers[question.id] === choice.key ? "selected" : ""}" data-choice="${choice.key}">
-      <span class="choice-key">${choice.key}</span><span>${choice.text}</span>
+    <button type="button" class="choice ${selectedValues.includes(choice.key) ? "selected" : ""}" data-choice="${choice.key}" aria-pressed="${question.multiple ? selectedValues.includes(choice.key) : "false"}">
+      <span>${choice.text}</span>
     </button>`).join("");
   document.querySelectorAll("[data-choice]").forEach((button) => {
     button.addEventListener("click", () => selectChoice(question.id, button.dataset.choice));
   });
   $("backBtn").disabled = state.index === 0;
-  $("nextBtn").disabled = !state.answers[question.id];
+  $("nextBtn").disabled = !hasAnswer;
   $("nextBtn").textContent = state.index === total - 1 ? "結果を見る" : "次へ";
 }
 
 function selectChoice(questionId, key) {
-  state.answers[questionId] = key;
+  const question = state.questions.find((item) => item.id === questionId);
+  if (question?.multiple) {
+    const selected = new Set(Array.isArray(state.answers[questionId]) ? state.answers[questionId] : []);
+    if (selected.has(key)) {
+      selected.delete(key);
+    } else {
+      selected.add(key);
+    }
+    state.answers[questionId] = [...selected];
+  } else {
+    state.answers[questionId] = key;
+  }
   renderQuestion();
 }
 
@@ -504,6 +523,7 @@ function nextQuestion() {
 }
 
 function calculateScores() {
+  if (document.body.classList.contains("page-cases")) return calculateCaseQuestionScores();
   const scores = Object.fromEntries(TYPE_ORDER.map((type) => [type, 0]));
   const maxScores = Object.fromEntries(TYPE_ORDER.map((type) => [type, 0]));
   state.questions.forEach((question) => {
@@ -524,6 +544,23 @@ function calculateScores() {
   }).sort((a, b) => b.percent - a.percent || b.score - a.score || TYPE_ORDER.indexOf(a.type) - TYPE_ORDER.indexOf(b.type));
 }
 
+function calculateCaseQuestionScores() {
+  const scores = Object.fromEntries(CASE_TYPE_ORDER.map((type) => [type, 0]));
+  state.questions.forEach((question) => {
+    const answer = state.answers[question.id];
+    const keys = Array.isArray(answer) ? answer : [answer].filter(Boolean);
+    keys.forEach((key) => addCasePoints(scores, state.scoring[question.id]?.[key]));
+  });
+  const ranked = CASE_TYPE_ORDER.map((type) => ({ type, score: scores[type], percent: 0, ...CASE_DIAGNOSIS_TYPES[type] }))
+    .sort((a, b) => b.score - a.score || CASE_TYPE_ORDER.indexOf(a.type) - CASE_TYPE_ORDER.indexOf(b.type));
+  const isTie = ranked.length > 1 && ranked[0].score === ranked[1].score;
+  const isUnknown = Array.isArray(state.answers.case_q2) && state.answers.case_q2.includes("unknown");
+  const ordered = isTie || isUnknown
+    ? [ranked.find((item) => item.type === "variable"), ...ranked.filter((item) => item.type !== "variable")]
+    : ranked;
+  return ordered.map((item, index) => ({ ...item, percent: index === 0 ? 95 : Math.max(20, 75 - index * 15) }));
+}
+
 function labelFor(percent) {
   if (percent >= 80) return "第一候補";
   if (percent >= 60) return "比較候補";
@@ -533,6 +570,7 @@ function labelFor(percent) {
 }
 
 function resultTypeToCaseId(type) {
+  if (CASE_DIAGNOSIS_TYPES[type]) return CASE_DIAGNOSIS_TYPES[type].caseId;
   return {
     aioi_type: "case1",
     tokio_type: "case2",
@@ -544,6 +582,7 @@ function resultTypeToCaseId(type) {
 }
 
 function checksForResult(type) {
+  if (CASE_DIAGNOSIS_TYPES[type]) return CASE_DIAGNOSIS_TYPES[type].checks;
   return {
     aioi_type: ["安全運転スコア", "走行データの取得条件", "継続時の割引"],
     tokio_type: ["事故自動通報", "事故時の通話", "家族同乗時の初動"],
@@ -558,9 +597,11 @@ function renderResults() {
   state.ranked = calculateScores();
   const top = state.ranked[0];
   if (!top) return;
-  $("topResult").innerHTML = `<span class="badge">まず見る候補</span><h2>${escapeHtml(top.name)}</h2><p>${escapeHtml(top.company)}</p><p>${escapeHtml(top.summary)}</p>`;
+  $("topResult").innerHTML = `<span class="badge">まず見る候補</span><h2>${escapeHtml(top.name)}</h2><p>${escapeHtml(top.company || top.candidate)}</p><p>${escapeHtml(top.summary || "この結果は保険の最終判断ではなく、比較の入口です。補償内容・保険料・車両条件なども確認してください。")}</p>`;
   $("scoreList").innerHTML = `<ul>${checksForResult(top.type).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>`;
-  $("compareReason").textContent = top.type === "direct_type"
+  $("compareReason").textContent = CASE_DIAGNOSIS_TYPES[top.type]
+    ? "この2問診断は、使い方や不安に近い比較の入口を示すものです。保険の最終判断ではありません。"
+    : top.type === "direct_type"
     ? "価格重視タイプが近い結果です。この診断結果だけで判断せず、補償内容・車両条件・契約条件を確認してください。"
     : `5社の中では、まず${top.company}を見る理由があります。ただし、契約判断を断定するものではありません。`;
   renderDetail();

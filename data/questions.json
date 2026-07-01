@@ -574,5 +574,73 @@
         "text": "保険料を下げる方法"
       }
     ]
+  },
+  {
+    "id": "case_q1",
+    "number": 1,
+    "text": "この車は主に誰が使いますか？",
+    "multiple": false,
+    "choices": [
+      {
+        "key": "self",
+        "text": "自分が中心"
+      },
+      {
+        "key": "family",
+        "text": "家族もよく使う"
+      },
+      {
+        "key": "watch",
+        "text": "子どもや親など、見守りたい家族が使う"
+      },
+      {
+        "key": "work",
+        "text": "仕事でも使う"
+      },
+      {
+        "key": "different",
+        "text": "車ごとに使う人が違う"
+      }
+    ]
+  },
+  {
+    "id": "case_q2",
+    "number": 2,
+    "text": "この車に当てはまるものを選んでください",
+    "multiple": true,
+    "choices": [
+      {
+        "key": "daily",
+        "text": "ほぼ毎日運転する"
+      },
+      {
+        "key": "children",
+        "text": "子どもや家族をよく乗せる"
+      },
+      {
+        "key": "family-alone",
+        "text": "家族が一人で運転することがある"
+      },
+      {
+        "key": "night",
+        "text": "夜間・仕事帰りに一人で運転することがある"
+      },
+      {
+        "key": "multi-car",
+        "text": "車が2台以上ある"
+      },
+      {
+        "key": "changes",
+        "text": "車の使い方が変わることがある"
+      },
+      {
+        "key": "accident-worry",
+        "text": "事故のとき、自分だけで対応できるか不安"
+      },
+      {
+        "key": "unknown",
+        "text": "よく分からないので、近い候補だけ知りたい"
+      }
+    ]
   }
 ]
