@@ -420,7 +420,6 @@ h2{font-size:1.35rem;line-height:1.42;margin:0 0 10px;letter-spacing:-.025em}.he
   margin-top:.48em;
 }
 @media(max-width:760px){
-  body{overflow-x:hidden}
   .first-view{
     gap:clamp(18px,4vh,28px);
     padding-inline:clamp(14px,4.8vw,22px);
@@ -880,3 +879,87 @@ a.primary-btn,a.secondary-btn{display:inline-flex;align-items:center;justify-con
 .evidence-source-list{display:grid;gap:10px;margin-top:14px}.evidence-source-item{border:1px solid #edf0f3;border-radius:14px;background:#fafafa;padding:12px}
 .evidence-source-item a{font-weight:950;color:var(--plum-900);text-decoration:underline;text-underline-offset:.18em}.evidence-source-item dl{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:10px 0 0}.evidence-source-item dl div{min-width:0}.evidence-source-item dt{font-size:.76rem;font-weight:950;color:var(--slate-500)}.evidence-source-item dd{margin:2px 0 0;color:var(--plum-700);font-size:.9rem;line-height:1.5;overflow-wrap:anywhere}
 @media(max-width:760px){.evidence-card{padding:16px}.evidence-card-head{display:block}.risk-label{margin-top:8px}.evidence-source-item dl{grid-template-columns:1fr}}
+
+/* Responsive safeguards: keep content inside the viewport without masking overflow. */
+.site-header,
+.screen,
+.disclaimer,
+.first-view,
+.case-detail-panel{
+  max-width:100%;
+}
+img,svg,canvas,video,iframe{
+  max-width:100%;
+}
+.primary-btn,
+.secondary-btn,
+.choice,
+.diagnosis-option,
+.case-card,
+.top-nav a{
+  min-height:44px;
+}
+.primary-btn,
+.secondary-btn{
+  white-space:normal;
+  text-align:center;
+  line-height:1.35;
+}
+.hero-title,
+.hero-title span,
+.hero-subtitle span,
+.brand span:last-child,
+.case-card h3,
+.case-card-candidate,
+.case-card-point,
+.source-list a{
+  overflow-wrap:anywhere;
+}
+.company-chips{
+  max-width:100%;
+  overflow:visible;
+}
+.company-chips li{
+  white-space:normal;
+  text-align:center;
+}
+
+@media(max-width:760px){
+  .hero-title span{white-space:normal;}
+  .diagnosis-result-actions{grid-template-columns:1fr;gap:12px;}
+  .diagnosis-result-actions .primary-btn,
+  .diagnosis-result-actions .secondary-btn,
+  .question-actions .primary-btn,
+  .question-actions .secondary-btn,
+  .case-detail-nav .secondary-btn,
+  .case-step-actions .secondary-btn{
+    width:100%;
+    min-height:48px;
+    padding:12px 16px;
+  }
+  .detail-open .case-detail-nav-top .secondary-btn{
+    min-height:48px;
+    padding:10px 16px;
+  }
+  .source-list a{align-items:flex-start;}
+}
+@media(max-width:380px){
+  .page-home .current-companies{padding-inline:8px;}
+  .page-home .company-chips li{font-size:.68rem;padding-inline:8px;}
+}
+.brand,
+.top-nav a{
+  min-height:44px;
+  min-width:44px;
+  display:inline-flex;
+  align-items:center;
+}
+.top-nav a{
+  justify-content:center;
+}
+@media(max-width:760px){
+  .page-cases .top-nav a,
+  .top-nav a{
+    padding:8px 10px;
+  }
+}
