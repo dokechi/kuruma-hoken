@@ -49,11 +49,11 @@ const RESULT_DESCRIPTIONS = {
 };
 
 const COMPANY_COMPARISON = [
-  { key: "aioi", label: "あいおい", types: ["aioi_type", "daily"], values: ["◎", "○", "△", "○", "○"] },
-  { key: "tokio", label: "東京海上", types: ["tokio_type", "familyRide"], values: ["○", "◎", "○", "△", "○"] },
-  { key: "sompo", label: "損保ジャパン", types: ["sompo_type", "nightWork"], values: ["○", "○", "◎", "△", "○"] },
-  { key: "ms", label: "三井住友", types: ["ms_type", "familyWatch"], values: ["○", "◎", "△", "◎", "○"] },
-  { key: "kyoei", label: "共栄火災", types: ["kyoei_type", "variable"], values: ["△", "○", "○", "△", "◎"] }
+  { key: "aioi", label: "あいおい", types: ["aioi_type", "daily"], values: ["◎", "△", "△", "△", "△"] },
+  { key: "tokio", label: "東京海上", types: ["tokio_type", "familyRide"], values: ["△", "◎", "○", "○", "△"] },
+  { key: "sompo", label: "損保J", types: ["sompo_type", "nightWork"], values: ["○", "○", "◎", "○", "△"] },
+  { key: "ms", label: "三井住友", types: ["ms_type", "familyWatch"], values: ["△", "○", "△", "◎", "△"] },
+  { key: "kyoei", label: "共栄", types: ["kyoei_type"], values: ["△", "△", "○", "△", "◎"] }
 ];
 const COMPARISON_ROWS = ["安全運転", "家族同乗", "夜間事故", "見守り", "使い方変化"];
 
@@ -62,7 +62,14 @@ function resultDescription(type) {
 }
 
 function highlightedCompanyKey(type) {
+  if (type === "variable") return "";
   return COMPANY_COMPARISON.find((company) => company.types.includes(type))?.key || "";
+}
+
+function comparisonGuideText(type) {
+  return type === "variable"
+    ? "使い方変動型のため、特定の会社を固定せず横並びで比較してください。"
+    : "回答に近い列を青で表示しています。";
 }
 
 function renderComparisonTable(type) {
@@ -653,11 +660,11 @@ function renderResults() {
   const top = state.ranked[0];
   if (!top) return;
   const candidateName = top.candidate || top.company;
-  if ($("candidateResult")) $("candidateResult").innerHTML = `<p>${escapeHtml(candidateName)}</p>`;
   if ($("conclusionCandidate")) $("conclusionCandidate").textContent = candidateName;
   if ($("conclusionDescription")) $("conclusionDescription").textContent = resultDescription(top.type);
   $("topResult").innerHTML = `<h2>${escapeHtml(top.name)}</h2>`;
   $("scoreList").innerHTML = `<div class="reason-card-list">${checksForResult(top.type).map((item) => `<article class="reason-row-card"><span aria-hidden="true">✓</span><p>${escapeHtml(item)}</p></article>`).join("")}</div>`;
+  if ($("comparisonGuide")) $("comparisonGuide").textContent = comparisonGuideText(top.type);
   if ($("comparisonTable")) $("comparisonTable").innerHTML = renderComparisonTable(top.type);
   if ($("otherFitList")) $("otherFitList").innerHTML = `<ul>${otherFitItems(top.type).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>`;
   $("compareReason").textContent = CASE_DIAGNOSIS_TYPES[top.type]
