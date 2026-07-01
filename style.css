@@ -1538,3 +1538,101 @@ img,svg,canvas,video,iframe{
     font-size:.9rem;
   }
 }
+
+/* Public cases result mobile polish */
+@media(max-width:480px){
+  .page-cases .diagnosis-summary-screen.result-screen{
+    max-width:100%;
+    padding-inline:max(15px,env(safe-area-inset-left));
+    overflow-x:hidden;
+  }
+  .page-cases .diagnosis-summary-screen > section{
+    max-width:100%;
+  }
+  .page-cases .result-conclusion-card{
+    border-width:2px;
+    box-shadow:0 14px 30px rgba(37,99,235,.16);
+  }
+  .page-cases .result-conclusion-card h2{
+    margin-bottom:8px;
+    letter-spacing:-.025em;
+  }
+  .page-cases .diagnosis-summary-screen .diagnosis-result-section{
+    padding:14px 12px;
+  }
+  .page-cases .diagnosis-summary-screen .diagnosis-result-section h2,
+  .page-cases .section-heading-row h2,
+  .page-cases .other-fit-section h2{
+    margin-bottom:10px;
+  }
+  .page-cases .reason-row-card{
+    align-items:center;
+    min-height:50px;
+  }
+  .page-cases .competitor-comparison{
+    padding:14px 10px 15px;
+  }
+  .page-cases .comparison-table-wrap{
+    margin-inline:-2px;
+  }
+  .page-cases .result-comparison-table{
+    border-radius:14px;
+  }
+  .page-cases .result-comparison-table th,
+  .page-cases .result-comparison-table td{
+    min-width:0;
+    white-space:normal;
+  }
+  .page-cases .result-comparison-table .is-highlighted{
+    box-shadow:inset 0 0 0 999px rgba(37,99,235,.08);
+  }
+  .page-cases .other-fit-list li{
+    padding:11px 12px;
+    line-height:1.58;
+  }
+  .page-cases .diagnosis-result-actions{
+    position:sticky;
+    bottom:0;
+    z-index:5;
+    margin:18px -15px 0;
+    padding:10px 15px calc(10px + env(safe-area-inset-bottom));
+    background:linear-gradient(180deg,rgba(255,247,247,0),rgba(255,247,247,.96) 28%,#fff7f7 100%);
+  }
+  .page-cases .diagnosis-result-actions .primary-btn{
+    min-height:56px;
+    border-radius:18px;
+    box-shadow:0 12px 26px rgba(225,29,72,.22);
+    font-size:1rem;
+  }
+}
+@media(max-width:380px){
+  .page-cases .diagnosis-summary-screen.result-screen{
+    padding-inline:12px;
+  }
+  .page-cases .result-conclusion-card{
+    margin-top:14px;
+    padding:15px 13px;
+  }
+  .page-cases .result-conclusion-card h2{
+    font-size:1.25rem;
+  }
+  .page-cases .reason-row-card p{
+    font-size:.91rem;
+  }
+  .page-cases .competitor-comparison,
+  .page-cases .other-fit-section{
+    padding-inline:9px;
+  }
+  .page-cases .result-comparison-table thead th:first-child,
+  .page-cases .result-comparison-table tbody th{
+    width:23%;
+  }
+  .page-cases .result-comparison-table thead th:not(:first-child),
+  .page-cases .result-comparison-table td{
+    width:15.4%;
+  }
+  .page-cases .diagnosis-result-actions{
+    margin-inline:-12px;
+    padding-inline:12px;
+  }
+}
