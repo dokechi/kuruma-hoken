@@ -212,7 +212,7 @@ function bindCaseDetailControls() {
 
 function renderCaseDetail(caseId) {
   const modelCase = MODEL_CASES.find((item) => item.id === caseId) || MODEL_CASES[0];
-  const sources = (modelCase.sourceIds || []).map((id) => SOURCE_REGISTRY.find((source) => source.id === id)).filter(Boolean);
+  const sources = getSourcesByIds(modelCase.sourceIds || []);
   return `
     <article class="case-detail-panel" data-case-id="${escapeHtml(modelCase.id)}">
       ${renderCaseDetailNavigation(modelCase.id, "top")}
@@ -231,6 +231,7 @@ function renderCaseDetail(caseId) {
       <div class="accordion-stack">
         <details><summary>他社と比べる</summary>${renderComparisonCards(modelCase.comparisons)}</details>
         <details><summary>細かい条件・対象外条件</summary>${listItems(modelCase.smallConditions)}</details>
+        <details open><summary>根拠を見る</summary>${renderEvidenceClaims(modelCase.evidenceClaims)}</details>
         <details><summary>このページでは判断できないこと</summary>${listItems(modelCase.cannotDecideHere)}</details>
         <details><summary>根拠資料</summary>${renderSources(sources)}<p class="source-note">情報確認日：2026年6月25日。商品資料によって対象となる契約始期日が異なります。損保ジャパンは2026年1月始期資料と2026年7月始期資料を混同しないで表示しています。</p></details>
       </div>
@@ -263,11 +264,40 @@ function renderComparisonCards(comparisons) {
 }
 
 
+function getSourcesByIds(sourceIds) {
+  return (sourceIds || []).map((id) => SOURCE_REGISTRY.find((source) => source.id === id)).filter(Boolean);
+}
+
+function renderEvidenceClaims(evidenceClaims) {
+  if (!Array.isArray(evidenceClaims) || !evidenceClaims.length) return '<p>この場面に紐づく根拠付き注意点は登録されていません。</p>';
+  return `<div class="evidence-claims">${evidenceClaims.map((claim) => {
+    const sources = getSourcesByIds(claim.sourceIds || []);
+    return `<article class="evidence-card evidence-${escapeHtml(claim.riskLevel)}">
+      <div class="evidence-card-head">
+        <span class="evidence-group">${escapeHtml(claim.displayGroup)}</span>
+        <span class="risk-label">${escapeHtml(claim.riskLevel)}</span>
+      </div>
+      <h3>${escapeHtml(claim.claim)}</h3>
+      <p class="evidence-reason"><strong>重要理由</strong>${escapeHtml(claim.whyItMatters)}</p>
+      <div class="evidence-source-list" aria-label="この注意点の根拠資料">
+        ${sources.map((source) => `<div class="evidence-source-item">
+          <a href="${escapeHtml(source.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(source.title)}</a>
+          <dl>
+            <div><dt>会社名</dt><dd>${escapeHtml(source.company)}</dd></div>
+            <div><dt>確認日</dt><dd>${escapeHtml(source.verifiedAt)}</dd></div>
+            <div><dt>適用始期</dt><dd>${escapeHtml(source.applicableFrom)}</dd></div>
+          </dl>
+        </div>`).join("")}
+      </div>
+    </article>`;
+  }).join("")}</div>`;
+}
+
 function renderSources(sources) {
   if (!sources.length) return '<p>この場面に直接関係する公式資料は登録されていません。</p>';
   return `<ul class="source-list detail-sources">${sources.map((source) => `<li>
     <a href="${escapeHtml(source.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(source.title)}</a>
-    <p><strong>${escapeHtml(source.company)}</strong>／対象始期日：${escapeHtml(source.applicableFrom)}／確認日：2026年6月25日</p>
+    <p><strong>${escapeHtml(source.company)}</strong>／対象始期日：${escapeHtml(source.applicableFrom)}／確認日：${escapeHtml(source.verifiedAt)}</p>
     <p>${escapeHtml(source.note)}</p>
   </li>`).join("")}</ul>`;
 }
@@ -277,7 +307,7 @@ function renderSourcesPage() {
   if (!list || !SOURCE_REGISTRY.length) return;
   list.innerHTML = SOURCE_REGISTRY.map((source) => `<li>
     <a href="${escapeHtml(source.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(source.title)}</a>
-    <p><strong>${escapeHtml(source.company)}</strong>／対象始期日：${escapeHtml(source.applicableFrom)}／情報確認日：2026年6月25日</p>
+    <p><strong>${escapeHtml(source.company)}</strong>／対象始期日：${escapeHtml(source.applicableFrom)}／情報確認日：${escapeHtml(source.verifiedAt)}</p>
     <p>${escapeHtml(source.note)}</p>
   </li>`).join("");
 }

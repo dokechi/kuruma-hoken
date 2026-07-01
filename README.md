@@ -87,3 +87,15 @@
 ## 免責事項
 
 このサイトは、特定の保険商品の加入をすすめるものではありません。モデルケースや診断結果は、車の使い方や事故時の不安から、保険を見るポイントを整理するものです。実際の契約判断には、補償内容・保険料・車両条件などの確認が必要です。
+
+## データ追加・更新手順
+
+モデルケースや根拠資料を追加する場合は、根拠なしの主張が混入しないように次の順序で更新します。
+
+1. `data/source-registry.json` に公式資料を登録します。既存の出典だけで足りる場合は、新しい出典を作らず既存の `id` を利用します。
+2. 出典には `id`、`company`、`title`、`url`、`applicableFrom`、`verifiedAt`、`note` を必ず入れます。URLだけを根拠表示の代わりにしないでください。
+3. `data/model-cases.json` の対象ケースに `evidenceClaims` を追加・更新します。各要素には `claim`、`whyItMatters`、`sourceIds`、`appliesTo`、`riskLevel`、`displayGroup` が必要です。
+4. `sourceIds` には `data/source-registry.json` に存在する `id` だけを指定します。公式資料にない断定や、「絶対おすすめ」「最安」「最強」「必ず補償される」などの表現は追加しないでください。
+5. `riskLevel` は `high`、`medium`、`low` のいずれかを指定します。
+6. 各ケースの `finalNotice` は削除しないでください。ページ上の免責事項とあわせて、保険料、基本補償、保険金支払条件、引受可否まで含む総合評価ではないことを維持します。
+7. 更新後は `npm run validate:data` を実行し、存在しない `sourceId`、空の `sourceIds`、不正な `riskLevel`、`verifiedAt` 欠落、`finalNotice` 欠落がないことを確認します。
