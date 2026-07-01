@@ -74,7 +74,7 @@ function comparisonGuideText(type) {
 
 function renderComparisonTable(type) {
   const highlightKey = highlightedCompanyKey(type);
-  return `<table class="comparison-table">
+  return `<table class="result-comparison-table">
     <thead><tr><th scope="col">場面</th>${COMPANY_COMPARISON.map((company) => `<th scope="col" class="${company.key === highlightKey ? "is-highlighted" : ""}">${escapeHtml(company.label)}</th>`).join("")}</tr></thead>
     <tbody>${COMPARISON_ROWS.map((row, rowIndex) => `<tr><th scope="row">${escapeHtml(row)}</th>${COMPANY_COMPARISON.map((company) => `<td class="${company.key === highlightKey ? "is-highlighted" : ""}">${company.values[rowIndex]}</td>`).join("")}</tr>`).join("")}</tbody>
   </table>`;
@@ -86,7 +86,7 @@ function otherFitItems(type) {
     { types: ["ms_type", "familyWatch"], text: "家族の位置確認を重視 → 三井住友海上型" },
     { types: ["aioi_type", "daily"], text: "安全運転スコアを重視 → あいおい型" },
     { types: ["tokio_type", "familyRide"], text: "家族同乗時の事故初動を重視 → 東京海上日動型" },
-    { types: ["kyoei_type", "variable"], text: "車の使い方が変わりやすい → 共栄火災型" }
+    { types: ["kyoei_type"], text: "車の使い方が変わりやすい → 共栄火災型" }
   ];
   return items.filter((item) => !item.types.includes(type)).slice(0, 3).map((item) => item.text);
 }
