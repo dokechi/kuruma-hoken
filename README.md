@@ -99,3 +99,4 @@
 5. `riskLevel` は `high`、`medium`、`low` のいずれかを指定します。
 6. 各ケースの `finalNotice` は削除しないでください。ページ上の免責事項とあわせて、保険料、基本補償、保険金支払条件、引受可否まで含む総合評価ではないことを維持します。
 7. 更新後は `npm run validate:data` を実行し、存在しない `sourceId`、空の `sourceIds`、不正な `riskLevel`、`verifiedAt` 欠落、`finalNotice` 欠落がないことを確認します。
+<!-- trigger pages redeploy -->
