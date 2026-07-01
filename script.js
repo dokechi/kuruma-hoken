@@ -48,7 +48,7 @@ async function init() {
 
   MODEL_CASES = modelCases;
   SOURCE_REGISTRY = sourceRegistry;
-  Object.assign(state, { questions, scoring, results });
+  Object.assign(state, { questions: document.body.classList.contains("page-cases") ? questions.slice(0, 2) : questions, scoring, results });
   bindEvents();
   renderCaseDiagnosis();
   renderCases();
@@ -68,10 +68,16 @@ function bindEvents() {
   $("restartBtn")?.addEventListener("click", restart);
   $("backBtn")?.addEventListener("click", previousQuestion);
   $("nextBtn")?.addEventListener("click", nextQuestion);
+  $("candidateBtn")?.addEventListener("click", () => {
+    const caseId = resultTypeToCaseId(state.ranked[0]?.type);
+    showScreen("caseListScreen", { scrollTop: false });
+    openCaseDetail(caseId);
+  });
+  $("compareBtn")?.addEventListener("click", () => showScreen("caseListScreen"));
   document.querySelectorAll("[data-nav]").forEach((button) => {
     button.addEventListener("click", () => showScreen(button.dataset.nav));
   });
-  $("startCaseDiagnosis")?.addEventListener("click", () => showScreen("caseDiagnosis"));
+  $("startCaseDiagnosis")?.addEventListener("click", () => showScreen($("question-title") ? "question" : "caseDiagnosis"));
   $("showCaseList")?.addEventListener("click", () => showScreen("caseListScreen"));
   document.querySelectorAll("[data-case-home]").forEach((button) => {
     button.addEventListener("click", () => showScreen("caseEntry"));
@@ -112,7 +118,7 @@ function bindEvents() {
 
 
 function escapeHtml(value) {
-  return String(value ?? "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char]));
+  return String(value ?? "").replaceAll("第一比較候補", "まず見る候補").replace(/[&<>"\']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "\'": "&#39;" }[char]));
 }
 
 function listItems(items) {
@@ -228,7 +234,7 @@ function renderCases() {
 function renderModelCaseFaq() {
   const faqs = [
     ["なぜN-BOXならあいおいなのですか？", "N-BOX自体が理由ではありません。高頻度運転、安全運転スコアへの関心、500km以上の走行見込み、継続時の段階制割引を重視することが理由です。"],
-    ["安全運転割引はあいおいだけですか？", "いいえ。他社にも運転評価や割引があります。このケースでは段階制の評価を重視するため、あいおい型を第一比較候補にしています。"],
+    ["安全運転割引はあいおいだけですか？", "いいえ。他社にも運転評価や割引があります。このケースでは段階制の評価を重視するため、あいおい型をまず見る候補にしています。"],
     ["ALSOKは損保ジャパンだけですか？", "いいえ。共栄火災にも所定条件でALSOK現場急行があります。損保ジャパン型は、通信ドラレコ、通知、運転診断、ALSOKを一体で求める人の比較候補です。"],
     ["東京海上日動の月額500円型が一番高機能ですか？", "いいえ。低負担型です。後方カメラ、家族見守り、360度撮影、現場急行を重視する場合は他社型も比較します。"],
     ["三井住友海上の360度型なら死角はありませんか？", "いいえ。車両構造による死角があり、後方車両のナンバーを記録できない場合があります。"],
@@ -344,7 +350,7 @@ function renderCaseDetail(caseId) {
       <p class="inline-detail-kicker">この場面の詳しい理由</p>
       <h1 id="case-detail-title">${escapeHtml(modelCase.title)}</h1>
       <section class="conclusion-box" aria-label="この場面の結論">
-        <p class="eyebrow">この場面の第一比較候補</p>
+        <p class="eyebrow">まず見る候補</p>
         <h2>${escapeHtml(modelCase.primaryCandidate)}</h2>
         <p class="conclusion-text">${escapeHtml(modelCase.conclusion)}</p>
         <div class="reason-line"><strong>選定理由：</strong><span>${escapeHtml(modelCase.selectionReason)}</span></div>
@@ -526,23 +532,45 @@ function labelFor(percent) {
   return "該当薄め";
 }
 
+function resultTypeToCaseId(type) {
+  return {
+    aioi_type: "case1",
+    tokio_type: "case2",
+    sompo_type: "case3",
+    ms_type: "case4",
+    kyoei_type: "case6",
+    direct_type: "case7"
+  }[type] || MODEL_CASES[0]?.id;
+}
+
+function checksForResult(type) {
+  return {
+    aioi_type: ["安全運転スコア", "走行データの取得条件", "継続時の割引"],
+    tokio_type: ["事故自動通報", "事故時の通話", "家族同乗時の初動"],
+    sompo_type: ["通信ドラレコ", "事故通知", "現場急行"],
+    ms_type: ["位置確認", "運転状況共有", "見守り機能"],
+    kyoei_type: ["分かりやすさ", "電話・担当者への相談", "使用目的の変化"],
+    direct_type: ["保険料", "補償内容", "車両条件"]
+  }[type] || ["補償内容", "保険料", "契約条件"];
+}
+
 function renderResults() {
   state.ranked = calculateScores();
   const top = state.ranked[0];
-  $("topResult").innerHTML = `<span class="badge">${top.company}</span><h2>${top.name}</h2><p>${top.summary}</p>`;
-  $("scoreList").innerHTML = state.ranked.map((item, index) => `
-    <article class="score-row">
-      <div class="score-head"><span>${index + 1}. ${item.company}</span><span>タイプ一致度 ${item.percent}%・${labelFor(item.percent)}</span></div>
-      <div class="meter" aria-hidden="true"><span style="width:${item.percent}%"></span></div>
-      <p>${item.name}</p>
-    </article>`).join("");
+  if (!top) return;
+  $("topResult").innerHTML = `<span class="badge">まず見る候補</span><h2>${escapeHtml(top.name)}</h2><p>${escapeHtml(top.company)}</p><p>${escapeHtml(top.summary)}</p>`;
+  $("scoreList").innerHTML = `<ul>${checksForResult(top.type).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>`;
   $("compareReason").textContent = top.type === "direct_type"
-    ? "価格重視タイプが最も近い結果です。この診断結果だけで加入を断定せず、補償内容・車両条件・契約条件を確認してください。"
-    : `5社の中では、まず${top.company}を比較する理由があります。ただし、加入を断定するものではありません。`;
+    ? "価格重視タイプが近い結果です。この診断結果だけで判断せず、補償内容・車両条件・契約条件を確認してください。"
+    : `5社の中では、まず${top.company}を見る理由があります。ただし、契約判断を断定するものではありません。`;
   renderDetail();
 }
 
 function renderDetail() {
+  if (document.body.classList.contains("page-cases")) {
+    if ($("detailBody")) $("detailBody").innerHTML = "";
+    return;
+  }
   const top = state.ranked[0];
   const lowItems = state.ranked.slice(1);
   const highReason = top.type === "direct_type"
@@ -550,7 +578,7 @@ function renderDetail() {
     : top.highReason;
   $("detailBody").innerHTML = `
     <article><h2>なぜ一致度が高いのか</h2><p>${highReason}</p></article>
-    <article><h2>まず比較する理由</h2><p>${top.type === "direct_type" ? "保険料への関心が強い結果です。実際の契約判断では、価格だけでなく補償内容・車両条件・契約条件も合わせて確認してください。" : `5社の中では、まず${top.company}を比較する理由があります。回答内容と事故時の不安軸が近いためです。`}</p></article>
+    <article><h2>まず見る理由</h2><p>${top.type === "direct_type" ? "保険料への関心が強い結果です。実際の契約判断では、価格だけでなく補償内容・車両条件・契約条件も合わせて確認してください。" : `5社の中では、まず${top.company}を見る理由があります。回答内容と事故時の不安軸が近いためです。`}</p></article>
     <article><h2>なぜ他のタイプが低いのか</h2><p>${lowItems.map((item) => `${item.company}は${item.lowReason}`).join(" ")}</p></article>
     <article><h2>低いタイプの見方</h2><p>一致度が低いタイプは、その会社が悪いのではなく、今回の回答で見えた不安とはズレやすいという意味です。実際の契約判断では補償内容・保険料・車両条件などを確認してください。</p></article>`;
 }
@@ -560,7 +588,7 @@ function restart() {
   state.answers = {};
   state.ranked = [];
   renderQuestion();
-  showScreen("cases");
+  showScreen(document.body.classList.contains("page-cases") ? "caseEntry" : "cases");
 }
 
 init().catch(() => {

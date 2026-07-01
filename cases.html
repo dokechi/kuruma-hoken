@@ -29,28 +29,43 @@
       </div>
     </section>
 
-    <section id="caseDiagnosis" class="screen case-diagnosis-screen" aria-labelledby="case-diagnosis-title">
-      <div class="case-diagnosis-shell">
-        <p class="eyebrow">2問でしぼる</p>
-        <h1 id="case-diagnosis-title">使い方を2つだけ選ぶ</h1>
-        <div class="diagnosis-question">
-          <h2>Q1. この車は主に誰が使いますか？</h2>
-          <div id="caseQ1" class="diagnosis-options" role="radiogroup" aria-label="この車は主に誰が使いますか？"></div>
+    <section id="question" class="screen question-screen" aria-labelledby="question-title">
+      <div class="question-shell">
+        <div class="progress-meta">
+          <span id="questionCount">質問 1 / 2</span>
+          <span id="answeredCount">未回答</span>
         </div>
-        <div class="diagnosis-question">
-          <h2>Q2. この車に当てはまるものを選んでください</h2>
-          <p class="diagnosis-note">複数選択できます。</p>
-          <div id="caseQ2" class="diagnosis-options" aria-label="この車に当てはまるもの"></div>
-        </div>
-        <div class="case-entry-actions diagnosis-submit-actions">
-          <button id="showDiagnosisResult" class="primary-btn" type="button" disabled>診断結果を見る</button>
-          <button class="secondary-btn" type="button" data-case-home>← 戻る</button>
-        </div>
+        <div class="progress-track" aria-hidden="true"><div id="progressBar" class="progress-bar"></div></div>
+        <article class="question-card">
+          <p id="questionCategory" class="eyebrow">選択式・証券情報は不要です</p>
+          <h1 id="question-title">質問</h1>
+          <div id="choices" class="choices"></div>
+          <div class="question-actions">
+            <button id="backBtn" class="secondary-btn quiet" type="button">戻る</button>
+            <button id="nextBtn" class="primary-btn" type="button">次へ</button>
+          </div>
+        </article>
       </div>
     </section>
 
-    <section id="caseDiagnosisResult" class="screen case-diagnosis-result-screen" aria-labelledby="diagnosis-result-title">
-      <div id="diagnosisResultBody"></div>
+    <section id="summary" class="screen result-screen diagnosis-summary-screen" aria-labelledby="summary-title">
+      <p class="eyebrow">診断結果</p>
+      <h1 id="summary-title">診断結果</h1>
+      <section aria-label="あなたのタイプ">
+        <h2>あなたのタイプ</h2>
+        <div id="topResult" class="top-result"></div>
+      </section>
+      <section class="diagnosis-result-section" aria-label="まず確認する3つ">
+        <h2>まず確認する3つ</h2>
+        <div id="scoreList" class="score-list"></div>
+      </section>
+      <p id="compareReason" class="callout"></p>
+      <div id="detailBody" class="detail-grid"></div>
+      <div class="diagnosis-result-actions">
+        <button id="candidateBtn" class="primary-btn" type="button">この候補を見る</button>
+        <button id="compareBtn" class="secondary-btn" type="button">他社と比べる</button>
+        <button id="restartBtn" class="secondary-btn quiet" type="button">もう一度選ぶ</button>
+      </div>
     </section>
 
     <section id="caseListScreen" class="screen result-screen" aria-labelledby="case-list-title">

@@ -582,6 +582,12 @@ a.primary-btn,a.secondary-btn{display:inline-flex;align-items:center;justify-con
   margin:8px 0 0;
   padding-left:1.25em;
 }
+.diagnosis-summary-screen #detailBody:empty{
+  display:none;
+}
+.diagnosis-summary-screen .score-list{
+  display:block;
+}
 .diagnosis-result-actions{
   display:grid;
   grid-template-columns:repeat(3,minmax(0,1fr));
