@@ -9,11 +9,11 @@ const categoryLabel = (category) => category;
 const GLOBAL_DISCLAIMER = "本ページは、当社取扱5社について、特定の付帯サービスを重視する場合の比較の入口を示すものです。保険料、基本補償、保険金支払条件、特約、引受可否、代理店対応等を含む総合評価ではありません。掲載車種・年代は代表例です。実際の商品選択時には、補償内容、保険料、車両条件、契約始期、引受条件等の確認が必要です。";
 const $ = (id) => document.getElementById(id);
 const CASE_DIAGNOSIS_TYPES = {
-  daily: { name: "毎日運転・データ活用型", candidate: "あいおいニッセイ同和損保型", checks: ["安全運転スコア", "走行データの取得条件", "継続時の割引"], caseId: "case1" },
-  familyRide: { name: "家族同乗・事故時サポート型", candidate: "東京海上日動型", checks: ["事故自動通報", "音声通話", "SOS"], caseId: "case2" },
-  familyWatch: { name: "家族見守り型", candidate: "三井住友海上型", checks: ["位置確認", "運転状況共有", "見守り機能"], caseId: "case4" },
-  nightWork: { name: "夜間・現場帰りサポート型", candidate: "損保ジャパン型", checks: ["通信ドラレコ", "事故通知", "現場急行"], caseId: "case3" },
-  variable: { name: "使い方変動・複数比較型", candidate: "分岐型：1社固定にしない", checks: ["使用目的", "車ごとの使い方", "変更手続き"], caseId: "case7" }
+  daily: { name: "毎日よく運転する車", candidate: "あいおいニッセイ同和損保をまず確認", checks: ["安全運転の評価", "どれだけ走れば評価されるか", "続けたときの割引"], caseId: "case1" },
+  familyRide: { name: "家族をよく乗せる車", candidate: "東京海上日動をまず確認", checks: ["事故時の自動連絡", "車内から相談", "SOS"], caseId: "case2" },
+  familyWatch: { name: "家族の運転を見守りたい車", candidate: "三井住友海上をまず確認", checks: ["今いる場所の確認", "運転の様子を家族に共有", "家族の運転見守り"], caseId: "case4" },
+  nightWork: { name: "夜間や仕事帰りに使う車", candidate: "損保ジャパンをまず確認", checks: ["通信できるドラレコ", "事故を知らせる機能", "事故現場へのかけつけ"], caseId: "case3" },
+  variable: { name: "使う人や目的が変わりやすい車", candidate: "1社に決めず、複数社を比べる", checks: ["車の使い道", "車ごとに使う人が違う", "使い方が変わった時の手続き"], caseId: "case7" }
 };
 const CASE_Q1 = [
   ["self", "自分が中心", { daily: 2 }],
@@ -35,15 +35,15 @@ const CASE_Q2 = [
 const caseDiagnosisState = { q1: "", q2: new Set() };
 
 const RESULT_DESCRIPTIONS = {
-  aioi_type: "毎日の運転データや安全運転スコアを比較の入口にしたい人向け。",
+  aioi_type: "毎日の運転データや安全運転の評価を比較の入口にしたい人向け。",
   tokio_type: "家族を乗せる車で、事故時の初動を重視する人向け。",
   sompo_type: "夜間や一人の事故現場で、通知や現場対応の不安を減らしたい人向け。",
-  ms_type: "家族が運転する車を、位置確認や見守りで把握したい人向け。",
+  ms_type: "家族が運転する車を、今いる場所の確認や見守りで把握したい人向け。",
   kyoei_type: "使い方が変わる車で、相談しながら整理したい人向け。",
   direct_type: "保険料や補償内容を先に見比べ、条件を自分で整理したい人向け。",
-  daily: "毎日の運転データや安全運転スコアを比較の入口にしたい人向け。",
+  daily: "毎日の運転データや安全運転の評価を比較の入口にしたい人向け。",
   familyRide: "家族を乗せる車で、事故時の初動を重視する人向け。",
-  familyWatch: "家族が運転する車を、位置確認や見守りで把握したい人向け。",
+  familyWatch: "家族が運転する車を、今いる場所の確認や見守りで把握したい人向け。",
   nightWork: "夜間や仕事帰りの事故現場で、初動の不安を減らしたい人向け。",
   variable: "車ごとに使い方が変わるため、1社に固定せず複数比較したい人向け。"
 };
@@ -57,26 +57,26 @@ const COMPANY_COMPARISON = [
 ];
 const COMPARISON_ROWS = ["安全運転", "家族同乗", "夜間事故", "見守り", "使い方変化"];
 const CHECK_DETAILS = {
-  "安全運転スコア": "日々の運転を点数で見られるか。",
-  "走行データの取得条件": "走行距離など条件を先に確認。",
-  "継続時の割引": "継続時の割引も確認。",
-  "事故自動通報": "事故時に連絡できない不安へ備える。",
+  "安全運転の評価": "日々の運転を点数で見られるか。",
+  "どれだけ走れば評価されるか": "走行距離など条件を先に確認。",
+  "続けたときの割引": "続けたときの割引も確認。",
+  "事故時の自動連絡": "事故時に連絡できない不安へ備える。",
   "事故時の通話": "事故直後に相談できるか。",
   "家族同乗時の初動": "家族を乗せる車の初動対応を重視。",
-  "音声通話": "車内からすぐ相談できるか。",
+  "車内から相談": "車内からすぐ相談できるか。",
   "SOS": "事故以外の緊急時も助けを呼べるか。",
-  "通信ドラレコ": "映像・通知・診断を確認。",
-  "事故通知": "家族や代理店へ早く伝わるか。",
-  "現場急行": "一人で現場に残る不安を減らす。",
-  "位置確認": "家族の居場所を把握しやすいか。",
-  "運転状況共有": "急操作などを家族と共有できるか。",
-  "見守り機能": "親や子どもの運転を見守れるか。",
-  "使用目的": "通勤・送迎・仕事などの変化を確認。",
-  "車ごとの使い方": "車ごとに比較先を分ける。",
-  "変更手続き": "用途変更時の負担を見る。",
+  "通信できるドラレコ": "映像・通知・診断を確認。",
+  "事故を知らせる機能": "家族や代理店へ早く伝わるか。",
+  "事故現場へのかけつけ": "一人で現場に残る不安を減らす。",
+  "今いる場所の確認": "家族の居場所を把握しやすいか。",
+  "運転の様子を家族に共有": "急操作などを家族と共有できるか。",
+  "家族の運転見守り": "親や子どもの運転を見守れるか。",
+  "車の使い道": "通勤・送迎・仕事などの変化を確認。",
+  "車ごとに使う人が違う": "車ごとに比較先を分ける。",
+  "使い方が変わった時の手続き": "用途変更時の負担を見る。",
   "分かりやすさ": "複雑な条件を相談しながら整理しやすいかを見ます。",
   "電話・担当者への相談": "自分だけで判断しにくい時に相談しやすいかを確認します。",
-  "使用目的の変化": "使い方が変わりやすい車で条件変更の負担を見ます。",
+  "車の使い道の変化": "使い方が変わりやすい車で条件変更の負担を見ます。",
   "保険料": "価格だけでなく、補償内容と合わせて比較します。",
   "補償内容": "基本補償や特約の中身を必ず確認します。",
   "車両条件": "車種・年式・運転者条件などで合う候補が変わります。"
@@ -93,7 +93,7 @@ function highlightedCompanyKey(type) {
 
 function comparisonGuideText(type) {
   return type === "variable"
-    ? "使い方変動型のため、特定の会社を固定せず横並びで比較してください。"
+    ? "使う人や目的が変わりやすい車のため、特定の会社を固定せず横並びで比較してください。"
     : "回答に近い列を青で表示しています。";
 }
 
@@ -107,11 +107,11 @@ function renderComparisonTable(type) {
 
 function otherFitItems(type) {
   const items = [
-    { types: ["sompo_type", "nightWork"], text: "夜間・一人の事故現場が不安なら、損保ジャパン型も合います。" },
-    { types: ["ms_type", "familyWatch"], text: "家族の位置確認を重視するなら、三井住友海上型も合います。" },
-    { types: ["aioi_type", "daily"], text: "安全運転スコア重視なら、あいおい型も合います。" },
-    { types: ["tokio_type", "familyRide"], text: "家族同乗時の初動重視なら、東京海上日動型も合います。" },
-    { types: ["kyoei_type"], text: "使い方が変わりやすいなら、共栄火災型も合います。" }
+    { types: ["sompo_type", "nightWork"], text: "夜間・一人の事故現場が不安なら、損保ジャパンも確認すると安心です。" },
+    { types: ["ms_type", "familyWatch"], text: "家族の今いる場所の確認を重視するなら、三井住友海上も確認すると安心です。" },
+    { types: ["aioi_type", "daily"], text: "安全運転の評価重視なら、あいおいニッセイ同和損保も合います。" },
+    { types: ["tokio_type", "familyRide"], text: "家族同乗時の初動重視なら、東京海上日動も確認すると安心です。" },
+    { types: ["kyoei_type"], text: "使い方が変わりやすいなら、共栄火災も確認すると安心です。" }
   ];
   if (type === "variable") {
     const variablePriorityTypes = ["kyoei_type", "sompo_type", "ms_type"];
@@ -207,8 +207,21 @@ function bindEvents() {
 }
 
 
+function displayLabel(value) {
+  return String(value ?? "")
+    .replaceAll("あいおいニッセイ同和損保型", "あいおいニッセイ同和損保をまず確認")
+    .replaceAll("東京海上日動型", "東京海上日動をまず確認")
+    .replaceAll("損保ジャパン型", "損保ジャパンをまず確認")
+    .replaceAll("三井住友海上型", "三井住友海上をまず確認")
+    .replaceAll("共栄火災型", "共栄火災をまず確認")
+    .replaceAll("分岐型：1社固定にしません", "1社に決めず、複数社を比べる")
+    .replaceAll("分岐型：1社固定にしない", "1社に決めず、複数社を比べる")
+    .replaceAll("第一比較候補", "まず確認する先")
+    .replaceAll("まず見る候補", "まず確認する先");
+}
+
 function escapeHtml(value) {
-  return String(value ?? "").replaceAll("第一比較候補", "まず見る候補").replace(/[&<>"\']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "\'": "&#39;" }[char]));
+  return displayLabel(value).replace(/[&<>"\']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "\'": "&#39;" }[char]));
 }
 
 function listItems(items) {
@@ -270,15 +283,15 @@ function renderCaseDiagnosisResult() {
       <p class="eyebrow">比較の入口</p>
       <h1 id="diagnosis-result-title">あなたは、まずこれを見る</h1>
       <section class="diagnosis-result-section">
-        <h2>あなたの車はこれに近いです</h2>
+        <h2>選んだ内容に近い使い方</h2>
         <p>${escapeHtml(result.name)}</p>
       </section>
       <section class="diagnosis-result-section">
-        <h2>まず見る候補</h2>
+        <h2>まず確認する先</h2>
         <p>${escapeHtml(result.candidate)}</p>
       </section>
       <section class="diagnosis-result-section">
-        <h2>理由は3つだけ</h2>
+        <h2>理由はこの3つ</h2>
         ${listItems(result.checks)}
       </section>
       <section class="diagnosis-caution" aria-label="ただし注意">
@@ -330,12 +343,12 @@ function renderCases() {
 
 function renderModelCaseFaq() {
   const faqs = [
-    ["なぜN-BOXならあいおいなのですか？", "N-BOX自体が理由ではありません。高頻度運転、安全運転スコアへの関心、500km以上の走行見込み、継続時の段階制割引を重視することが理由です。"],
-    ["安全運転割引はあいおいだけですか？", "いいえ。他社にも運転評価や割引があります。このケースでは段階制の評価を重視するため、あいおい型をまず見る候補にしています。"],
-    ["ALSOKは損保ジャパンだけですか？", "いいえ。共栄火災にも所定条件でALSOK現場急行があります。損保ジャパン型は、通信ドラレコ、通知、運転診断、ALSOKを一体で求める人の比較候補です。"],
-    ["東京海上日動の月額500円型が一番高機能ですか？", "いいえ。低負担型です。後方カメラ、家族見守り、360度撮影、現場急行を重視する場合は他社型も比較します。"],
+    ["なぜN-BOXならあいおいなのですか？", "N-BOX自体が理由ではありません。高頻度運転、安全運転の評価への関心、500km以上の走行見込み、継続時の段階制割引を重視することが理由です。"],
+    ["安全運転割引はあいおいだけですか？", "いいえ。他社にも運転評価や割引があります。このケースでは段階制の評価を重視するため、あいおいニッセイ同和損保を確認する先にしています。"],
+    ["ALSOKは損保ジャパンだけですか？", "いいえ。共栄火災にも所定条件でALSOK事故現場へのかけつけがあります。損保ジャパンは、通信できるドラレコ、通知、運転診断、ALSOKを一体で求める人の比較候補です。"],
+    ["東京海上日動の月額500円型が一番高機能ですか？", "いいえ。低負担型です。後方カメラ、家族見守り、360度撮影、事故現場へのかけつけを重視する場合は他社型も比較します。"],
     ["三井住友海上の360度型なら死角はありませんか？", "いいえ。車両構造による死角があり、後方車両のナンバーを記録できない場合があります。"],
-    ["60代以上なら共栄火災ですか？", "いいえ。年齢だけでは判断しません。使用目的が変わりやすく、使用目的による保険料差や変更手続きを避けたい場合の比較候補です。"],
+    ["60代以上なら共栄火災ですか？", "いいえ。年齢だけでは判断しません。車の使い道が変わりやすく、車の使い道による保険料差や使い方が変わった時の手続きを避けたい場合の比較候補です。"],
     ["保険料を比較せずに会社を決められますか？", "決められません。本サイトは、付帯サービス面で最初に比較する候補を整理するもので、最終契約判断ではありません。"]
   ];
   return `<section class="faq-panel"><h2>比較前提FAQ</h2>${faqs.map(([q,a]) => `<details><summary>${q}</summary><p>${a}</p></details>`).join("")}</section>`;
@@ -447,13 +460,13 @@ function renderCaseDetail(caseId) {
       <p class="inline-detail-kicker">この場面の詳しい理由</p>
       <h1 id="case-detail-title">${escapeHtml(modelCase.title)}</h1>
       <section class="conclusion-box" aria-label="この場面の結論">
-        <p class="eyebrow">まず見る候補</p>
+        <p class="eyebrow">まず確認する先</p>
         <h2>${escapeHtml(modelCase.primaryCandidate)}</h2>
         <p class="conclusion-text">${escapeHtml(modelCase.conclusion)}</p>
         <div class="reason-line"><strong>選定理由：</strong><span>${escapeHtml(modelCase.selectionReason)}</span></div>
-        <div class="reason-line muted"><strong>ただし：</strong><span>他社が勝つ条件もあります。事故現場の不安、家族見守り、低負担の事故自動通報、使用目的の変動などを重視する場合は下の比較を確認してください。</span></div>
+        <div class="reason-line muted"><strong>ただし：</strong><span>他社が勝つ条件もあります。事故現場の不安、家族見守り、低負担の事故時の自動連絡、車の使い道の変動などを重視する場合は下の比較を確認してください。</span></div>
       </section>
-      <section class="detail-reason-section"><h2>理由は3つだけ</h2>${listItems((modelCase.decisionCriteria || []).slice(0, 3))}</section>
+      <section class="detail-reason-section"><h2>理由はこの3つ</h2>${listItems((modelCase.decisionCriteria || []).slice(0, 3))}</section>
       <div class="accordion-stack">
         <details open><summary>他社と比べる</summary>${renderComparisonCards(modelCase.comparisons)}</details>
         <details><summary>根拠を見る</summary>${renderEvidenceClaims(modelCase.evidenceClaims)}</details>
@@ -681,11 +694,11 @@ function resultTypeToCaseId(type) {
 function checksForResult(type) {
   if (CASE_DIAGNOSIS_TYPES[type]) return CASE_DIAGNOSIS_TYPES[type].checks;
   return {
-    aioi_type: ["安全運転スコア", "走行データの取得条件", "継続時の割引"],
-    tokio_type: ["事故自動通報", "事故時の通話", "家族同乗時の初動"],
-    sompo_type: ["通信ドラレコ", "事故通知", "現場急行"],
-    ms_type: ["位置確認", "運転状況共有", "見守り機能"],
-    kyoei_type: ["分かりやすさ", "電話・担当者への相談", "使用目的の変化"],
+    aioi_type: ["安全運転の評価", "どれだけ走れば評価されるか", "続けたときの割引"],
+    tokio_type: ["事故時の自動連絡", "事故時の通話", "家族同乗時の初動"],
+    sompo_type: ["通信できるドラレコ", "事故を知らせる機能", "事故現場へのかけつけ"],
+    ms_type: ["今いる場所の確認", "運転の様子を家族に共有", "家族の運転見守り"],
+    kyoei_type: ["分かりやすさ", "電話・担当者への相談", "車の使い道の変化"],
     direct_type: ["保険料", "補償内容", "車両条件"]
   }[type] || ["補償内容", "保険料", "契約条件"];
 }
@@ -694,7 +707,7 @@ function renderResults() {
   state.ranked = calculateScores();
   const top = state.ranked[0];
   if (!top) return;
-  const candidateName = top.candidate || top.company;
+  const candidateName = displayLabel(top.candidate || top.company);
   if ($("conclusionCandidate")) $("conclusionCandidate").textContent = candidateName;
   if ($("conclusionDescription")) $("conclusionDescription").textContent = resultDescription(top.type);
   $("topResult").innerHTML = `<h2>${escapeHtml(top.name)}</h2>`;
@@ -706,7 +719,7 @@ function renderResults() {
     ? "この1問診断は、使い方や不安に近い比較の入口を示すものです。保険の最終判断ではありません。"
     : top.type === "direct_type"
     ? "価格重視タイプが近い結果です。この結果だけで判断せず、補償内容・車両条件・契約条件を確認してください。"
-    : `5社の中では、まず${top.company}を見る理由があります。ただし、契約判断を断定するものではありません。`;
+    : `5社の中では、まず${displayLabel(top.company).replace("をまず確認", "")}を見る理由があります。ただし、契約判断を断定するものではありません。`;
   renderDetail();
 }
 
