@@ -1824,3 +1824,76 @@ img,svg,canvas,video,iframe{
     font-size:.84rem;
   }
 }
+
+/* Home first-view diagnosis alignment */
+body.page-home .home-hero-stack{
+  display:grid;
+  justify-items:center;
+  gap:clamp(10px,2svh,18px);
+  width:min(100%,920px);
+}
+body.page-home .hero-title{
+  width:min(100%,12.8em);
+  max-width:12.8em;
+}
+body.page-home .hero-title span:last-child{
+  white-space:normal;
+}
+.hero-subtitle{
+  display:grid;
+  gap:4px;
+  max-width:720px;
+  margin:0;
+  color:var(--plum-700);
+  font-size:clamp(.94rem,2.1vw,1.08rem);
+  font-weight:800;
+  line-height:1.75;
+}
+.hero-subtitle span{
+  display:block;
+}
+.hero-proof-points{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:8px;
+  margin:0;
+  padding:0;
+  list-style:none;
+}
+.hero-proof-points li{
+  display:inline-flex;
+  align-items:center;
+  min-height:28px;
+  padding:4px 10px;
+  border-radius:999px;
+  background:var(--rose-100);
+  color:var(--rose-600);
+  font-size:.78rem;
+  font-weight:900;
+  line-height:1.3;
+}
+@media(max-width:760px){
+  body.page-home .home-hero-stack{
+    gap:clamp(8px,1.8svh,14px);
+  }
+  .hero-subtitle{
+    font-size:.88rem;
+    line-height:1.58;
+    gap:2px;
+  }
+  .hero-proof-points{
+    gap:6px;
+  }
+  .hero-proof-points li{
+    min-height:24px;
+    padding:3px 8px;
+    font-size:.7rem;
+  }
+}
+@media(max-width:380px){
+  .hero-subtitle{
+    font-size:.8rem;
+    line-height:1.48;
+  }
+}
